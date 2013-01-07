@@ -10,6 +10,7 @@ License: GPLv2 or later
 Generate linked Google+ Hangout Event notifications in a widget from a Google Calendar with a nifty Countdown Clock to each event.
 
 == Description ==
+
 This plugin will generate linked Google+ Hangout Event notifications in a widget from a Google Calendar with a nifty Countdown Clock to each event. Fully customizable with fonts and colors.
 
 = Features =
