@@ -21,7 +21,6 @@ This plugin will generate linked Google+ Hangout Event notifications in a widget
 * Choose colors, fonts, size, and style for the widget (Google Fonts Included)
 * Links Directly to Hangout Event on Google+
 
-
 == Installation ==
 
 1. Upload the full directory into your wp-content/plugins directory
