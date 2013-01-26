@@ -7,7 +7,7 @@ Tested up to: 3.5
 Stable tag: 0.0.4
 License: GPLv2 or later
 
-Generate linked Google+ Hangout & Event notifications with variable Shortcode & Widgets, includes a nifty countdown clock. Now with Google Fonts.
+Generate linked Google+ Hangout & Event feeds with Shortcode and Widgets, also includes a nifty countdown clock. Now with Google Fonts.
 
 == Description ==
 
