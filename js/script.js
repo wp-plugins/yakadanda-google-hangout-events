@@ -2,14 +2,6 @@ jQuery(function($){
   
   // In admin page settings
   if ( $('body').find('#google-hangout-event').length == 1 ) {
-    // select display
-    var value_of_display = $('#hidden_display').val();
-    if ( value_of_display ) $('#display option[value=' + value_of_display + ']').attr('selected',true);
-    
-    // select countdown
-    var  value_of_countdown_display = $('#hidden_countdown_display').val();
-    if ( value_of_countdown_display ) $('#countdown_display :radio[value=' + value_of_countdown_display + ']').attr('checked',true);
-    
     // select themes, sizes, and styles
     var optionsFirst = new Array("title", "date", "detail", "icon", "countdown"),
     optionsLast = new Array("theme", "size", "style");

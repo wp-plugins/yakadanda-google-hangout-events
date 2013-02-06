@@ -16,8 +16,11 @@ class googlePlusEvents extends WP_Widget {
   public function widget( $args, $instance ) {
     $events = googleplushangoutevent_response();
     $i = 0;
-    $display = empty( $instance['display'] ) ? 1 : $instance['display'];
+    $display = isset( $instance['display'] ) ? $instance['display'] : 1;
     $start_times = googleplushangoutevent_start_times($events, $display, 'normal');
+    $creator = 1;
+    $author = isset($instance['author']) ? $instance['author'] : 'self';
+    $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
     
     extract( $args );
     $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Google+ Events' ) : $instance['title'], $instance, $this->id_base );
@@ -29,7 +32,13 @@ class googlePlusEvents extends WP_Widget {
       <div id="ghe-1st-widget">
         <input id="ghe-start-times-1st" name="ghe-start-times-1st" type="hidden" value="<?php echo $start_times; ?>"/>
         <?php if ($events): ?>
-          <?php foreach ( $events as $event ): if ( !$event['hangoutLink'] && ($event['visibility'] != 'private') ): ?>
+          <?php foreach ( $events as $event ):
+            $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
+            $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
+          
+            if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
+            if ( !$hangoutlink && $creator && ($visibility != 'private') ): 
+          ?>
             <div class="ghe-vessel">
               <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
               <div class="ghe-time"><?php echo googleplushangoutevent_time($event['start']['dateTime'], $event['end']['dateTime'], 'widget'); ?></div>
@@ -39,9 +48,9 @@ class googlePlusEvents extends WP_Widget {
                 <li><a href="#" target="_blank" onclick="return false;">Event</a></li>
               </ul>
               
-              <?php if ( ($instance['countdown'] == 'first') && ($i==0) || empty($instance['countdown']) ): ?>
+              <?php if ( ($countdown == 'first') && ($i==0) ): ?>
                 <div id="ghe-countdown-1st-<?php echo $i; ?>" class="ghe-countdown"><?php echo $event['start']['dateTime']; ?></div>
-              <?php elseif ( $instance['countdown'] == 'all' ): ?>
+              <?php elseif ( $countdown == 'all' ): ?>
                 <div id="ghe-countdown-1st-<?php echo $i; ?>" class="ghe-countdown"><?php echo $event['start']['dateTime']; ?></div>
               <?php endif; ?>
               <div class="ghe-button"><a href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
@@ -64,6 +73,7 @@ class googlePlusEvents extends WP_Widget {
   public function update($new_instance, $old_instance) {
     $instance = array();
     $instance['title'] = strip_tags($new_instance['title']);
+    $instance['author'] = strip_tags($new_instance['author']);
     $instance['display'] = strip_tags($new_instance['display']);
     $instance['countdown'] = strip_tags($new_instance['countdown']);
     return $instance;
@@ -72,12 +82,25 @@ class googlePlusEvents extends WP_Widget {
   // Back-end widget form.
   public function form( $instance ) {
     if ( isset( $instance[ 'title' ] ) ) $title = $instance[ 'title' ];
+    if ( isset( $instance[ 'author' ] ) ) $author = $instance[ 'author' ];
     if ( isset( $instance[ 'display' ] ) ) $display = $instance[ 'display' ];
     if ( isset( $instance[ 'countdown' ] ) ) $countdown = $instance[ 'countdown' ];
     ?>
       <p>
         <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
         <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+      </p>
+      <p>
+        <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
+        <label title="Self">
+          <input type="radio" value="self" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( ( $author == 'self' ) || empty( $author ) ) ? 'checked="checked"' : null; ?>>
+          <span>Self</span>
+        </label>
+        <br/>
+        <label title="All">
+          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( $author == 'all' ) ? 'checked="checked"' : null; ?>>
+          <span>All</span>
+        </label>
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Display:' ); ?></label><br/>
@@ -90,6 +113,7 @@ class googlePlusEvents extends WP_Widget {
         </select>
       </p>
       <p>
+        <label for="<?php echo $this->get_field_id( 'countdown' ); ?>"><?php _e( 'Countdown:' ); ?></label><br/>
         <label title="Display countdown clock on first only">
           <input type="radio" value="first" name="<?php echo $this->get_field_name( 'countdown' ); ?>" <?php echo ( ($countdown == 'first') || empty($countdown) ) ? 'checked="checked"' : null; ?>>
           <span>Display countdown clock on first only</span>
@@ -128,8 +152,11 @@ class googlePlusHangoutEvents extends WP_Widget {
   public function widget( $args, $instance ) {
     $events = googleplushangoutevent_response();
     $i = 0;
-    $display = empty( $instance['display'] ) ? 1 : $instance['display'];
+    $display = isset( $instance['display'] ) ? $instance['display'] : 1;
     $start_times = googleplushangoutevent_start_times($events, $display, 'hangout');
+    $creator = 1;
+    $author = isset($instance['author']) ? $instance['author'] : 'self';
+    $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
     
     extract( $args );
     $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Google+ Hangout Events' ) : $instance['title'], $instance, $this->id_base );
@@ -141,7 +168,13 @@ class googlePlusHangoutEvents extends WP_Widget {
       <div id="ghe-2nd-widget">
         <input id="ghe-start-times-2nd" name="ghe-start-times-2nd" type="hidden" value="<?php echo $start_times; ?>"/>
         <?php if ($events): ?>
-          <?php foreach ( $events as $event ): if ( $event['hangoutLink'] && ($event['visibility'] != 'private') ): ?>
+          <?php foreach ( $events as $event ):
+            $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
+            $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
+            
+            if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
+            if ( $hangoutlink && $creator && ($visibility != 'private') ):
+          ?>
             <?php $onair = googleplushangoutevent_onair($event['start']['dateTime'], $event['end']['dateTime']); ?>
             <div class="ghe-vessel">
               <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
@@ -156,9 +189,9 @@ class googlePlusHangoutEvents extends WP_Widget {
                 <?php endif; ?>
               </ul>
               
-              <?php if ( ($instance['countdown'] == 'first') && ($i==0) || empty($instance['countdown']) ): ?>
+              <?php if ( ($countdown == 'first') && ($i==0) ): ?>
                 <div id="ghe-countdown-2nd-<?php echo $i; ?>" class="ghe-countdown"><?php echo $event['start']['dateTime']; ?></div>
-              <?php elseif ( $instance['countdown'] == 'all' ): ?>
+              <?php elseif ( $countdown == 'all' ): ?>
                 <div id="ghe-countdown-2nd-<?php echo $i; ?>" class="ghe-countdown"><?php echo $event['start']['dateTime']; ?></div>
               <?php endif; ?>
               
@@ -182,6 +215,7 @@ class googlePlusHangoutEvents extends WP_Widget {
   public function update($new_instance, $old_instance) {
     $instance = array();
     $instance['title'] = strip_tags($new_instance['title']);
+    $instance['author'] = strip_tags($new_instance['author']);
     $instance['display'] = strip_tags($new_instance['display']);
     $instance['countdown'] = strip_tags($new_instance['countdown']);
     return $instance;
@@ -190,12 +224,25 @@ class googlePlusHangoutEvents extends WP_Widget {
   // Back-end widget form.
   public function form( $instance ) {
     if ( isset( $instance[ 'title' ] ) ) $title = $instance[ 'title' ];
+    if ( isset( $instance[ 'author' ] ) ) $author = $instance[ 'author' ];
     if ( isset( $instance[ 'display' ] ) ) $display = $instance[ 'display' ];
     if ( isset( $instance[ 'countdown' ] ) ) $countdown = $instance[ 'countdown' ];
     ?>
       <p>
         <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
         <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+      </p>
+      <p>
+        <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
+        <label title="Self">
+          <input type="radio" value="self" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( ( $author == 'self' ) || empty( $author ) ) ? 'checked="checked"' : null; ?>>
+          <span>Self</span>
+        </label>
+        <br/>
+        <label title="All">
+          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( $author == 'all' ) ? 'checked="checked"' : null; ?>>
+          <span>All</span>
+        </label>
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Display:' ); ?></label><br/>
@@ -208,6 +255,7 @@ class googlePlusHangoutEvents extends WP_Widget {
         </select>
       </p>
       <p>
+        <label for="<?php echo $this->get_field_id( 'countdown' ); ?>"><?php _e( 'Countdown:' ); ?></label><br/>
         <label title="Display countdown clock on first only">
           <input type="radio" value="first" name="<?php echo $this->get_field_name( 'countdown' ); ?>" <?php echo ( ($countdown == 'first') || empty($countdown) ) ? 'checked="checked"' : null; ?>>
           <span>Display countdown clock on first only</span>
@@ -292,7 +340,7 @@ function googleplushangoutevent_css() {
 }
 add_action('wp_head', 'googleplushangoutevent_css');
 
-function googleplushangoutevent_response() {
+function googleplushangoutevent_response( $months = null ) {
   require_once( dirname( __FILE__ ) . '/src/Google_Client.php');
   require_once( dirname( __FILE__ ) . '/src/contrib/Google_CalendarService.php');
   
@@ -317,7 +365,13 @@ function googleplushangoutevent_response() {
     
     $service = new Google_CalendarService($client);
     
-    $timeMin = date('c'); // the date is today
+    // the date is today
+    $timeMin = date('c');
+    
+    if ( $months ) {
+      // the today date minus by months
+      $timeMin = date('c', strtotime("-" . $months . " month", strtotime($timeMin)));
+    }
     
     $args = array(
       'maxResults' => 20,
@@ -339,9 +393,10 @@ function googleplushangoutevent_i_last($events, $option = 'all') {
   $event_filter = true;
   if ($events) {
     foreach ( $events as $event ) {
+      $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
       
-      if ($option == 'hangout') $event_filter = $event['hangoutLink'];
-      elseif ($option == 'normal') $event_filter = !$event['hangoutLink'];
+      if ($option == 'hangout') $event_filter = $hangoutlink;
+      elseif ($option == 'normal') $event_filter = !$hangoutlink;
       
       if ($event_filter) {
         $summary = ++$summary;
@@ -358,11 +413,13 @@ function googleplushangoutevent_start_times($events, $display, $option = 'all') 
   $i_last = googleplushangoutevent_i_last($events, $option);
   if ($events) {
     foreach ( $events as $event ) {
+      $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
+      $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
       
-      if ($option == 'hangout') $event_filter = $event['hangoutLink'];
-      elseif ($option == 'normal') $event_filter = !$event['hangoutLink'];
+      if ($option == 'hangout') $event_filter = $hangoutlink;
+      elseif ($option == 'normal') $event_filter = !$hangoutlink;
       
-      if ( $event_filter && ($event['visibility'] != 'private') ) {
+      if ( $event_filter && ($visibility != 'private') ) {
         $output .= $event['start']['dateTime'];
 
         $i++;

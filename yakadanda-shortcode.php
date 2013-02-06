@@ -1,30 +1,40 @@
 <?php
 /*
  * [google+events]
- * [google+events type="all" limit="5"]
- * type = all, normal, hangout
- * limit = number, it limited to 20
+ * [google+events type="all" limit="6" past="8"]
+ * type = all, normal, or hangout, default is all
+ * limit = number of events to show, it limited to 20
+ * past = number of months, to display past events in X months ago
+ * author = self, or all, default is self
  */
 function googleplushangoutevent_shortcode( $atts ) {
   extract( shortcode_atts( array(
     'type' => 'all',
-    'limit' => 20
+    'limit' => 20,
+    'past' => null,
+    'author' => 'self'
   ), $atts ) );
   
   if ($limit > 20) $limit = 20;
   
-  $events = googleplushangoutevent_response();
+  $events = googleplushangoutevent_response( $past );
   $output = 'No Event.';
   $i = 0;
   $filter = true;
+  $creator = 1;
   
   if ($events) {
     $output = null;
     foreach ($events as $event) {
-      if ($type == 'normal') $filter = !$event['hangoutLink'];
-      elseif ($type == 'hangout') $filter = $event['hangoutLink'];
+      $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
+      $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
       
-      if ( $filter && ($event['visibility'] != 'private') ) { $i++;
+      if ($type == 'normal') $filter = !$hangoutlink;
+      elseif ($type == 'hangout') $filter = $hangoutlink;
+      
+      if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
+      
+      if ( $filter && $creator && ($visibility != 'private') ) { $i++;
         $output .= '<div class="yghe-event">';
         $output .= '<div class="yghe-creator"><a href="https://plus.google.com/' . $event['creator']['id'] . '" title="' . $event['creator']['displayName'] . '">' . $event['creator']['displayName'] . '</a> ' . googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
         $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '">' . $event['summary'] . '</a></div>';
@@ -43,6 +53,8 @@ function googleplushangoutevent_shortcode( $atts ) {
       }
     }
   }
+  
+  if ($output == null) $output = 'No Event.';
   
   return $output;
 }
@@ -135,3 +147,16 @@ function googleplushangoutevent_timezone( $time ) {
   
   return $output;
 }
+
+/*add_action('init', 'xx');
+function xx() {
+  
+  $months = 1;
+
+  $timeMin = date('c'); // the date is today
+
+  $timeMin = date('c', strtotime("-".$months." month", strtotime($timeMin)));
+  
+  echo $timeMin;
+  die();
+}*/

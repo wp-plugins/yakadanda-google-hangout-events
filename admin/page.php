@@ -115,14 +115,18 @@
     <h3>Shortcode Examples:</h3> 
     <ul class="sc_examples">
 	    <li>[google+events]</li>
-	    <li>[google+events limit="3"]</li>
 	    <li>[google+events type="hangout"]</li>
-	    <li>[google+events limit="5" type="normal"]</li>
+      <li>[google+events limit="3"]</li>
+      <li>[google+events past="2"]</li>
+      <li>[google+events author="all"]</li>
+	    <li>[google+events limit="5" type="normal" past="1" author="all"]</li>
     </ul>
     <h4>Key</h4>
     <ul class="sc_key">
-	    <li>type = all, normal, or hangout</li>
-	    <li>limit = number (maximum 20)</li>
+	    <li>type = all, normal, or hangout, by default type is all</li>
+	    <li>limit = number of events to display (maximum 20)</li>
+      <li>past = number of months to display past events in X months ago, by default past is false</li>
+      <li>author = self, or all, by default author is self</li>
     </ul>
   </form>
 </div>
