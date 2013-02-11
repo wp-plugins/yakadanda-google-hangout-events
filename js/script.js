@@ -36,7 +36,7 @@ jQuery(function($){
     if (typeof gheStartTimes1st != "undefined") {
       startTimes1st = gheStartTimes1st.split(';');
       for (i in startTimes1st) {
-        if ( $('body').find('#ghe-countdown-1st-'+i).length == 1 ) {
+        if ( ($('body').find('#ghe-countdown-1st-'+i).length == 1) && startTimes1st[i]) {
           loadCountDown(i, startTimes1st[i], 'ghe-countdown-1st-');
         }
       }
@@ -48,7 +48,7 @@ jQuery(function($){
     if (typeof gheStartTimes2nd != "undefined") {
       startTimes2nd = gheStartTimes2nd.split(';');
       for (i in startTimes2nd) {
-        if ( $('body').find('#ghe-countdown-2nd-'+i).length == 1 ) {
+        if ( ($('body').find('#ghe-countdown-2nd-'+i).length == 1) && startTimes2nd[i] ) {
           loadCountDown(i, startTimes2nd[i], 'ghe-countdown-2nd-');
         }
       }

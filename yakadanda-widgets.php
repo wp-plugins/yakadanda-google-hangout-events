@@ -38,10 +38,13 @@ class googlePlusEvents extends WP_Widget {
           
             if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
             if ( !$hangoutlink && $creator && ($visibility != 'private') ): 
+              
+              $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
+              $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
           ?>
             <div class="ghe-vessel">
               <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
-              <div class="ghe-time"><?php echo googleplushangoutevent_time($event['start']['dateTime'], $event['end']['dateTime'], 'widget'); ?></div>
+              <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, 'widget'); ?></div>
               <div class="ghe-detail"><?php echo $event['description']; ?></div>
               
               <ul class="ghe-icons">
@@ -49,9 +52,9 @@ class googlePlusEvents extends WP_Widget {
               </ul>
               
               <?php if ( ($countdown == 'first') && ($i==0) ): ?>
-                <div id="ghe-countdown-1st-<?php echo $i; ?>" class="ghe-countdown"><?php echo $event['start']['dateTime']; ?></div>
+                <div id="ghe-countdown-1st-<?php echo $i; ?>" class="ghe-countdown"><?php echo $start_event; ?></div>
               <?php elseif ( $countdown == 'all' ): ?>
-                <div id="ghe-countdown-1st-<?php echo $i; ?>" class="ghe-countdown"><?php echo $event['start']['dateTime']; ?></div>
+                <div id="ghe-countdown-1st-<?php echo $i; ?>" class="ghe-countdown"><?php echo $start_event; ?></div>
               <?php endif; ?>
               <div class="ghe-button"><a href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
             </div>
@@ -174,11 +177,15 @@ class googlePlusHangoutEvents extends WP_Widget {
             
             if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
             if ( $hangoutlink && $creator && ($visibility != 'private') ):
-          ?>
-            <?php $onair = googleplushangoutevent_onair($event['start']['dateTime'], $event['end']['dateTime']); ?>
+              
+              $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
+              $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
+
+              $onair = googleplushangoutevent_onair($event['start']['dateTime'], $event['end']['dateTime']);
+            ?>
             <div class="ghe-vessel">
               <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
-              <div class="ghe-time"><?php echo googleplushangoutevent_time($event['start']['dateTime'], $event['end']['dateTime'], 'widget'); ?></div>
+              <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, 'widget'); ?></div>
               <div class="ghe-detail"><?php echo $event['description']; ?></div>
               
               <ul class="ghe-icons">
@@ -190,9 +197,9 @@ class googlePlusHangoutEvents extends WP_Widget {
               </ul>
               
               <?php if ( ($countdown == 'first') && ($i==0) ): ?>
-                <div id="ghe-countdown-2nd-<?php echo $i; ?>" class="ghe-countdown"><?php echo $event['start']['dateTime']; ?></div>
+                <div id="ghe-countdown-2nd-<?php echo $i; ?>" class="ghe-countdown"><?php echo $start_event; ?></div>
               <?php elseif ( $countdown == 'all' ): ?>
-                <div id="ghe-countdown-2nd-<?php echo $i; ?>" class="ghe-countdown"><?php echo $event['start']['dateTime']; ?></div>
+                <div id="ghe-countdown-2nd-<?php echo $i; ?>" class="ghe-countdown"><?php echo $start_event; ?></div>
               <?php endif; ?>
               
               <div class="ghe-button"><a href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
@@ -354,7 +361,7 @@ function googleplushangoutevent_response( $months = null ) {
   $client->setClientId( $data['client_id'] );
   $client->setClientSecret( $data['client_secret'] );
   $client->setRedirectUri( GPLUS_HANGOUT_EVENT_URL . '/oauth2callback.php' );
-  $client->setScopes( 'https://www.googleapis.com/auth/calendar.readonly' );
+  $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
   $client->setDeveloperKey( $data['api_key'] );
   
   $token = get_option('yakadanda_googleplus_hangout_event_access_token');
@@ -368,17 +375,26 @@ function googleplushangoutevent_response( $months = null ) {
     // the date is today
     $timeMin = date('c');
     
-    if ( $months ) {
-      // the today date minus by months
-      $timeMin = date('c', strtotime("-" . $months . " month", strtotime($timeMin)));
-    }
-    
     $args = array(
       'maxResults' => 20,
       'orderBy' => 'startTime',
       'singleEvents' => true,
       'timeMin' => $timeMin
     );
+    
+    // Past Events
+    if ( $months ) {
+      // the today date minus by months
+      $timeMin = date('c', strtotime("-" . $months . " month", strtotime($timeMin)));
+      
+      $args = array(
+        'maxResults' => 20,
+        'orderBy' => 'startTime',
+        'singleEvents' => true,
+        'timeMin' => $timeMin,
+        'timeMax' => date('c')
+      );
+    }
     
     $events = $service->events->listEvents( $data['calendar_id'], $args );
     
@@ -420,7 +436,7 @@ function googleplushangoutevent_start_times($events, $display, $option = 'all') 
       elseif ($option == 'normal') $event_filter = !$hangoutlink;
       
       if ( $event_filter && ($visibility != 'private') ) {
-        $output .= $event['start']['dateTime'];
+        $output .= isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
 
         $i++;
         if ( $i == $display ) break;

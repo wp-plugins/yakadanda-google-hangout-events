@@ -38,12 +38,18 @@ function googleplushangoutevent_shortcode( $atts ) {
         $output .= '<div class="yghe-event">';
         $output .= '<div class="yghe-creator"><a href="https://plus.google.com/' . $event['creator']['id'] . '" title="' . $event['creator']['displayName'] . '">' . $event['creator']['displayName'] . '</a> ' . googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
         $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '">' . $event['summary'] . '</a></div>';
-        $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($event['start']['dateTime'], $event['end']['dateTime'], 'shortcode') . '</div>';
+        
+        $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
+        $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
+        
+        $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, 'shortcode') . '</div>';
 
         if ($event['location']) {
           $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
         } else {
-          $output .= '<div class="yghe-event-hangout"><a href="' . $event['hangoutLink'] . '" title="Google+ Hangout">Google+ Hangout</a></div>';
+          $output .= '<div class="yghe-event-hangout">';
+          if ( isset($event['hangoutLink']) ) $output .= '<a href="' . $event['hangoutLink'] . '" title="Google+ Hangout">Google+ Hangout</a>';
+          $output .= '</div>';
         }
 
         $output .= '<div class="yghe-event-description">'. $event['description'] . '</div>';
@@ -65,11 +71,16 @@ function googleplushangoutevent_time($startdate, $finishdate, $type) {
   
   $begindate = str_split($startdate, 19);
   
+  $year_event = date('Y', strtotime($begindate[0]));
+  $year_current = date('Y');
+  $years = $year_current - $year_event;
+  
   $output = null;
   
   if ( $type == 'shortcode'  ) {
     $timezone = googleplushangoutevent_timezone( $begindate[1] );
     $output = date('D, F d, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone;
+    if ($years > 0) $output = date('D, F d Y, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone;
   } elseif ( $type == 'widget' ) {
     $timezone = googleplushangoutevent_timezone( $begindate[1] );
     $enddate = str_split($finishdate, 19);
@@ -81,8 +92,17 @@ function googleplushangoutevent_time($startdate, $finishdate, $type) {
     $enddate = str_split($finishdate, 19);
     if ( $type == 'shortcode' ) {
       $output = date('D, F d, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone . ' - ' . date('D, F d, g:i A', strtotime($enddate[0])) . '&nbsp;' . $timezone;
+      if ($years > 0) $output = date('D, F d Y, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone . ' - ' . date('D, F d Y, g:i A', strtotime($enddate[0])) . '&nbsp;' . $timezone;
+      
+      if ( !isset($timezone) ) {
+        $output = date('D, F d, ', strtotime($begindate[0])) . 'All day';
+        if ($years > 0) $output = date('D, F d Y, ', strtotime($begindate[0])) . 'All day';
+      }
     } elseif ( $type == 'widget' ) {
       $output = '<span>' . date('F jS Y g:i a', strtotime($begindate[0])) . '&nbsp;to</span><br><span>' . date('F jS Y g:i a', strtotime($enddate[0])) . '&nbsp;' . $timezone . '</span>';
+      if ( !isset($timezone) ) {
+        $output = '<span>' . date('F jS Y', strtotime($begindate[0])) . '</span><br><span>All day</span>';
+      }
     }
   }
   
@@ -147,16 +167,3 @@ function googleplushangoutevent_timezone( $time ) {
   
   return $output;
 }
-
-/*add_action('init', 'xx');
-function xx() {
-  
-  $months = 1;
-
-  $timeMin = date('c'); // the date is today
-
-  $timeMin = date('c', strtotime("-".$months." month", strtotime($timeMin)));
-  
-  echo $timeMin;
-  die();
-}*/

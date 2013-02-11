@@ -56,7 +56,7 @@ if ($_GET['logout']) {
     $client->setClientId( $_POST['client_id'] );
     $client->setClientSecret( $_POST['client_secret'] );
     $client->setRedirectUri( GPLUS_HANGOUT_EVENT_URL . '/oauth2callback.php' );
-    $client->setScopes( 'https://www.googleapis.com/auth/calendar.readonly' );
+    $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
     $client->setDeveloperKey( $_POST['api_key'] );
 
     // make null the token from database

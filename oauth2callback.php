@@ -17,7 +17,7 @@ $client->setApplicationName("Yakadanda GooglePlus Hangout Event");
 $client->setClientId( $data['client_id'] );
 $client->setClientSecret( $data['client_secret'] );
 $client->setRedirectUri( GPLUS_HANGOUT_EVENT_URL . '/oauth2callback.php' );
-$client->setScopes( 'https://www.googleapis.com/auth/calendar.readonly' );
+$client->setScopes( 'https://www.googleapis.com/auth/calendar' );
 $client->setDeveloperKey( $data['api_key'] );
 
 if (isset($_GET['code'])) {
