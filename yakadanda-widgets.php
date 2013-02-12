@@ -22,6 +22,8 @@ class googlePlusEvents extends WP_Widget {
     $author = isset($instance['author']) ? $instance['author'] : 'self';
     $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
     
+    $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
+    
     extract( $args );
     $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Google+ Events' ) : $instance['title'], $instance, $this->id_base );
     
@@ -31,7 +33,7 @@ class googlePlusEvents extends WP_Widget {
     ?>
       <div id="ghe-1st-widget">
         <input id="ghe-start-times-1st" name="ghe-start-times-1st" type="hidden" value="<?php echo $start_times; ?>"/>
-        <?php if ($events): ?>
+        <?php if ($events && !$http_status): ?>
           <?php foreach ( $events as $event ):
             $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
             $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
@@ -63,7 +65,7 @@ class googlePlusEvents extends WP_Widget {
             
           <?php endif; endforeach; ?>
         <?php endif; if ($i == 0): ?>
-          <div class="ghe-vessel"><p><?php googleplushangoutevent_widget_message('normal'); ?></p></div>
+          <div class="ghe-vessel"><p><?php googleplushangoutevent_widget_message($events, 'normal'); ?></p></div>
         <?php endif; ?>
       </div>
       
@@ -161,6 +163,8 @@ class googlePlusHangoutEvents extends WP_Widget {
     $author = isset($instance['author']) ? $instance['author'] : 'self';
     $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
     
+    $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
+    
     extract( $args );
     $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Google+ Hangout Events' ) : $instance['title'], $instance, $this->id_base );
     
@@ -170,7 +174,7 @@ class googlePlusHangoutEvents extends WP_Widget {
     ?>
       <div id="ghe-2nd-widget">
         <input id="ghe-start-times-2nd" name="ghe-start-times-2nd" type="hidden" value="<?php echo $start_times; ?>"/>
-        <?php if ($events): ?>
+        <?php if ($events && !$http_status): ?>
           <?php foreach ( $events as $event ):
             $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
             $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
@@ -209,7 +213,7 @@ class googlePlusHangoutEvents extends WP_Widget {
             
           <?php endif; endforeach; ?>
         <?php endif; if ($i == 0): ?>
-          <div class="ghe-vessel"><p><?php googleplushangoutevent_widget_message('hangout'); ?></p></div>
+          <div class="ghe-vessel"><p><?php googleplushangoutevent_widget_message($events, 'hangout'); ?></p></div>
         <?php endif; ?>
       </div>
       
@@ -398,7 +402,7 @@ function googleplushangoutevent_response( $months = null ) {
     
     $events = $service->events->listEvents( $data['calendar_id'], $args );
     
-    $output = $events['items'];
+    $output = isset($events['error']['code']) ? $events : $events['items'];
   }
   
   return $output;
@@ -407,7 +411,10 @@ function googleplushangoutevent_response( $months = null ) {
 function googleplushangoutevent_i_last($events, $option = 'all') {
   $summary = 0;
   $event_filter = true;
-  if ($events) {
+  
+  $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
+  
+  if ($events && !$http_status) {
     foreach ( $events as $event ) {
       $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
       
@@ -427,7 +434,10 @@ function googleplushangoutevent_start_times($events, $display, $option = 'all') 
   $event_filter = true;
   $i = 0;
   $i_last = googleplushangoutevent_i_last($events, $option);
-  if ($events) {
+  
+  $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
+  
+  if ($events && !$http_status) {
     foreach ( $events as $event ) {
       $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
       $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
@@ -448,12 +458,21 @@ function googleplushangoutevent_start_times($events, $display, $option = 'all') 
   return $output;
 }
 
-function googleplushangoutevent_widget_message($type) {
+function googleplushangoutevent_widget_message($events, $type) {
   $message = 'Not Connected.';
   $token = get_option('yakadanda_googleplus_hangout_event_access_token');
+  
+  $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
+  
   if ($token) {
     if ($type == 'normal') $message = 'No event yet.';
     else $message = 'No hangout event yet.';
+    
+    // Error 403 message
+    if ($http_status == '403') {
+      $message = isset($events['error']['message']) ? $events['error']['message'] : null;
+      $message = $http_status . ' ' . $message . '.';
+    }
   }
   echo $message;
 }

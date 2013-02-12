@@ -22,8 +22,9 @@ function googleplushangoutevent_shortcode( $atts ) {
   $i = 0;
   $filter = true;
   $creator = 1;
+  $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
   
-  if ($events) {
+  if ($events && !$http_status ) {
     $output = null;
     foreach ($events as $event) {
       $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
@@ -60,7 +61,13 @@ function googleplushangoutevent_shortcode( $atts ) {
     }
   }
   
-  if ($output == null) $output = 'No Event.';
+  if ( $output == null ) $output = 'No Event.';
+  
+  // Error 403 message
+  if ($http_status == '403') {
+    $message = isset($events['error']['message']) ? $events['error']['message'] : null;
+    $output = $http_status . ' ' . $message . '.';
+  }
   
   return $output;
 }

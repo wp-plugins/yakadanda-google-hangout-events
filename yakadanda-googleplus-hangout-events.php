@@ -3,7 +3,7 @@
 Plugin Name: Yakadanda Google+ Hangout Events
 Plugin URI: http://www.yakadanda.com/plugins/yakadanda-google-hangout-events/
 Description: A countdown function to time of the Google+ Hangout Events.
-Version: 0.0.6
+Version: 0.0.7
 Author: Peter Ricci
 Author URI: http://www.yakadanda.com/
 License: GPL2

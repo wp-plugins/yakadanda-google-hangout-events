@@ -52,7 +52,8 @@ class Google_REST {
     $body = $response->getResponseBody();
     $decoded = null;
     
-    if ($code != '200' && $code != '201' && $code != '204') {
+    //if ($code != '200' && $code != '201' && $code != '204') {
+    if ($code != '200' && $code != '201' && $code != '204' && $code != '403') {
       $decoded = json_decode($body, true);
       $err = 'Error calling ' . $response->getRequestMethod() . ' ' . $response->getUrl();
       if ($decoded != null && isset($decoded['error']['message'])  && isset($decoded['error']['code'])) {
@@ -62,7 +63,7 @@ class Google_REST {
       } else {
         $err .= ": ($code) $body";
       }
-
+      
       throw new Google_ServiceException($err, $code, null, $decoded['error']['errors']);
     }
     
