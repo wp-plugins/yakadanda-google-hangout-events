@@ -48,9 +48,9 @@
           <dd><em>Web application</em></dd>
           <dt><strong>Your site or hostname</strong></dt>
           <dd>Change the selectbox to "<em>http://</em>"<br/>
-            Copy and paste this url <em><?php echo GPLUS_HANGOUT_EVENT_URL . '/oauth2callback.php'; ?></em> to the textbox.</dd>
+            Copy and paste this url <em><?php echo GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php'; ?></em> to the textbox.</dd>
           <dt><strong>Redirect URI</strong></dt>
-          <dd>It will automatically be filled with "<em><?php echo GPLUS_HANGOUT_EVENT_URL . '/oauth2callback.php'; ?></em>" after paste and click outside the textbox.</dd>
+          <dd>It will automatically be filled with "<em><?php echo GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php'; ?></em>" after paste and click outside the textbox.</dd>
         </dl>
         <strong>Finally click Create client ID button.</strong>
       </li>

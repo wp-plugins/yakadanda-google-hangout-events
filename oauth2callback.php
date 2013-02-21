@@ -5,8 +5,8 @@ require_once( dirname( __FILE__ ) . '/src/contrib/Google_CalendarService.php');
 
 $data = get_option('yakadanda_googleplus_hangout_event_options');
 
-if( !defined('GPLUS_HANGOUT_EVENT_URL') ) {
-  define( 'GPLUS_HANGOUT_EVENT_URL', plugins_url(null, __FILE__) );
+if( !defined('GPLUS_HANGOUT_EVENTS_PLUGIN_URL') ) {
+  define( 'GPLUS_HANGOUT_EVENTS_PLUGIN_URL', plugins_url(null, __FILE__) );
 }
 
 $client = new Google_Client();
@@ -16,7 +16,7 @@ $client->setApplicationName("Yakadanda GooglePlus Hangout Event");
 // client id, client secret, and to register your redirect uri.
 $client->setClientId( $data['client_id'] );
 $client->setClientSecret( $data['client_secret'] );
-$client->setRedirectUri( GPLUS_HANGOUT_EVENT_URL . '/oauth2callback.php' );
+$client->setRedirectUri( GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php' );
 $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
 $client->setDeveloperKey( $data['api_key'] );
 

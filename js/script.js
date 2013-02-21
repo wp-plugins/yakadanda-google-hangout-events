@@ -3,7 +3,7 @@ jQuery(function($){
   // In admin page settings
   if ( $('body').find('#google-hangout-event').length == 1 ) {
     // select themes, sizes, and styles
-    var optionsFirst = new Array("title", "date", "detail", "icon", "countdown"),
+    var optionsFirst = new Array("title", "date", "detail", "icon", "countdown", "event_button"),
     optionsLast = new Array("theme", "size", "style");
     
     for ( f in optionsFirst ) {

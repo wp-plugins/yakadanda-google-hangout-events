@@ -134,7 +134,7 @@ class googlePlusEvents extends WP_Widget {
           <span>Display countdown clock on none</span>
         </label>
       </p>
-    <?php 
+    <?php
   }
   
 }/* end of googlePlusHangoutEvents class */
@@ -205,7 +205,6 @@ class googlePlusHangoutEvents extends WP_Widget {
               <?php elseif ( $countdown == 'all' ): ?>
                 <div id="ghe-countdown-2nd-<?php echo $i; ?>" class="ghe-countdown"><?php echo $start_event; ?></div>
               <?php endif; ?>
-              
               <div class="ghe-button"><a href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
             </div>
             
@@ -346,6 +345,27 @@ function googleplushangoutevent_css() {
       .widget_googleplus_hangout_events .ghe-countdown span {
         font-size: <?php echo $data['countdown_size'];?>px;
       }
+      .widget_googleplus_events #ghe-1st-widget .ghe-vessel .ghe-button,
+      .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel .ghe-button {
+        background: <?php echo $data['event_button_background'];?>;
+        font-family: <?php echo $data['event_button_theme'];?>;
+        font-size: <?php echo $data['event_button_size'];?>px;
+        <?php echo ( $data['event_button_style'] != 'italic' ) ? 'font-weight:' . $data['event_button_style'] : 'font-style:' . $data['event_button_style']; ?>;
+      }
+      .widget_googleplus_events #ghe-1st-widget .ghe-vessel .ghe-button a,
+      .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel .ghe-button a {
+        color: <?php echo $data['event_button_color'];?>;
+      }
+      .widget_googleplus_events #ghe-1st-widget .ghe-vessel .ghe-button a:hover,
+      .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel .ghe-button a:hover {
+        color: <?php echo $data['event_button_color'];?>;
+      }
+      .widget_googleplus_events #ghe-1st-widget .ghe-vessel .ghe-button:hover,
+      .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel .ghe-button:hover {
+        color: <?php echo $data['event_button_color'];?>;
+        background: <?php echo $data['event_button_hover'];?>;
+      }
+      
     </style>
   <?php
 }
@@ -364,7 +384,7 @@ function googleplushangoutevent_response( $months = null ) {
   // client id, client secret, and to register your redirect uri.
   $client->setClientId( $data['client_id'] );
   $client->setClientSecret( $data['client_secret'] );
-  $client->setRedirectUri( GPLUS_HANGOUT_EVENT_URL . '/oauth2callback.php' );
+  $client->setRedirectUri( GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php' );
   $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
   $client->setDeveloperKey( $data['api_key'] );
   

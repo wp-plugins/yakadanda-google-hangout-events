@@ -41,7 +41,13 @@ if ($_GET['logout']) {
       'countdown_color' => $_POST['countdown_color'],
       'countdown_theme' => $_POST['countdown_theme'],
       'countdown_size' => $_POST['countdown_size'],
-      'countdown_style' => $_POST['countdown_style']
+      'countdown_style' => $_POST['countdown_style'],
+      'event_button_background' => $_POST['event_button_background'],
+      'event_button_hover' => $_POST['event_button_hover'],
+      'event_button_color' => $_POST['event_button_color'],
+      'event_button_theme' => $_POST['event_button_theme'],
+      'event_button_size' => $_POST['event_button_size'],
+      'event_button_style' => $_POST['event_button_style']
     );
 
   $option = 'yakadanda_googleplus_hangout_event_options';
@@ -55,7 +61,7 @@ if ($_GET['logout']) {
     // client id, client secret, and to register your redirect uri.
     $client->setClientId( $_POST['client_id'] );
     $client->setClientSecret( $_POST['client_secret'] );
-    $client->setRedirectUri( GPLUS_HANGOUT_EVENT_URL . '/oauth2callback.php' );
+    $client->setRedirectUri( GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php' );
     $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
     $client->setDeveloperKey( $_POST['api_key'] );
 

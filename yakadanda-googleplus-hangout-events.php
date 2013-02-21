@@ -3,7 +3,7 @@
 Plugin Name: Yakadanda Google+ Hangout Events
 Plugin URI: http://www.yakadanda.com/plugins/yakadanda-google-hangout-events/
 Description: A countdown function to time of the Google+ Hangout Events.
-Version: 0.0.7
+Version: 0.0.8
 Author: Peter Ricci
 Author URI: http://www.yakadanda.com/
 License: GPL2
@@ -25,9 +25,11 @@ function googleplushangoutevent_deactivate() {
 }
 register_deactivation_hook( __FILE__, 'googleplushangoutevent_deactivate' );
 
-if( !defined('GPLUS_HANGOUT_EVENT_URL') ) {
-  define( 'GPLUS_HANGOUT_EVENT_URL', plugins_url(null, __FILE__) );
-}
+if( !defined('GPLUS_HANGOUT_EVENTS_VER') ) { define('GPLUS_HANGOUT_EVENTS_VER', '0.0.8'); }
+if( !defined('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR') ) { define('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR', plugin_dir_path(__FILE__) ); }
+if( !defined('GPLUS_HANGOUT_EVENTS_PLUGIN_URL') ) { define('GPLUS_HANGOUT_EVENTS_PLUGIN_URL', plugins_url(null, __FILE__) ); }
+if( !defined('GPLUS_HANGOUT_EVENTS_THEME_DIR') ) { define('GPLUS_HANGOUT_EVENTS_THEME_DIR', get_stylesheet_directory() ); }
+if( !defined('GPLUS_HANGOUT_EVENTS_THEME_URL') ) { define('GPLUS_HANGOUT_EVENTS_THEME_URL', get_stylesheet_directory_uri() ); }
 
 // Register scripts & styles
 add_action( 'init', 'googleplushangoutevent_register' );
@@ -35,15 +37,19 @@ function googleplushangoutevent_register() {
   /* Styles */
   // Google web fonts
   $google_fonts = googleplushangoutevent_google_fonts();
-  if ($google_fonts) wp_register_style( 'googleplushangoutevent-google-fonts', 'http://fonts.googleapis.com/css?family=' . $google_fonts, false, '0.0.4', 'all' );
+  if ($google_fonts) wp_register_style( 'googleplushangoutevent-google-fonts', 'http://fonts.googleapis.com/css?family=' . $google_fonts, false, GPLUS_HANGOUT_EVENTS_VER, 'all' );
   // Yakadanda GooglePlus Hangout Event style
-  wp_register_style( 'googleplushangoutevent-style', GPLUS_HANGOUT_EVENT_URL . '/css/style.css', false, '0.0.4', 'all' );
+  if ( file_exists(GPLUS_HANGOUT_EVENTS_THEME_DIR . '/css/google-hangout-events.css' ) ) {
+    wp_register_style( 'googleplushangoutevents-style', GPLUS_HANGOUT_EVENTS_THEME_URL . '/css/google-hangout-events.css', false, GPLUS_HANGOUT_EVENTS_VER, 'all' );
+  } else {
+    wp_register_style( 'googleplushangoutevents-style', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/css/google-hangout-events.css', false, GPLUS_HANGOUT_EVENTS_VER, 'all' );
+  }
   
   /* Scripts */
   // Countdown timer jQuery Plugin
-  wp_register_script( 'googleplushangoutevent-countdown', GPLUS_HANGOUT_EVENT_URL . '/js/jquery.jcountdown.min.js', array('jquery'), '1.4.2', true );
+  wp_register_script( 'googleplushangoutevent-countdown', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/js/jquery.jcountdown.min.js', array('jquery'), '1.4.2', true );
   // Google+ Hangout Event script
-  wp_register_script( 'googleplushangoutevent-script', GPLUS_HANGOUT_EVENT_URL . '/js/script.js', array('googleplushangoutevent-countdown'), '0.0.4', true );
+  wp_register_script( 'googleplushangoutevent-script', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/js/script.js', array('googleplushangoutevent-countdown'), GPLUS_HANGOUT_EVENTS_VER, true );
 }
 
 // Call stylesheets
@@ -54,7 +60,7 @@ add_action( 'wp_enqueue_scripts', 'googleplushangoutevent_wp_enqueue_styles' );
 function googleplushangoutevent_wp_enqueue_styles() {
   $google_fonts = googleplushangoutevent_google_fonts();
   if ($google_fonts) wp_enqueue_style( 'googleplushangoutevent-google-fonts' );
-  wp_enqueue_style( 'googleplushangoutevent-style' );
+  wp_enqueue_style( 'googleplushangoutevents-style' );
 }
 
 // Call javascripts

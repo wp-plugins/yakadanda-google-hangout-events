@@ -1,7 +1,7 @@
 <div id="google-hangout-event" class="wrap">
   <div id="icon-edit" class="icon32 icon32-posts-quote"><br></div><h2>Google+ Hangout Events</h2>
   
-  <form method="post" action="<?php echo GPLUS_HANGOUT_EVENT_URL . '/admin/posteddata.php'; ?>">
+  <form method="post" action="<?php echo GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/admin/posteddata.php'; ?>">
     <table class="form-table">
       <tr valign="top">
         <th scope="row"><label for="calendar_id"><?php _e('Calendar ID') ?></label></th>
@@ -28,6 +28,7 @@
       <tr valign="top">
         <th scope="row"><label for="widget_border"><?php _e('Widget Border') ?></label></th>
         <td><input name="widget_border" type="text" id="event_border" value="<?php echo ($data['widget_border']) ? $data['widget_border'] : '#D2D2D2'; ?>" class="regular-text colorwheel" /></td>
+        <td rowspan="12"><div id="picker"></div></td>
       </tr>
       <tr valign="top">
         <th scope="row"><label for="widget_background"><?php _e('Widget Background') ?></label></th>
@@ -43,7 +44,6 @@
             googleplushangoutevent_font_styles( 'title_style', $data['title_style'] );
           ?>
         </td>
-        <td rowspan="6"><div id="picker"></div></td>
       </tr>
       <tr valign="top">
         <th scope="row"><label for="date_color"><?php _e('Date') ?></label></th>
@@ -101,12 +101,31 @@
           ?>
         </td>
       </tr>
+      <tr valign="top">
+        <th scope="row"><label for="event_button_background"><?php _e('View Event Button Background') ?></label></th>
+        <td><input name="event_button_background" type="text" id="event_button_background" value="<?php echo ($data['event_button_background']) ? $data['event_button_background'] : '#D64337'; ?>" class="regular-text colorwheel" /></td>
+      </tr>
+      <tr valign="top">
+        <th scope="row"><label for="event_button_hover"><?php _e('View Event Button Hover') ?></label></th>
+        <td><input name="event_button_hover" type="text" id="event_button_hover" value="<?php echo ($data['event_button_hover']) ? $data['event_button_hover'] : '#c03c34'; ?>" class="regular-text colorwheel" /></td>
+      </tr>
+      <tr valign="top">
+        <th scope="row"><label for="event_button_color"><?php _e('View Event Button Text') ?></label></th>
+        <td>
+          <input name="event_button_color" type="text" id="event_button_color" value="<?php echo ($data['event_button_color']) ? $data['event_button_color'] : '#FFFFFF'; ?>" class="regular-text colorwheel" />
+          <?php
+            googleplushangoutevent_font_themes( 'event_button_theme', $data['event_button_theme']);
+            googleplushangoutevent_font_sizes( 'event_button_size', $data['event_button_size']);
+            googleplushangoutevent_font_styles( 'event_button_style', $data['event_button_style']);
+          ?>
+        </td>
+      </tr>
 
     </table>
     <p class="submit">
       <?php if ( get_option('yakadanda_googleplus_hangout_event_access_token') ): ?>
         <input id="submit" class="button-primary" type="submit" value="Save Changes" name="submit">&nbsp;
-        <a href="<?php echo GPLUS_HANGOUT_EVENT_URL . '/admin/posteddata.php?logout=1'; ?>" class="button-primary">Logout</a>
+        <a href="<?php echo GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/admin/posteddata.php?logout=1'; ?>" class="button-primary">Logout</a>
       <?php else: ?>
         <input id="submit" class="button-primary" type="submit" value="Save and Connect" name="submit">
       <?php endif; ?>

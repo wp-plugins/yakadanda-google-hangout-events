@@ -20,7 +20,7 @@ function googleplushangoutevent_page() {
 	}
   
   $data = get_option( 'yakadanda_googleplus_hangout_event_options' );
-  $manual_url = GPLUS_HANGOUT_EVENT_URL . '/manual.php';
+  $manual_url = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/manual.php';
   
   include('page.php');
 }
@@ -46,6 +46,7 @@ function googleplushangoutevent_font_themes( $id, $data = null ) {
   if ( ( $id == 'detail_theme' ) && ( $data == null ) ) $data = 'Arial';
   if ( ( $id == 'icon_theme' ) && ( $data == null ) ) $data = 'Arial';
   if ( ( $id == 'countdown_theme' ) && ( $data == null ) ) $data = 'Arial';
+  if ( ( $id == 'event_button_theme' ) && ( $data == null ) ) $data = 'Arial';
   ?>
     <input name="hidden_<?php echo $id; ?>" type="hidden" id="hidden_<?php echo $id; ?>" value="<?php echo $data; ?>" />
     <select id="<?php echo $id; ?>" name="<?php echo $id; ?>">
@@ -64,6 +65,7 @@ function googleplushangoutevent_font_sizes( $id, $data = null ) {
   if ( ( $id == 'detail_size' ) && ( $data == null ) ) $data = 12;
   if ( ( $id == 'icon_size' ) && ( $data == null ) ) $data = 12;
   if ( ( $id == 'countdown_size' ) && ( $data == null ) ) $data = 11;
+  if ( ( $id == 'event_button_size' ) && ( $data == null ) ) $data = 14;
   ?>
     <input name="hidden_<?php echo $id; ?>" type="hidden" id="hidden_<?php echo $id; ?>" value="<?php echo $data; ?>" />
     <select id="<?php echo $id; ?>" name="<?php echo $id; ?>">
