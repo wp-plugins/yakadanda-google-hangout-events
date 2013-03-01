@@ -293,41 +293,53 @@ function googleplushangoutevent_css() {
     <style type="text/css">
       .widget_googleplus_events #ghe-1st-widget .ghe-vessel,
       .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel {
-        background: <?php echo $data['widget_background'];?>;
-        border: 1px solid <?php echo $data['widget_border'];?>;
+        background: <?php echo isset($data['widget_background']) ? $data['widget_background'] : '#FEFEFE';?>;
+        border: 1px solid <?php echo isset($data['widget_border']) ? $data['widget_border'] : '#D2D2D2';?>;
       }
       .widget_googleplus_events h4.ghe-title,
       .widget_googleplus_hangout_events h4.ghe-title {
-        color: <?php echo $data['title_color'];?>;
-        font-family: <?php echo $data['title_theme'];?>;
-        font-size: <?php echo $data['title_size'];?>px;
-        <?php echo ( $data['title_style'] != 'italic' ) ? 'font-weight:' . $data['title_style'] : 'font-style:' . $data['title_style']; ?>;
+        color: <?php echo isset($data['title_color']) ? $data['title_color'] : '#444444';?>;
+        font-family: <?php echo isset($data['title_theme']) ? $data['title_theme'] : 'Arial';?>;
+        font-size: <?php echo isset($data['title_size']) ? $data['title_size'] : '14';?>px;
+        <?php
+          $data['title_style'] = isset($data['title_style']) ? $data['title_style'] : 'bold';
+          echo ( $data['title_style'] != 'italic' ) ? 'font-weight: ' . $data['title_style'] . ';' : 'font-style: ' . $data['title_style'] . ';';
+        ?>
       }
       .widget_googleplus_events .ghe-time,
       .widget_googleplus_hangout_events .ghe-time {
-        color: <?php echo $data['date_color'];?>;
-        font-family: <?php echo $data['date_theme'];?>;
-        font-size: <?php echo $data['date_size'];?>px;
-        <?php echo ( $data['date_style'] != 'italic' ) ? 'font-weight:' . $data['date_style'] : 'font-style:' . $data['date_style']; ?>;
+        color: <?php echo isset($data['date_color']) ? $data['date_color'] : '#D64337';?>;
+        font-family: <?php echo isset($data['date_theme']) ? $data['date_theme'] : 'Arial';?>;
+        font-size: <?php echo isset($data['date_size']) ? $data['date_size'] : '12' ;?>px;
+        <?php
+          $data['date_style'] = isset($data['date_style']) ? $data['date_style'] : 'normal';
+          echo ( $data['date_style'] != 'italic' ) ? 'font-weight: ' . $data['date_style'] . ';' : 'font-style: ' . $data['date_style'] . ';';
+        ?>
       }
       .widget_googleplus_events .ghe-detail,
       .widget_googleplus_hangout_events .ghe-detail {
-        color: <?php echo $data['detail_color'];?>;
-        font-family: <?php echo $data['detail_theme'];?>;
-        font-size: <?php echo $data['detail_size'];?>px;
-        <?php echo ( $data['detail_style'] != 'italic' ) ? 'font-weight:' . $data['detail_style'] : 'font-style:' . $data['detail_style']; ?>;
+        color: <?php echo isset($data['detail_color']) ? $data['detail_color'] : '#5F5F5F';?>;
+        font-family: <?php echo isset($data['detail_theme']) ? $data['detail_theme'] : 'Arial';?>;
+        font-size: <?php echo isset($data['detail_size']) ? $data['detail_size'] : '12';?>px;
+        <?php
+          $data['detail_style'] = isset($data['detail_style']) ? $data['detail_style'] : 'normal';
+          echo ( $data['detail_style'] != 'italic' ) ? 'font-weight: ' . $data['detail_style'] . ';' : 'font-style: ' . $data['detail_style'] . ';';
+        ?>
       }
       .widget_googleplus_events #ghe-1st-widget .ghe-vessel ul.ghe-icons li,
       .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel ul.ghe-icons li {
-        background: <?php echo $data['icon_background'];?>;
-        border: 1px solid <?php echo $data['icon_border'];?>;
-        font-family: <?php echo $data['icon_theme'];?>;
-        font-size: <?php echo $data['icon_size'];?>px;
-        <?php echo ( $data['icon_style'] != 'italic' ) ? 'font-weight:' . $data['icon_style'] : 'font-style:' . $data['icon_style']; ?>;
+        background: <?php echo isset($data['icon_background']) ? $data['icon_background'] : '#FFFFFF';?>;
+        border: 1px solid <?php echo isset($data['icon_border']) ? $data['icon_border'] : '#D2D2D2';?>;
+        font-family: <?php echo isset($data['icon_theme']) ? $data['icon_theme'] : 'Arial';?>;
+        font-size: <?php echo isset($data['icon_size']) ? $data['icon_size'] : '12';?>px;
+        <?php
+          $data['icon_style'] = isset($data['icon_style']) ? $data['icon_style'] : 'normal';
+          echo ( $data['icon_style'] != 'italic' ) ? 'font-weight: ' . $data['icon_style'] . ';' : 'font-style: ' . $data['icon_style'] . ';';
+        ?>
       }
       .widget_googleplus_events #ghe-1st-widget .ghe-vessel ul.ghe-icons li a,
       .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel ul.ghe-icons li a {
-        color: <?php echo $data['icon_color'];?>;
+        color: <?php echo isset($data['icon_color']) ? $data['icon_color'] : '#3366CC';?>;
       }
       .widget_googleplus_events #ghe-1st-widget .ghe-vessel ul.ghe-icons li a:hover,
       .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel ul.ghe-icons li a:hover {
@@ -335,37 +347,42 @@ function googleplushangoutevent_css() {
       }
       .widget_googleplus_events .ghe-countdown,
       .widget_googleplus_hangout_events .ghe-countdown {
-        background: <?php echo $data['countdown_background'];?>;
-        color: <?php echo $data['countdown_color'];?>;
-        font-family: <?php echo $data['countdown_theme'];?>;
-        font-size: <?php echo $data['countdown_size'];?>px;
-        <?php echo ( $data['countdown_style'] != 'italic' ) ? 'font-weight:' . $data['countdown_style'] : 'font-style:' . $data['countdown_style']; ?>;
+        background: <?php echo isset($data['countdown_background']) ? $data['countdown_background'] : '#3366CC';?>;
+        color: <?php echo isset($data['countdown_color']) ? $data['countdown_color'] : '#FFFFFF';?>;
+        font-family: <?php echo isset($data['countdown_theme']) ? $data['countdown_theme'] : 'Arial';?>;
+        font-size: <?php echo isset($data['countdown_size']) ? $data['countdown_size'] : '11';?>px;
+        <?php
+          $data['countdown_style'] = isset($data['countdown_style']) ? $data['countdown_style'] : 'normal';
+          echo ( $data['countdown_style'] != 'italic' ) ? 'font-weight: ' . $data['countdown_style'] . ';' : 'font-style: ' . $data['countdown_style'] . ';';
+        ?>
       }
       .widget_googleplus_events .ghe-countdown span,
       .widget_googleplus_hangout_events .ghe-countdown span {
-        font-size: <?php echo $data['countdown_size'];?>px;
+        font-size: <?php echo isset($data['countdown_size']) ? $data['countdown_size'] : '11';?>px;
       }
       .widget_googleplus_events #ghe-1st-widget .ghe-vessel .ghe-button,
       .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel .ghe-button {
-        background: <?php echo $data['event_button_background'];?>;
-        font-family: <?php echo $data['event_button_theme'];?>;
-        font-size: <?php echo $data['event_button_size'];?>px;
-        <?php echo ( $data['event_button_style'] != 'italic' ) ? 'font-weight:' . $data['event_button_style'] : 'font-style:' . $data['event_button_style']; ?>;
+        background: <?php echo isset($data['event_button_background']) ? $data['event_button_background'] : '#D64337';?>;
+        font-family: <?php echo isset($data['event_button_theme']) ? $data['event_button_theme'] : 'Arial';?>;
+        font-size: <?php echo isset($data['event_button_size']) ? $data['event_button_size'] : '14';?>px;
+        <?php
+          $data['event_button_style'] = isset($data['event_button_style']) ? $data['event_button_style'] : 'normal';
+          echo ( $data['event_button_style'] != 'italic' ) ? 'font-weight: ' . $data['event_button_style'] . ';' : 'font-style: ' . $data['event_button_style'] . ';';
+        ?>
       }
       .widget_googleplus_events #ghe-1st-widget .ghe-vessel .ghe-button a,
       .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel .ghe-button a {
-        color: <?php echo $data['event_button_color'];?>;
+        color: <?php echo isset($data['event_button_color']) ? $data['event_button_color'] : '#FFFFFF';?>;
       }
       .widget_googleplus_events #ghe-1st-widget .ghe-vessel .ghe-button a:hover,
       .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel .ghe-button a:hover {
-        color: <?php echo $data['event_button_color'];?>;
+        color: <?php echo isset($data['event_button_color']) ? $data['event_button_color'] : '#FFFFFF';?>;
       }
       .widget_googleplus_events #ghe-1st-widget .ghe-vessel .ghe-button:hover,
       .widget_googleplus_hangout_events #ghe-2nd-widget .ghe-vessel .ghe-button:hover {
-        color: <?php echo $data['event_button_color'];?>;
-        background: <?php echo $data['event_button_hover'];?>;
+        color: <?php echo isset($data['event_button_color']) ? $data['event_button_color'] : '#FFFFFF';?>;
+        background: <?php echo isset($data['event_button_hover']) ? $data['event_button_hover'] : '#c03c34';?>;
       }
-      
     </style>
   <?php
 }

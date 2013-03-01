@@ -84,6 +84,7 @@ Use google-hangout-events.css in yakadanda-google-hangout-events/css/google-hang
 
 = 0.0.9 =
 * Improved events query function
+* Fixed PHP notices in custom style/css function
 
 = 0.0.8 =
 * Defined plugin version, plugin directory/url, active theme directory/url
