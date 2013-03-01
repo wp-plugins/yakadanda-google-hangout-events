@@ -50,7 +50,7 @@ class googlePlusEvents extends WP_Widget {
               <div class="ghe-detail"><?php echo $event['description']; ?></div>
               
               <ul class="ghe-icons">
-                <li><a href="#" target="_blank" onclick="return false;">Event</a></li>
+                <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Event</a></li>
               </ul>
               
               <?php if ( ($countdown == 'first') && ($i==0) ): ?>
@@ -193,10 +193,10 @@ class googlePlusHangoutEvents extends WP_Widget {
               <div class="ghe-detail"><?php echo $event['description']; ?></div>
               
               <ul class="ghe-icons">
-                <li><a href="#" target="_blank" onclick="return false;">Event</a></li>
-                <li><a href="#" target="_blank" onclick="return false;">Hangout</a></li>
+                <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Event</a></li>
+                <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Hangout</a></li>
                 <?php if ($onair): ?>
-                  <li><a href="#" target="_blank" onclick="return false;">On Air</a></li>
+                  <li><a href="<?php echo $event['hangoutLink'] ?>" target="_blank">On Air</a></li>
                 <?php endif; ?>
               </ul>
               
@@ -489,7 +489,7 @@ function googleplushangoutevent_widget_message($events, $type) {
     else $message = 'No hangout event yet.';
     
     // Error 403 message
-    if ($http_status == '403') {
+    if ($http_status) {
       $message = isset($events['error']['message']) ? $events['error']['message'] : null;
       $message = $http_status . ' ' . $message . '.';
     }

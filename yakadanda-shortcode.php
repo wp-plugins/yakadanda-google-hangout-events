@@ -64,7 +64,7 @@ function googleplushangoutevent_shortcode( $atts ) {
   if ( $output == null ) $output = 'No Event.';
   
   // Error 403 message
-  if ($http_status == '403') {
+  if ($http_status) {
     $message = isset($events['error']['message']) ? $events['error']['message'] : null;
     $output = $http_status . ' ' . $message . '.';
   }
