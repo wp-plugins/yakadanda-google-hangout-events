@@ -6,18 +6,25 @@
  * limit = number of events to show, it limited to 20
  * past = number of months, to display past events in X months ago
  * author = self, or all, default is self
+ * id = Event identifier (string), e.g. https://plus.google.com/events/cXXXXX XXXXX is event identifier
  */
 function googleplushangoutevent_shortcode( $atts ) {
   extract( shortcode_atts( array(
     'type' => 'all',
     'limit' => 20,
     'past' => null,
-    'author' => 'self'
+    'author' => 'self',
+    'id' => null
   ), $atts ) );
-  
+    
   if ($limit > 20) $limit = 20;
   
-  $events = googleplushangoutevent_response( $past );
+  if ($id) {
+    $events = googleplushangoutevent_response( null, $id );
+  } else {
+    $events = googleplushangoutevent_response( $past );
+  }
+  
   $output = 'No Event.';
   $i = 0;
   $filter = true;
@@ -26,23 +33,19 @@ function googleplushangoutevent_shortcode( $atts ) {
   
   if ($events && !$http_status ) {
     $output = null;
-    foreach ($events as $event) {
-      $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
+    if ($id) {
+      // Events get
+      $event = $events;
       $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
-      
-      if ($type == 'normal') $filter = !$hangoutlink;
-      elseif ($type == 'hangout') $filter = $hangoutlink;
-      
-      if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
-      
-      if ( $filter && $creator && ($visibility != 'private') ) { $i++;
+
+      if ( $visibility != 'private' ) {
         $output .= '<div class="yghe-event">';
         $output .= '<div class="yghe-creator"><a href="https://plus.google.com/' . $event['creator']['id'] . '" title="' . $event['creator']['displayName'] . '">' . $event['creator']['displayName'] . '</a> ' . googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
         $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '">' . $event['summary'] . '</a></div>';
-        
+
         $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
         $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
-        
+
         $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, 'shortcode') . '</div>';
 
         if ($event['location']) {
@@ -55,8 +58,42 @@ function googleplushangoutevent_shortcode( $atts ) {
 
         $output .= '<div class="yghe-event-description">'. $event['description'] . '</div>';
         $output .= '</div>';
+      }
+      
+    } else {
+      // Events lists
+      foreach ($events as $event) {
+        $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
+        $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
 
-        if ($limit == $i) break;
+        if ($type == 'normal') $filter = !$hangoutlink;
+        elseif ($type == 'hangout') $filter = $hangoutlink;
+
+        if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
+
+        if ( $filter && $creator && ($visibility != 'private') ) { $i++;
+          $output .= '<div class="yghe-event">';
+          $output .= '<div class="yghe-creator"><a href="https://plus.google.com/' . $event['creator']['id'] . '" title="' . $event['creator']['displayName'] . '">' . $event['creator']['displayName'] . '</a> ' . googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
+          $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '">' . $event['summary'] . '</a></div>';
+
+          $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
+          $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
+
+          $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, 'shortcode') . '</div>';
+
+          if ($event['location']) {
+            $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
+          } else {
+            $output .= '<div class="yghe-event-hangout">';
+            if ( isset($event['hangoutLink']) ) $output .= '<a href="' . $event['hangoutLink'] . '" title="Google+ Hangout">Google+ Hangout</a>';
+            $output .= '</div>';
+          }
+
+          $output .= '<div class="yghe-event-description">'. $event['description'] . '</div>';
+          $output .= '</div>';
+
+          if ($limit == $i) break;
+        }
       }
     }
   }

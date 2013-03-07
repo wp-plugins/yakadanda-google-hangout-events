@@ -388,7 +388,7 @@ function googleplushangoutevent_css() {
 }
 add_action('wp_head', 'googleplushangoutevent_css');
 
-function googleplushangoutevent_response( $months = null ) {
+function googleplushangoutevent_response( $months = null, $event_id = null ) {
   require_once( dirname( __FILE__ ) . '/src/Google_Client.php');
   require_once( dirname( __FILE__ ) . '/src/contrib/Google_CalendarService.php');
   
@@ -437,9 +437,16 @@ function googleplushangoutevent_response( $months = null ) {
       );
     }
     
-    $events = $service->events->listEvents( $data['calendar_id'], $args );
     
-    $output = isset($events['error']['code']) ? $events : $events['items'];
+    if ( $event_id ) {
+      // Events get
+      $event = $service->events->get( $data['calendar_id'], $event_id );
+      $output = $event;
+    } else {
+      // Events list
+      $events = $service->events->listEvents( $data['calendar_id'], $args );
+      $output = isset($events['error']['code']) ? $events : $events['items'];
+    }
   }
   
   return $output;

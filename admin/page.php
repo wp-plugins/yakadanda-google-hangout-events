@@ -139,6 +139,7 @@
       <li>[google+events past="2"]</li>
       <li>[google+events author="all"]</li>
 	    <li>[google+events limit="5" type="normal" past="1" author="all"]</li>
+      <li>[google+events id="xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>
     </ul>
     <h4>Key</h4>
     <ul class="sc_key">
@@ -146,6 +147,8 @@
 	    <li>limit = number of events to display (maximum 20)</li>
       <li>past = number of months to display past events in X months ago, by default past is false</li>
       <li>author = self, or all, by default author is self</li>
+      <li>id = Event identifier (string). Single Event Example: https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u>
+        <br/>To create a single event you would place in shortcode [google+events id="snlc77gi4v519jom5gb28217so"]</li>
     </ul>
   </form>
 </div>
