@@ -20,7 +20,7 @@ This plugin will generate linked Google+ Hangout Event notifications in a widget
 * Display Google+ Hangouts Events in Posts or Pages via short-code
 * Choose colors, fonts, size, and style for the widget (Google Fonts Included)
 * Links Directly to Hangout Event on Google+
-* **New** Display Single Events (See FAQ)
+* ***New** Display Single Events (See FAQ)
 
 == Installation ==
 
@@ -40,8 +40,8 @@ Use google-hangout-events.css in yakadanda-google-hangout-events/css/google-hang
 
 = How to find event identifier to create a single event shortcode? =
 Single Event Example: https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so
-The letters after ***.com/u/0/events/c is an event id, the event identifier will be snlc77gi4v519jom5gb28217so without first letter 'c'
-So to create a single event you would place in shortcode [google+events id="snlc77gi4v519jom5gb28217so"]
+The letters after ***.com/u/0/events/c is an event id, so the event identifier will be snlc77gi4v519jom5gb28217so without first letter 'c'.
+To create a single event you would place in shortcode [google+events id="snlc77gi4v519jom5gb28217so"]
 
 == Screenshots ==
 
