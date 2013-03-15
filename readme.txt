@@ -4,7 +4,7 @@ Donate link: http://www.yakadanda.com/
 Tags: Google, Hangout, Hangouts, Events, Google+, Googleplus, Calendar, Calendars, Yakadanda
 Requires at least: 3.4.0
 Tested up to: 3.5.1
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 
 Generate linked Google+ Hangout Event notifications in a widget from a Google Calendar with a nifty Countdown Clock to each event.
@@ -48,6 +48,9 @@ To create a single event you would place in shortcode [google+events id="snlc77g
 
 == Changelog ==
 
+= 0.1.1 =
+* Improved Save and Connect action when trying to connect with google api
+
 = 0.1.0 =
 * Added feature to display an event on shortcode based on event identifier
 
@@ -90,6 +93,9 @@ To create a single event you would place in shortcode [google+events id="snlc77g
 * Used calendar feed in Google Calendar API v2
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+* Fixed fatal error: Cannot redeclare class URI_Template_Parser
 
 = 0.1.0 =
 * -
