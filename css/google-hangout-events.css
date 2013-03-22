@@ -20,20 +20,20 @@ Default Stylesheet
   padding: 10px;
   overflow: auto;
 }
-.yghe-event .yghe-creator {
+.yghe-event .yghe-organizer {
   color: #aaaaaa;
   float: right;
   font-size: 11px;
   text-align: right;
   width: 20%;
 }
-.yghe-event .yghe-creator a {
+.yghe-event .yghe-organizer a {
   color: #444444;
   display: block;
   font-size: 12px;
   text-decoration: none;
 }
-.yghe-event .yghe-creator a:hover {
+.yghe-event .yghe-organizer a:hover {
   color: #3366cc;
   text-decoration: underline;
 }

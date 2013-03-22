@@ -23,7 +23,12 @@ function googleplushangoutevent_shortcode( $atts ) {
     $events = googleplushangoutevent_response( null, $id );
   } else {
     $events = googleplushangoutevent_response( $past );
+    // Sorting events
+    if ( $past ) uasort( $events , 'googleplushangoutevent_sort_events_desc' );
+    else uasort( $events , 'googleplushangoutevent_sort_events_asc' );
   }
+  
+  $data = get_option('yakadanda_googleplus_hangout_event_options');
   
   $output = 'No Event.';
   $i = 0;
@@ -40,7 +45,10 @@ function googleplushangoutevent_shortcode( $atts ) {
 
       if ( $visibility != 'private' ) {
         $output .= '<div class="yghe-event">';
-        $output .= '<div class="yghe-creator"><a href="https://plus.google.com/' . $event['creator']['id'] . '" title="' . $event['creator']['displayName'] . '">' . $event['creator']['displayName'] . '</a> ' . googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
+        
+        $output .= '<div class="yghe-organizer">' . googleplushangoutevent_organizer($event);
+        $output .= googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
+        
         $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '">' . $event['summary'] . '</a></div>';
 
         $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
@@ -69,11 +77,19 @@ function googleplushangoutevent_shortcode( $atts ) {
         if ($type == 'normal') $filter = !$hangoutlink;
         elseif ($type == 'hangout') $filter = $hangoutlink;
 
-        if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
-
+        if ( $author == 'self' ) {
+          if ( isset($event['creator']['self']) )
+            $creator = $event['creator']['self'];
+          else
+            $creator = ($event['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+        }
+        
         if ( $filter && $creator && ($visibility != 'private') ) { $i++;
           $output .= '<div class="yghe-event">';
-          $output .= '<div class="yghe-creator"><a href="https://plus.google.com/' . $event['creator']['id'] . '" title="' . $event['creator']['displayName'] . '">' . $event['creator']['displayName'] . '</a> ' . googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
+          
+          $output .= '<div class="yghe-organizer">' . googleplushangoutevent_organizer($event);
+          $output .= googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
+          
           $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '">' . $event['summary'] . '</a></div>';
 
           $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
@@ -114,10 +130,9 @@ function googleplushangoutevent_time($startdate, $finishdate, $type) {
   $diff = round(abs(strtotime($finishdate)-strtotime($startdate))/86400);
   
   $begindate = str_split($startdate, 19);
-  
   $year_event = date('Y', strtotime($begindate[0]));
   $year_current = date('Y');
-  $years = $year_current - $year_event;
+  $years = $year_event - $year_current;
   
   $output = null;
   
@@ -208,6 +223,19 @@ function googleplushangoutevent_timezone( $time ) {
   elseif ( $time == '-03:00' ) $output = 'AGT'; // Argentina Standard Time
   //elseif ( $time == '-03:00' ) $output = 'BET'; // Brazil Eastern Time
   elseif ( $time == '-01:00' ) $output = 'CAT'; // Central African Time
+  
+  return $output;
+}
+
+function googleplushangoutevent_organizer($event) {
+  if ( isset($event['organizer']['id']) ) {
+    $output = '<a href="https://plus.google.com/' . $event['organizer']['id'] . '" title="Organizer">' . $event['organizer']['displayName'] . '</a> ';
+  } else {
+    if ( strpos($event['organizer']['email'], '.calendar.') !== false )
+      $output = '<a href="mailto:' . $event['creator']['email'] . '" title="Calendar">' . $event['organizer']['displayName'] . '</a> ';
+    else
+      $output = '<a href="mailto:' . $event['organizer']['email'] . '" title="Organizer">' . $event['organizer']['displayName'] . '</a> ';
+  }
   
   return $output;
 }

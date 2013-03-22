@@ -15,11 +15,16 @@ class googlePlusEvents extends WP_Widget {
   // Front-end display of widget.
   public function widget( $args, $instance ) {
     $events = googleplushangoutevent_response();
+    // sorting
+    uasort( $events , 'googleplushangoutevent_sort_events_asc' );
+    
+    $data = get_option('yakadanda_googleplus_hangout_event_options');
+    
     $i = 0;
     $display = isset( $instance['display'] ) ? $instance['display'] : 1;
-    $start_times = googleplushangoutevent_start_times($events, $display, 'normal');
     $creator = 1;
     $author = isset($instance['author']) ? $instance['author'] : 'self';
+    $start_times = googleplushangoutevent_start_times($events, $display, $author, 'normal');
     $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
     
     $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
@@ -37,8 +42,14 @@ class googlePlusEvents extends WP_Widget {
           <?php foreach ( $events as $event ):
             $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
             $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
-          
-            if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
+            
+            if ( $author == 'self' ) {
+              if ( isset($event['creator']['self']) )
+                $creator = $event['creator']['self'];
+              else
+                $creator = ($event['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+            }
+            
             if ( !$hangoutlink && $creator && ($visibility != 'private') ): 
               
               $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
@@ -156,11 +167,16 @@ class googlePlusHangoutEvents extends WP_Widget {
   // Front-end display of widget.
   public function widget( $args, $instance ) {
     $events = googleplushangoutevent_response();
+    // sorting
+    uasort( $events , 'googleplushangoutevent_sort_events_asc' );
+    
+    $data = get_option('yakadanda_googleplus_hangout_event_options');
+    
     $i = 0;
     $display = isset( $instance['display'] ) ? $instance['display'] : 1;
-    $start_times = googleplushangoutevent_start_times($events, $display, 'hangout');
     $creator = 1;
     $author = isset($instance['author']) ? $instance['author'] : 'self';
+    $start_times = googleplushangoutevent_start_times($events, $display, $author, 'hangout');
     $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
     
     $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
@@ -179,7 +195,13 @@ class googlePlusHangoutEvents extends WP_Widget {
             $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
             $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
             
-            if ( $author == 'self' ) $creator = isset( $event['creator']['self'] ) ? $event['creator']['self'] : 0;
+            if ( $author == 'self' ) {
+              if ( isset($event['creator']['self']) )
+                $creator = $event['creator']['self'];
+              else
+                $creator = ($event['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+            }
+            
             if ( $hangoutlink && $creator && ($visibility != 'private') ):
               
               $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
@@ -407,11 +429,13 @@ function googleplushangoutevent_response( $months = null, $event_id = null ) {
   
   $token = get_option('yakadanda_googleplus_hangout_event_access_token');
   
-  $output = null;
+  $output = array();
   if ($token) {
     $client->setAccessToken($token);
     
     $service = new Google_CalendarService($client);
+    
+    $calendar_ids = googleplushangoutevent_calendar_list($service);
     
     // the date is today
     $timeMin = date('c');
@@ -437,19 +461,58 @@ function googleplushangoutevent_response( $months = null, $event_id = null ) {
       );
     }
     
-    
     if ( $event_id ) {
       // Events get
       $event = $service->events->get( $data['calendar_id'], $event_id );
       $output = $event;
     } else {
       // Events list
-      $events = $service->events->listEvents( $data['calendar_id'], $args );
-      $output = isset($events['error']['code']) ? $events : $events['items'];
+      //$events = $service->events->listEvents( $data['calendar_id'], $args );
+      foreach ( $calendar_ids as $calendar_id ) {
+        $events = $service->events->listEvents( $calendar_id, $args );
+        $the_events = isset($events['error']['code']) ? $events : $events['items'];
+        $output = array_merge((array)$output, (array)$the_events);
+      }
     }
   }
   
   return $output;
+}
+
+function googleplushangoutevent_calendar_list($service) {
+  $calendarList = $service->calendarList->listCalendarList();
+  
+  $output = array();
+  
+  while(true) {
+    foreach ($calendarList['items'] as $calendarListEntry) {
+      if (strpos($calendarListEntry['id'],'group.v') == false) $output[] = $calendarListEntry['id'];
+    }
+    
+    $pageToken = $calendarList['nextPageToken'];
+    if ($pageToken) {
+      $optParams = array('pageToken' => $pageToken);
+      $calendarList = $service->calendarList->listCalendarList($optParams);
+    } else {
+      break;
+    }
+  }
+  
+  return $output;
+}
+
+function googleplushangoutevent_events(&$array) {
+  $sorter = array();
+  $ret = array();
+  reset($array);
+  foreach ($array as $ii => $va) {
+    $sorter[$ii] = $va['start']['dateTime'];
+  }
+  natsort($sorter);
+  foreach ($sorter as $ii => $va) {
+    $ret[$ii] = $array[$ii];
+  }
+  $array = $ret;
 }
 
 function googleplushangoutevent_i_last($events, $option = 'all') {
@@ -473,7 +536,9 @@ function googleplushangoutevent_i_last($events, $option = 'all') {
   return $summary;
 }
 
-function googleplushangoutevent_start_times($events, $display, $option = 'all') {
+function googleplushangoutevent_start_times($events, $display, $author, $option = 'all') {
+  $data = get_option('yakadanda_googleplus_hangout_event_options');
+  $creator = 1;
   $output = null;
   $event_filter = true;
   $i = 0;
@@ -489,7 +554,14 @@ function googleplushangoutevent_start_times($events, $display, $option = 'all') 
       if ($option == 'hangout') $event_filter = $hangoutlink;
       elseif ($option == 'normal') $event_filter = !$hangoutlink;
       
-      if ( $event_filter && ($visibility != 'private') ) {
+      if ($author == 'self') {
+        if (isset($event['creator']['self']))
+          $creator = $event['creator']['self'];
+        else
+          $creator = ($event['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+      }
+      
+      if ( $event_filter && ($visibility != 'private') && $creator ) {
         $output .= isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
 
         $i++;
@@ -532,4 +604,16 @@ function googleplushangoutevent_onair($datetime1, $datetime2) {
   }
   
   return $output;
+}
+
+function googleplushangoutevent_sort_events_asc($a,$b) {
+  $x = isset($a['start']['dateTime']) ? strtotime($a['start']['dateTime']) : strtotime($a['start']['date']);
+  $y = isset($b['start']['dateTime']) ? strtotime($b['start']['dateTime']) : strtotime($b['start']['date']);
+  return $x > $y ? 1 : -1;
+}
+
+function googleplushangoutevent_sort_events_desc($a,$b) {
+  $x = isset($a['start']['dateTime']) ? strtotime($a['start']['dateTime']) : strtotime($a['start']['date']);
+  $y = isset($b['start']['dateTime']) ? strtotime($b['start']['dateTime']) : strtotime($b['start']['date']);
+  return $x < $y ? 1 : -1;
 }

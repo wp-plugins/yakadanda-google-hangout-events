@@ -59,9 +59,45 @@ jQuery(function($){
 
 function loadCountDown(i, startTime, selector) {
   jQuery(function($){
-    var theSelector = selector + i;
+    var theSelector = selector + i,
+    todayTime = new Date(),
+    beginTime = new Date(startTime),
+    diff = new Date(beginTime-todayTime),
+    diffMinutes = diff/1000/60;
+    diffHours = diff/1000/60/60;
+    diffDays = diff/1000/60/60/24;
+    diffMonths = diff/2628000000,
+    diffYears = diffMonths/12;
+    
+    minutes = hours = days = months = years = '';
+    if (diffMinutes >=1) {
+      text = 'Minute';
+      if (diffHours >=2 ) { text = 'Minutes'; }
+      minutes = '%i<span>&nbsp;'+text+'</span><em>|</em>';
+    }
+    if (diffHours >=1) {
+      text = 'Hour';
+      if (diffHours >=2 ) { text = 'Hours'; }
+      hours = '%h<span>&nbsp;'+text+'</span><em>|</em>';
+    }
+    if (diffDays >=1) {
+      text = 'Day';
+      if (diffDays >=2 ) { text = 'Days'; }
+      days = '%d<span>&nbsp;'+text+'</span><em>|</em>';
+    }
+    if (diffMonths >= 1) {
+      text = 'Month';
+      if (diffMonths >=2 ) { text = 'Months'; }
+      months = '%m<span>&nbsp;'+text+'</span><em>|</em>';
+    }
+    if (diffYears >= 1) {
+      text = 'Year';
+      if (diffYears >=2 ) { text = 'Years'; }
+      years = '%y<span>&nbsp;'+text+'</span><em>|</em>';
+    }
+    
     $("#"+theSelector).countdown({
-      htmlTemplate: "%d<span>&nbsp;Days</span><em>|</em>%h<span>&nbsp;Hours</span><em>|</em>%i<span>&nbsp;Minutes</span><em>|</em>%s<span>&nbsp;Seconds</span>",
+      htmlTemplate: years + months + days + hours + minutes + "%s<span>&nbsp;Seconds</span>",
       date: startTime,
       yearsAndMonths: true,
       /*servertime: function() { 
