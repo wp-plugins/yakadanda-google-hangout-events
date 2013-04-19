@@ -140,6 +140,8 @@
       <li>[google+events author="all"]</li>
 	    <li>[google+events limit="5" type="normal" past="1" author="all"]</li>
       <li>[google+events id="xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>
+      <li>[google+events filter_out="xxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>
+      <li>[google+events search="free text search terms"]</li>
     </ul>
     <h4>Key</h4>
     <ul class="sc_key">
@@ -149,6 +151,8 @@
       <li>author = self, or all, by default author is self</li>
       <li>id = Event identifier (string). Single Event Example: https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u>
         <br/>To create a single event you would place in shortcode [google+events id="snlc77gi4v519jom5gb28217so"]</li>
+      <li>filter_out = Filter out certain events by event identifiers, seperated by comma</li>
+      <li>search = Text search terms (string) to display events that match these terms in any field, except for extended properties</li>
     </ul>
   </form>
 </div>

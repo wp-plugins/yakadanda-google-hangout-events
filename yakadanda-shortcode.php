@@ -7,6 +7,8 @@
  * past = number of months, to display past events in X months ago
  * author = self, or all, default is self
  * id = Event identifier (string), e.g. https://plus.google.com/events/cXXXXX XXXXX is event identifier
+ * filter_out = Filter out certain events by event identifiers, seperated by comma
+ * search = Text search terms (string) to display events that match these terms in any field, except for extended properties
  */
 function googleplushangoutevent_shortcode( $atts ) {
   extract( shortcode_atts( array(
@@ -14,7 +16,9 @@ function googleplushangoutevent_shortcode( $atts ) {
     'limit' => 20,
     'past' => null,
     'author' => 'self',
-    'id' => null
+    'id' => null,
+    'filter_out' => array(),
+    'search' => null
   ), $atts ) );
     
   if ($limit > 20) $limit = 20;
@@ -22,7 +26,7 @@ function googleplushangoutevent_shortcode( $atts ) {
   if ($id) {
     $events = googleplushangoutevent_response( null, $id );
   } else {
-    $events = googleplushangoutevent_response( $past );
+    $events = googleplushangoutevent_response( $past, null, $search );
     // Sorting events
     if ( $past ) uasort( $events , 'googleplushangoutevent_sort_events_desc' );
     else uasort( $events , 'googleplushangoutevent_sort_events_asc' );
@@ -38,6 +42,12 @@ function googleplushangoutevent_shortcode( $atts ) {
   
   if ($events && !$http_status ) {
     $output = null;
+    
+    // filter out by event identifiers
+    if ($filter_out) {
+      $filter_out = explode(',', $filter_out);
+    }
+    
     if ($id) {
       // Events get
       $event = $events;
@@ -84,7 +94,7 @@ function googleplushangoutevent_shortcode( $atts ) {
             $creator = ($event['creator']['email'] == $data['calendar_id']) ? 1 : 0;
         }
         
-        if ( $filter && $creator && ($visibility != 'private') ) { $i++;
+        if ( $filter && $creator && ($visibility != 'private') && !in_array($event['id'], $filter_out) ) { $i++;
           $output .= '<div class="yghe-event">';
           
           $output .= '<div class="yghe-organizer">' . googleplushangoutevent_organizer($event);

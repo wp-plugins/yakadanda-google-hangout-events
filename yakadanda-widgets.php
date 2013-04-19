@@ -410,7 +410,7 @@ function googleplushangoutevent_css() {
 }
 add_action('wp_head', 'googleplushangoutevent_css');
 
-function googleplushangoutevent_response( $months = null, $event_id = null ) {
+function googleplushangoutevent_response( $months = null, $event_id = null, $search = null ) {
   require_once( dirname( __FILE__ ) . '/src/Google_Client.php');
   require_once( dirname( __FILE__ ) . '/src/contrib/Google_CalendarService.php');
   
@@ -444,7 +444,8 @@ function googleplushangoutevent_response( $months = null, $event_id = null ) {
       'maxResults' => 20,
       'orderBy' => 'startTime',
       'singleEvents' => true,
-      'timeMin' => $timeMin
+      'timeMin' => $timeMin,
+      'q' => $search
     );
     
     // Past Events
@@ -457,7 +458,8 @@ function googleplushangoutevent_response( $months = null, $event_id = null ) {
         'orderBy' => 'startTime',
         'singleEvents' => true,
         'timeMin' => $timeMin,
-        'timeMax' => date('c')
+        'timeMax' => date('c'),
+        'q' => $search
       );
     }
     
