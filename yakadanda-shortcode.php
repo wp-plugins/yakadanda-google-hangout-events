@@ -74,7 +74,7 @@ function googleplushangoutevent_shortcode( $atts ) {
           $output .= '</div>';
         }
 
-        $output .= '<div class="yghe-event-description">'. $event['description'] . '</div>';
+        $output .= '<div class="yghe-event-description">'. nl2br( $event['description'] ) . '</div>';
         $output .= '</div>';
       }
       
@@ -115,7 +115,7 @@ function googleplushangoutevent_shortcode( $atts ) {
             $output .= '</div>';
           }
 
-          $output .= '<div class="yghe-event-description">'. $event['description'] . '</div>';
+          $output .= '<div class="yghe-event-description">'. nl2br( $event['description'] ) . '</div>';
           $output .= '</div>';
 
           if ($limit == $i) break;

@@ -58,7 +58,7 @@ class googlePlusEvents extends WP_Widget {
             <div class="ghe-vessel">
               <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
               <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, 'widget'); ?></div>
-              <div class="ghe-detail"><?php echo $event['description']; ?></div>
+              <div class="ghe-detail"><?php echo nl2br( $event['description'] ); ?></div>
               
               <ul class="ghe-icons">
                 <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Event</a></li>
@@ -212,7 +212,7 @@ class googlePlusHangoutEvents extends WP_Widget {
             <div class="ghe-vessel">
               <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
               <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, 'widget'); ?></div>
-              <div class="ghe-detail"><?php echo $event['description']; ?></div>
+              <div class="ghe-detail"><?php echo nl2br( $event['description'] ); ?></div>
               
               <ul class="ghe-icons">
                 <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Event</a></li>
