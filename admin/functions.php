@@ -22,6 +22,11 @@ function googleplushangoutevent_page() {
   $data = get_option( 'yakadanda_googleplus_hangout_event_options' );
   $manual_url = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/manual.php';
   
+  $response = null;
+  if (isset($_GET["calendar_id"])) {
+    $response = array('class' => 'error', 'msg' => 'Please login as ' . $data['calendar_id']);
+  }
+  
   include('page.php');
 }
 

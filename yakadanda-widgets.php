@@ -23,7 +23,7 @@ class googlePlusEvents extends WP_Widget {
     $i = 0;
     $display = isset( $instance['display'] ) ? $instance['display'] : 1;
     $creator = 1;
-    $author = isset($instance['author']) ? $instance['author'] : 'self';
+    $author = isset($instance['author']) ? $instance['author'] : 'all';
     $start_times = googleplushangoutevent_start_times($events, $display, $author, 'normal');
     $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
     
@@ -108,14 +108,14 @@ class googlePlusEvents extends WP_Widget {
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
-        <label title="Self">
-          <input type="radio" value="self" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( ( $author == 'self' ) || empty( $author ) ) ? 'checked="checked"' : null; ?>>
-          <span>Self</span>
+        <label title="All">
+          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( ( $author == 'all' ) || empty( $author ) ) ? 'checked="checked"' : null; ?>>
+          <span>All</span>
         </label>
         <br/>
-        <label title="All">
-          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( $author == 'all' ) ? 'checked="checked"' : null; ?>>
-          <span>All</span>
+        <label title="Self">
+          <input type="radio" value="self" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( $author == 'self' ) ? 'checked="checked"' : null; ?>>
+          <span>Self</span>
         </label>
       </p>
       <p>
@@ -175,7 +175,7 @@ class googlePlusHangoutEvents extends WP_Widget {
     $i = 0;
     $display = isset( $instance['display'] ) ? $instance['display'] : 1;
     $creator = 1;
-    $author = isset($instance['author']) ? $instance['author'] : 'self';
+    $author = isset($instance['author']) ? $instance['author'] : 'all';
     $start_times = googleplushangoutevent_start_times($events, $display, $author, 'hangout');
     $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
     
@@ -266,14 +266,14 @@ class googlePlusHangoutEvents extends WP_Widget {
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
-        <label title="Self">
-          <input type="radio" value="self" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( ( $author == 'self' ) || empty( $author ) ) ? 'checked="checked"' : null; ?>>
-          <span>Self</span>
+        <label title="All">
+          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( ( $author == 'all' ) || empty( $author ) ) ? 'checked="checked"' : null; ?>>
+          <span>All</span>
         </label>
         <br/>
-        <label title="All">
-          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( $author == 'all' ) ? 'checked="checked"' : null; ?>>
-          <span>All</span>
+        <label title="Self">
+          <input type="radio" value="self" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( $author == 'self' ) ? 'checked="checked"' : null; ?>>
+          <span>Self</span>
         </label>
       </p>
       <p>
@@ -433,9 +433,12 @@ function googleplushangoutevent_response( $months = null, $event_id = null, $sea
   if ($token) {
     $client->setAccessToken($token);
     
+    // http://stackoverflow.com/questions/11908420/trying-to-get-a-list-of-events-from-a-calendar-using-php
+    //$client->setUseObjects(true);
+    
     $service = new Google_CalendarService($client);
     
-    $calendar_ids = googleplushangoutevent_calendar_list($service);
+    $calendar_ids = googleplushangoutevent_calendar_list($service, $data['calendar_id']);
     
     // the date is today
     $timeMin = date('c');
@@ -469,7 +472,7 @@ function googleplushangoutevent_response( $months = null, $event_id = null, $sea
       $output = $event;
     } else {
       // Events list
-      //$events = $service->events->listEvents( $data['calendar_id'], $args );
+      //$events = $service->events->listEvents( $data['calendar_id'], $args );     
       foreach ( $calendar_ids as $calendar_id ) {
         $events = $service->events->listEvents( $calendar_id, $args );
         $the_events = isset($events['error']['code']) ? $events : $events['items'];
@@ -478,43 +481,40 @@ function googleplushangoutevent_response( $months = null, $event_id = null, $sea
     }
   }
   
+  // Remove duplicate
+  if ($output) {
+    foreach ($output as $k => $v) {
+      $result[$v['id']] = $v;
+    }
+    // Reset key
+    $output = array_values($result);
+  }
+  
   return $output;
 }
 
-function googleplushangoutevent_calendar_list($service) {
+function googleplushangoutevent_calendar_list($service, $calendar_id) {
   $calendarList = $service->calendarList->listCalendarList();
   
-  $output = array();
+  $output = array( $calendar_id );
   
-  while(true) {
-    foreach ($calendarList['items'] as $calendarListEntry) {
-      if (strpos($calendarListEntry['id'],'group.v') == false) $output[] = $calendarListEntry['id'];
-    }
-    
-    $pageToken = $calendarList['nextPageToken'];
-    if ($pageToken) {
-      $optParams = array('pageToken' => $pageToken);
-      $calendarList = $service->calendarList->listCalendarList($optParams);
-    } else {
-      break;
+  if ( $calendarList['items'] ) { $output = null;
+    while(true) {
+      foreach ($calendarList['items'] as $calendarListEntry) {
+        if (strpos($calendarListEntry['id'],'group.v') == false) $output[] = $calendarListEntry['id'];
+      }
+      
+      $pageToken = $calendarList['nextPageToken'];
+      if ($pageToken) {
+        $optParams = array('pageToken' => $pageToken);
+        $calendarList = $service->calendarList->listCalendarList($optParams);
+      } else {
+        break;
+      }
     }
   }
   
   return $output;
-}
-
-function googleplushangoutevent_events(&$array) {
-  $sorter = array();
-  $ret = array();
-  reset($array);
-  foreach ($array as $ii => $va) {
-    $sorter[$ii] = $va['start']['dateTime'];
-  }
-  natsort($sorter);
-  foreach ($sorter as $ii => $va) {
-    $ret[$ii] = $array[$ii];
-  }
-  $array = $ret;
 }
 
 function googleplushangoutevent_i_last($events, $option = 'all') {

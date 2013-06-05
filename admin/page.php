@@ -1,6 +1,10 @@
 <div id="google-hangout-event" class="wrap">
   <div id="icon-edit" class="icon32 icon32-posts-quote"><br></div><h2>Google+ Hangout Events</h2>
-  
+  <?php if ($response): ?>
+    <div id="message" class="<?php echo $response['class']; ?>">
+      <p><?php echo $response['msg']; ?></p>
+    </div>
+  <?php endif; ?>
   <form method="post" action="<?php echo GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/admin/posteddata.php'; ?>">
     <table class="form-table">
       <tr valign="top">
@@ -142,17 +146,19 @@
       <li>[google+events id="xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>
       <li>[google+events filter_out="xxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>
       <li>[google+events search="free text search terms"]</li>
+      <li>[google+events attendees="show"]</li>
     </ul>
     <h4>Key</h4>
     <ul class="sc_key">
 	    <li>type = all, normal, or hangout, by default type is all</li>
 	    <li>limit = number of events to display (maximum 20)</li>
       <li>past = number of months to display past events in X months ago, by default past is false</li>
-      <li>author = self, or all, by default author is self</li>
+      <li>author = self, or all, by default author is all</li>
       <li>id = Event identifier (string). Single Event Example: https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u>
         <br/>To create a single event you would place in shortcode [google+events id="snlc77gi4v519jom5gb28217so"]</li>
       <li>filter_out = Filter out certain events by event identifiers, seperated by comma</li>
       <li>search = Text search terms (string) to display events that match these terms in any field, except for extended properties</li>
+      <li>attendees = Events can have attendees, the value can be 'show', 'show_all', or 'hide', the default value for attendees attribute is 'hide'</li>
     </ul>
   </form>
 </div>

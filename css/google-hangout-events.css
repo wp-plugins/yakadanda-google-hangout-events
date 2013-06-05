@@ -78,6 +78,24 @@ Default Stylesheet
   font-size: 95%;
   margin: 1.5% 0 0;
 }
+.yghe-event .yghe-event-attendees {
+  clear: both;
+  font-size: 12px;
+}
+.yghe-event .yghe-event-attendees p {
+  margin: 1.5% 0 0;
+}
+.yghe-event .yghe-event-attendees a {
+  color: #444444;
+  text-decoration: none;
+}
+.yghe-event .yghe-event-attendees a:hover {
+  color: #3366cc;
+  text-decoration: underline;
+}
+.yghe-event .yghe-event-attendees span {
+  cursor: pointer;
+}
 /*-- PLUGIN WIDGETS
 --------------------------------------------:-)*/
 .widget .ghe-vessel {

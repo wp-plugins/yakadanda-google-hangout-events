@@ -3,10 +3,22 @@ include_once dirname( __FILE__ ) . "/../../../../wp-load.php";
 require_once( dirname( __FILE__ ) . '/../src/Google_Client.php');
 require_once( dirname( __FILE__ ) . '/../src/contrib/Google_CalendarService.php');
 
+$client = new Google_Client();
+$client->setApplicationName("Yakadanda GooglePlus Hangout Event");
+
+// Visit https://code.google.com/apis/console?api=calendar to generate your
+// client id, client secret, and to register your redirect uri.
+$client->setClientId( $_POST['client_id'] );
+$client->setClientSecret( $_POST['client_secret'] );
+$client->setRedirectUri( GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php' );
+$client->setScopes( 'https://www.googleapis.com/auth/calendar' );
+$client->setDeveloperKey( $_POST['api_key'] );
+
 if ($_GET['logout']) {
   $option = 'yakadanda_googleplus_hangout_event_access_token';
   $value = null;
   update_option( $option, $value );
+  $client->revokeToken();
 } elseif( ($_POST['calendar_id'] != null) && ($_POST['api_key'] != null) && ($_POST['client_id'] != null) && ($_POST['client_secret'] != null)) {
   
   $data = get_option('yakadanda_googleplus_hangout_event_options');
@@ -54,17 +66,6 @@ if ($_GET['logout']) {
   update_option( $option, $value );
 
   if ( ($data['api_key'] != $_POST['api_key']) || ($data['client_id'] != $_POST['client_id']) || ($data['client_secret'] != $_POST['client_secret']) || !$token ) {
-    $client = new Google_Client();
-    $client->setApplicationName("Yakadanda GooglePlus Hangout Event");
-
-    // Visit https://code.google.com/apis/console?api=calendar to generate your
-    // client id, client secret, and to register your redirect uri.
-    $client->setClientId( $_POST['client_id'] );
-    $client->setClientSecret( $_POST['client_secret'] );
-    $client->setRedirectUri( GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php' );
-    $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
-    $client->setDeveloperKey( $_POST['api_key'] );
-
     // make null the token from database
     $option = 'yakadanda_googleplus_hangout_event_access_token';
     $value = null;

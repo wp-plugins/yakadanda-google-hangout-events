@@ -5,20 +5,22 @@
  * type = all, normal, or hangout, default is all
  * limit = number of events to show, it limited to 20
  * past = number of months, to display past events in X months ago
- * author = self, or all, default is self
+ * author = self, or all, default is all
  * id = Event identifier (string), e.g. https://plus.google.com/events/cXXXXX XXXXX is event identifier
  * filter_out = Filter out certain events by event identifiers, seperated by comma
  * search = Text search terms (string) to display events that match these terms in any field, except for extended properties
+ * attendees = show, show_all, or hide, default is hide
  */
 function googleplushangoutevent_shortcode( $atts ) {
   extract( shortcode_atts( array(
     'type' => 'all',
     'limit' => 20,
     'past' => null,
-    'author' => 'self',
+    'author' => 'all',
     'id' => null,
     'filter_out' => array(),
-    'search' => null
+    'search' => null,
+    'attendees' => 'hide'
   ), $atts ) );
     
   if ($limit > 20) $limit = 20;
@@ -33,15 +35,15 @@ function googleplushangoutevent_shortcode( $atts ) {
   }
   
   $data = get_option('yakadanda_googleplus_hangout_event_options');
+  $token = get_option('yakadanda_googleplus_hangout_event_access_token');
   
-  $output = 'No Event.';
+  $output = null;
   $i = 0;
   $filter = true;
   $creator = 1;
   $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
   
   if ($events && !$http_status ) {
-    $output = null;
     
     // filter out by event identifiers
     if ($filter_out) {
@@ -75,6 +77,9 @@ function googleplushangoutevent_shortcode( $atts ) {
         }
 
         $output .= '<div class="yghe-event-description">'. nl2br( $event['description'] ) . '</div>';
+        
+        if ( ($attendees == 'show') || ($attendees == 'show_all') ) $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $event['attendees'], $attendees ) . '</div>';
+        
         $output .= '</div>';
       }
       
@@ -116,6 +121,9 @@ function googleplushangoutevent_shortcode( $atts ) {
           }
 
           $output .= '<div class="yghe-event-description">'. nl2br( $event['description'] ) . '</div>';
+          
+          if ( ($attendees == 'show') || ($attendees == 'show_all') ) $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $event['attendees'], $attendees ) . '</div>';
+          
           $output .= '</div>';
 
           if ($limit == $i) break;
@@ -124,7 +132,12 @@ function googleplushangoutevent_shortcode( $atts ) {
     }
   }
   
-  if ( $output == null ) $output = 'No Event.';
+  if ( ($output == null) && !$http_status ) {
+    $message = 'No event and hangout event yet.';
+    if ($type == 'normal') $message = 'No event yet.';
+    elseif ($type == 'hangout') $message = 'No hangout event yet.';
+    $output = ($token) ? $message : 'Not Connected.';
+  }
   
   // Error 403 message
   if ($http_status) {
@@ -241,10 +254,93 @@ function googleplushangoutevent_organizer($event) {
   if ( isset($event['organizer']['id']) ) {
     $output = '<a href="https://plus.google.com/' . $event['organizer']['id'] . '" title="Organizer">' . $event['organizer']['displayName'] . '</a> ';
   } else {
-    if ( strpos($event['organizer']['email'], '.calendar.') !== false )
+    if ( strpos($event['organizer']['email'], '.calendar.') !== false ) {
       $output = '<a href="mailto:' . $event['creator']['email'] . '" title="Calendar">' . $event['organizer']['displayName'] . '</a> ';
-    else
-      $output = '<a href="mailto:' . $event['organizer']['email'] . '" title="Organizer">' . $event['organizer']['displayName'] . '</a> ';
+    } else {
+      if ($event['organizer']['displayName']) {
+        $output = '<a href="mailto:' . $event['organizer']['email'] . '" title="Organizer">' . $event['organizer']['displayName'] . '</a> ';
+      } else {
+        $display_name = googleplushangoutevent_display_name( $event );
+        if ( $display_name )
+          $output = '<a href="mailto:' . $event['organizer']['email'] . '" title="Coworker\'s Calendar">' . $display_name . '</a> ';
+      }
+    }
+  }
+  
+  return $output;
+}
+
+function googleplushangoutevent_display_name( $event ) {
+  $output = null;
+  foreach ( $event['attendees'] as $attendee ) {
+    if ( $attendee['email'] == $event['organizer']['email'] ) {
+      $output = ( $attendee['displayName'] ) ? $attendee['displayName'] : null;
+      break;
+    }
+  }
+  
+  return $output;
+}
+
+function googleplushangoutevent_get_attendees( $guests, $view ) {
+  $output = null;
+  $i = $j = $k = 0;
+  
+  if ( $guests ) {
+    $accepted = $tentative = $needsAction = $accepted_title = $tentative_title = $needsAction_title = null;
+    
+    foreach ( $guests as $guest ) {
+      if ( $guest['responseStatus'] == 'accepted' ) { ++$i;
+        $display_name = ($guest['displayName']) ? $guest['displayName'] : $guest['email'];
+        $pass = ( ($view == 'show') && ($i >= 5) ) ? false : true;
+        
+        if ( $pass ) {
+          if ( $guest['id'] ) {
+            $accepted .= '<a href="https://plus.google.com/' . $guest['id'] . '">' . $display_name . '</a>';
+          } else {
+            $accepted .= '<a href="mailto:' . $guest['email'] . '">' . $display_name . '</a>';
+          }
+          $accepted .= ', ';
+        } else { $accepted_title .= $display_name . ', '; }
+      } elseif ( $guest['responseStatus'] == 'tentative' ) { ++$j;
+        $display_name = ($guest['displayName']) ? $guest['displayName'] : $guest['email'];
+        $pass = ( ($view == 'show') && ($j >= 5) ) ? false : true;
+        
+        if ($pass) {
+          if ( $guest['id'] ) {
+            $tentative .= '<a href="https://plus.google.com/' . $guest['id'] . '">' . $display_name . '</a>';
+          } else {
+            $tentative .= '<a href="mailto:' . $guest['email'] . '">' . $display_name . '</a>';
+          }
+          $tentative .= ', ';
+        } else { $tentative_title .= $display_name . ', '; }
+      } elseif ( $guest['responseStatus'] == 'needsAction' ) { ++$k;
+        $display_name = ($guest['displayName']) ? $guest['displayName'] : $guest['email'];
+        $pass = ( ($view == 'show') && ($k >= 5) ) ? false : true;
+        
+        if ( $pass ) {
+          if ( $guest['id'] ) {
+            $needsAction .= '<a href="https://plus.google.com/' . $guest['id'] . '">' . $display_name . '</a>';
+          } else {
+            $needsAction .= '<a href="mailto:' . $guest['email'] . '">' . $display_name . '</a>';
+          }
+          $needsAction .= ', ';
+        } else { $needsAction_title .= $display_name . ', '; }
+      }
+    }
+    
+    if ($accepted) {
+      $output .= '<p>Going (' . $i . ')</p>' . substr_replace($accepted ,"",-2);
+      if ( ($view == 'show') && ($i>4) ) $output .= ', <span title="' . substr_replace($accepted_title ,"",-2) . '">...</span>';
+    }
+    if ($tentative) {
+      $output .= '<p>Maybe (' . $j . ')</p>' . substr_replace($tentative ,"",-2);
+      if ( ($view == 'show') && ($j>4) ) $output .= ', <span title="' . substr_replace($tentative_title ,"",-2) . '">...</span>';
+    }
+    if ($needsAction) {
+      $output .= '<p>Unknown (' . $k . ')</p>' . substr_replace($needsAction ,"",-2);
+      if ( ($view == 'show') && ($k>4) ) $output .= ', <span title="' . substr_replace($needsAction_title ,"",-2) . '">...</span>';
+    }
   }
   
   return $output;

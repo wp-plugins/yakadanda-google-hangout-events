@@ -20,10 +20,23 @@ $client->setRedirectUri( GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php'
 $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
 $client->setDeveloperKey( $data['api_key'] );
 
+$service = new Google_CalendarService($client);
+
 if (isset($_GET['code'])) {
   $client->authenticate($_GET['code']);
   $option = 'yakadanda_googleplus_hangout_event_access_token';
-  update_option( $option, $client->getAccessToken() );
+  
+  $client->setAccessToken($client->getAccessToken());
+  
+  $calendar_ids = googleplushangoutevent_calendar_list($service);
+  $is_calendar_id = in_array($data['calendar_id'], $calendar_ids);
+  
+  $response = '&calendar_id=false';
+  if ($is_calendar_id) {
+    update_option( $option, $client->getAccessToken() );
+    $response = null;
+  }
+  
 }
 
-wp_redirect( admin_url( 'options-general.php?page=googleplus-hangout-events' ) ); exit;
+wp_redirect( admin_url( 'options-general.php?page=googleplus-hangout-events' . $response ) ); exit;
