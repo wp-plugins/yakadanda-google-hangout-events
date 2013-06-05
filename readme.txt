@@ -1,0 +1,156 @@
+=== Yakadanda Google+ Hangout Events ===
+Contributors: Yakadanda.com
+Donate link: http://www.yakadanda.com/
+Tags: Google, Hangout, Hangouts, Events, Google+, Googleplus, Calendar, Calendars, Yakadanda
+Requires at least: 3.4.0
+Tested up to: 3.5.1
+Stable tag: 0.1.4
+License: GPLv2 or later
+
+Generate linked Google+ Hangout Event notifications in a widget from a Google Calendar with a nifty Countdown Clock to each event.
+
+== Description ==
+
+This plugin will generate linked Google+ Hangout Event notifications in a widget from a Google Calendar with a nifty Countdown Clock to each event. Fully customizable with fonts and colors.
+
+= Features =
+* Display Regular Google+ Events in Posts or Pages via Widgets
+* Display Google+ Hangouts Events in Posts or Pages via Widgets
+* Display Regular Google+ Events in Posts or Pages via short-code
+* Display Google+ Hangouts Events in Posts or Pages via short-code
+* Choose colors, fonts, size, and style for the widget (Google Fonts Included)
+* Links Directly to Hangout Event on Google+
+* Display Single Events (See FAQ)
+* Display Public Events from My calendars (exception for contacts calendar and country holidays calendar)
+* Display Events via short-code using filter_out attribute to filter out certain events
+* Display Events based on search terms via short-code
+
+== Installation ==
+
+1. Upload the full directory into your wp-content/plugins directory
+2. Activate the plugin at the plugin administration page
+3. Configure Google+ Hangout Events using the following pages in the admin panel: Settings -> Google+ Hangout Events.
+
+That's it your done, you can add the Google Plus Hangout Events Widget to any sidebar.
+
+== Frequently Asked Questions ==
+
+= Do I need an account on Google? =
+You only need an Google+ account.
+
+= How do I change default style to my preferences? =
+Use google-hangout-events.css in yakadanda-google-hangout-events/css/google-hangout-events.css as reference. Copy that file to your active-theme/css/ as google-hangout-events.css
+
+= How to find event identifier to create a single event shortcode? =
+Single Event Example: https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so
+The letters after ***.com/u/0/events/c is an event id, so the event identifier will be snlc77gi4v519jom5gb28217so without first letter 'c'.
+To create a single event you would place in shortcode [google+events id="snlc77gi4v519jom5gb28217so"]
+
+== Screenshots ==
+
+
+== Changelog ==
+
+= 0.1.4 =
+* Added line breaks feature on event description
+
+= 0.1.3 =
+* Updated Google APIs Client Library for PHP to Google API PHP Client 0.6.2
+* Added filter_out attribute on shortcode to filter out certain events by event identifiers
+* Added search attribute on shortcode to display events that match the search terms in any field, except for extended properties
+
+= 0.1.2 =
+* Updated countdown feature to support next year's event
+* Extended events fetch feature to load public events in more calendars (exception for contacts calendar and country holidays calendar)
+
+= 0.1.1 =
+* Improved Save and Connect action when trying to connect with google api
+
+= 0.1.0 =
+* Added feature to display an event on shortcode based on event identifier
+
+= 0.0.9 =
+* Added link to Event button, Hangout button, and On Air button
+* Updated Google APIs Client Library for PHP to Google API PHP Client 0.6.1
+
+= 0.0.8 =
+* Added custom style feature for user preferences
+* Added Event button customization in plugin settings
+
+= 0.0.7 =
+* Added handling api error for 403 http status
+
+= 0.0.6 =
+* No today events or future events on the shortcode which have past attribute
+
+= 0.0.5 =
+* Added author filter feature on widget and shortcode
+* Added past option on shortcode only
+
+= 0.0.4 =
+* Added new widgets for normal event type
+* Added google+ events shortcode
+* Added time ago function for event create or event updated on the shortcode
+* Added google maps link with query search on the shortcode for normal event
+* Added Google fonts
+
+= 0.0.3 =
+* Added 2nd widget as widget (extra)
+* Added countdown option feature for 2nd widget
+* Added logout action
+
+= 0.0.2 =
+* Updated to Google Calendar API v3
+* Added instructions page as manual
+* Displayed the connection status
+
+= 0.0.1 =
+* Used calendar feed in Google Calendar API v2
+
+== Upgrade Notice ==
+
+= 0.1.4 =
+* -
+
+= 0.1.3 =
+* -
+
+= 0.1.2 =
+* Fixed event time function for next year's event
+* Improved event sort function
+
+= 0.1.1 =
+* Fixed fatal error: Cannot redeclare class URI_Template_Parser
+
+= 0.1.0 =
+* -
+
+= 0.0.9 =
+* Improved events query function
+* Fixed PHP notices in custom style/css function
+
+= 0.0.8 =
+* Defined plugin version, plugin directory/url, active theme directory/url
+* Improved the enqueue style
+
+= 0.0.7 =
+* Fixed events query function to prevent site errors by 403 http status
+
+= 0.0.6 =
+* Fixed past event on the shortcode
+* Fixed date time and countdown feature in the widgets for regular calendar event
+* Fixed date time for regular calendar event in the shortcode
+
+= 0.0.5 =
+* Fixed PHP notices
+
+= 0.0.4 =
+* Improved the event time
+* Fixed message widget if no hangout event or no normal event
+
+= 0.0.3 =
+* Fixed bugs in widget if google calendar not connected
+
+= 0.0.2 =
+* Fixed blank issues in widget if browser installed Addllock add-on
+* Fixed bugs if no hangout event
