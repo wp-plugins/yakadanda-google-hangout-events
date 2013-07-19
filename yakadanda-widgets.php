@@ -58,7 +58,7 @@ class googlePlusEvents extends WP_Widget {
             <div class="ghe-vessel">
               <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
               <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, 'widget'); ?></div>
-              <div class="ghe-detail"><?php echo nl2br( $event['description'] ); ?></div>
+              <div class="ghe-detail"><?php echo isset($event['description']) ? nl2br( $event['description'] ) : null; ?></div>
               
               <ul class="ghe-icons">
                 <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Event</a></li>
@@ -98,13 +98,13 @@ class googlePlusEvents extends WP_Widget {
   // Back-end widget form.
   public function form( $instance ) {
     if ( isset( $instance[ 'title' ] ) ) $title = $instance[ 'title' ];
-    if ( isset( $instance[ 'author' ] ) ) $author = $instance[ 'author' ];
-    if ( isset( $instance[ 'display' ] ) ) $display = $instance[ 'display' ];
-    if ( isset( $instance[ 'countdown' ] ) ) $countdown = $instance[ 'countdown' ];
+    $author = isset( $instance[ 'author' ] ) ? $instance[ 'author' ] : null;
+    $display = isset( $instance[ 'display' ] ) ? $instance[ 'display' ] : null;
+    $countdown = isset( $instance[ 'countdown' ] ) ? $instance[ 'countdown' ] : null;
     ?>
       <p>
         <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo isset($title) ? esc_attr( $title ): null; ?>" />
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
@@ -256,13 +256,13 @@ class googlePlusHangoutEvents extends WP_Widget {
   // Back-end widget form.
   public function form( $instance ) {
     if ( isset( $instance[ 'title' ] ) ) $title = $instance[ 'title' ];
-    if ( isset( $instance[ 'author' ] ) ) $author = $instance[ 'author' ];
-    if ( isset( $instance[ 'display' ] ) ) $display = $instance[ 'display' ];
-    if ( isset( $instance[ 'countdown' ] ) ) $countdown = $instance[ 'countdown' ];
+    $author = isset( $instance[ 'author' ] ) ? $instance[ 'author' ] : null;
+    $display = isset( $instance[ 'display' ] ) ? $instance[ 'display' ] : null;
+    $countdown = isset( $instance[ 'countdown' ] ) ? $instance[ 'countdown' ] : null;
     ?>
       <p>
         <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo isset($title) ? esc_attr( $title ) : null; ?>" />
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
@@ -478,16 +478,15 @@ function googleplushangoutevent_response( $months = null, $event_id = null, $sea
         $the_events = isset($events['error']['code']) ? $events : $events['items'];
         $output = array_merge((array)$output, (array)$the_events);
       }
+      // Remove duplicate
+      if ($output) {
+        foreach ($output as $k => $v) {
+          $result[$v['id']] = $v;
+        }
+        // Reset key
+        $output = array_values($result);
+      }
     }
-  }
-  
-  // Remove duplicate
-  if ($output) {
-    foreach ($output as $k => $v) {
-      $result[$v['id']] = $v;
-    }
-    // Reset key
-    $output = array_values($result);
   }
   
   return $output;
@@ -504,7 +503,7 @@ function googleplushangoutevent_calendar_list($service, $calendar_id) {
         if (strpos($calendarListEntry['id'],'group.v') == false) $output[] = $calendarListEntry['id'];
       }
       
-      $pageToken = $calendarList['nextPageToken'];
+      $pageToken = isset($calendarList['nextPageToken']) ? $calendarList['nextPageToken'] : null;
       if ($pageToken) {
         $optParams = array('pageToken' => $pageToken);
         $calendarList = $service->calendarList->listCalendarList($optParams);

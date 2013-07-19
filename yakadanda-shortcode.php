@@ -47,12 +47,13 @@ function googleplushangoutevent_shortcode( $atts ) {
     
     // filter out by event identifiers
     if ($filter_out) {
-      $filter_out = explode(',', $filter_out);
+      $filter_out = explode(',', str_replace(' ', '', $filter_out));
     }
     
     if ($id) {
       // Events get
       $event = $events;
+      
       $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
 
       if ( $visibility != 'private' ) {
@@ -68,17 +69,21 @@ function googleplushangoutevent_shortcode( $atts ) {
 
         $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, 'shortcode') . '</div>';
 
-        if ($event['location']) {
+        if ( isset($event['location']) ) {
           $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
         } else {
           $output .= '<div class="yghe-event-hangout">';
           if ( isset($event['hangoutLink']) ) $output .= '<a href="' . $event['hangoutLink'] . '" title="Google+ Hangout">Google+ Hangout</a>';
           $output .= '</div>';
         }
-
-        $output .= '<div class="yghe-event-description">'. nl2br( $event['description'] ) . '</div>';
         
-        if ( ($attendees == 'show') || ($attendees == 'show_all') ) $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $event['attendees'], $attendees ) . '</div>';
+        $description = isset($event['description']) ? nl2br( $event['description'] ) : null;
+        $output .= '<div class="yghe-event-description">' . $description . '</div>';
+        
+        if ( ($attendees == 'show') || ($attendees == 'show_all') ) {
+          $guests = isset($event['attendees']) ? $event['attendees'] : null;
+          $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $guests, $attendees ) . '</div>';
+        }
         
         $output .= '</div>';
       }
@@ -112,17 +117,21 @@ function googleplushangoutevent_shortcode( $atts ) {
 
           $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, 'shortcode') . '</div>';
 
-          if ($event['location']) {
+          if ( isset($event['location']) ) {
             $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
           } else {
             $output .= '<div class="yghe-event-hangout">';
             if ( isset($event['hangoutLink']) ) $output .= '<a href="' . $event['hangoutLink'] . '" title="Google+ Hangout">Google+ Hangout</a>';
             $output .= '</div>';
           }
-
-          $output .= '<div class="yghe-event-description">'. nl2br( $event['description'] ) . '</div>';
           
-          if ( ($attendees == 'show') || ($attendees == 'show_all') ) $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $event['attendees'], $attendees ) . '</div>';
+          $description = isset($event['description']) ? nl2br( $event['description'] ) : null;
+          $output .= '<div class="yghe-event-description">'. $description . '</div>';
+          
+          if ( ($attendees == 'show') || ($attendees == 'show_all') ) {
+            $guests = isset($event['attendees']) ? $event['attendees'] : null;
+            $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $guests, $attendees ) . '</div>';
+          }
           
           $output .= '</div>';
 
@@ -160,17 +169,17 @@ function googleplushangoutevent_time($startdate, $finishdate, $type) {
   $output = null;
   
   if ( $type == 'shortcode'  ) {
-    $timezone = googleplushangoutevent_timezone( $begindate[1] );
+    $timezone = isset($begindate[1]) ? googleplushangoutevent_timezone( $begindate[1] ) : null;
     $output = date('D, F d, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone;
     if ($years > 0) $output = date('D, F d Y, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone;
   } elseif ( $type == 'widget' ) {
-    $timezone = googleplushangoutevent_timezone( $begindate[1] );
+    $timezone = isset($begindate[1]) ? googleplushangoutevent_timezone( $begindate[1] ) : null;
     $enddate = str_split($finishdate, 19);
     $output = '<span>' . date('F jS Y', strtotime($begindate[0])) . '</span><br><span>' . date('g:i a', strtotime($begindate[0])) . '&nbsp;-&nbsp;' . date('g:i a', strtotime($enddate[0])) . '&nbsp;' . $timezone . '</span>';
   }
   
   if ( $diff >= 1 ) {
-    $timezone = googleplushangoutevent_timezone( $begindate[1] );
+    $timezone = isset($begindate[1]) ? googleplushangoutevent_timezone( $begindate[1] ) : null;
     $enddate = str_split($finishdate, 19);
     if ( $type == 'shortcode' ) {
       $output = date('D, F d, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone . ' - ' . date('D, F d, g:i A', strtotime($enddate[0])) . '&nbsp;' . $timezone;
@@ -213,7 +222,7 @@ function googleplushangoutevent_ago($datetime1, $datetime2) {
   return $o;
 }
 
-function googleplushangoutevent_timezone( $time ) {
+function googleplushangoutevent_timezone( $time = null ) {
   $output = null;
   
   if ( $time == '+01:00' ) $output = 'ECT'; // European Central Time
@@ -291,11 +300,11 @@ function googleplushangoutevent_get_attendees( $guests, $view ) {
     
     foreach ( $guests as $guest ) {
       if ( $guest['responseStatus'] == 'accepted' ) { ++$i;
-        $display_name = ($guest['displayName']) ? $guest['displayName'] : $guest['email'];
+        $display_name = isset($guest['displayName']) ? $guest['displayName'] : $guest['email'];
         $pass = ( ($view == 'show') && ($i >= 5) ) ? false : true;
         
         if ( $pass ) {
-          if ( $guest['id'] ) {
+          if ( isset($guest['id']) ) {
             $accepted .= '<a href="https://plus.google.com/' . $guest['id'] . '">' . $display_name . '</a>';
           } else {
             $accepted .= '<a href="mailto:' . $guest['email'] . '">' . $display_name . '</a>';
@@ -303,11 +312,11 @@ function googleplushangoutevent_get_attendees( $guests, $view ) {
           $accepted .= ', ';
         } else { $accepted_title .= $display_name . ', '; }
       } elseif ( $guest['responseStatus'] == 'tentative' ) { ++$j;
-        $display_name = ($guest['displayName']) ? $guest['displayName'] : $guest['email'];
+        $display_name = isset($guest['displayName']) ? $guest['displayName'] : $guest['email'];
         $pass = ( ($view == 'show') && ($j >= 5) ) ? false : true;
         
         if ($pass) {
-          if ( $guest['id'] ) {
+          if ( isset($guest['id']) ) {
             $tentative .= '<a href="https://plus.google.com/' . $guest['id'] . '">' . $display_name . '</a>';
           } else {
             $tentative .= '<a href="mailto:' . $guest['email'] . '">' . $display_name . '</a>';
@@ -315,11 +324,11 @@ function googleplushangoutevent_get_attendees( $guests, $view ) {
           $tentative .= ', ';
         } else { $tentative_title .= $display_name . ', '; }
       } elseif ( $guest['responseStatus'] == 'needsAction' ) { ++$k;
-        $display_name = ($guest['displayName']) ? $guest['displayName'] : $guest['email'];
+        $display_name = isset($guest['displayName']) ? $guest['displayName'] : $guest['email'];
         $pass = ( ($view == 'show') && ($k >= 5) ) ? false : true;
         
         if ( $pass ) {
-          if ( $guest['id'] ) {
+          if ( isset($guest['id']) ) {
             $needsAction .= '<a href="https://plus.google.com/' . $guest['id'] . '">' . $display_name . '</a>';
           } else {
             $needsAction .= '<a href="mailto:' . $guest['email'] . '">' . $display_name . '</a>';
