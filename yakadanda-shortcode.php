@@ -33,7 +33,7 @@ function googleplushangoutevent_shortcode( $atts ) {
     if ( $past ) uasort( $events , 'googleplushangoutevent_sort_events_desc' );
     else uasort( $events , 'googleplushangoutevent_sort_events_asc' );
   }
-  
+    
   $data = get_option('yakadanda_googleplus_hangout_event_options');
   $token = get_option('yakadanda_googleplus_hangout_event_access_token');
   
@@ -67,7 +67,7 @@ function googleplushangoutevent_shortcode( $atts ) {
         $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
         $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
 
-        $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, 'shortcode') . '</div>';
+        $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $event['timeZone'], 'shortcode') . '</div>';
 
         if ( isset($event['location']) ) {
           $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
@@ -115,7 +115,7 @@ function googleplushangoutevent_shortcode( $atts ) {
           $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
           $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
 
-          $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, 'shortcode') . '</div>';
+          $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $event['timeZone'],'shortcode') . '</div>';
 
           if ( isset($event['location']) ) {
             $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
@@ -158,7 +158,7 @@ function googleplushangoutevent_shortcode( $atts ) {
 }
 add_shortcode( 'google+events', 'googleplushangoutevent_shortcode' );
 
-function googleplushangoutevent_time($startdate, $finishdate, $type) {
+function googleplushangoutevent_time($startdate, $finishdate, $timezone, $type) {
   $diff = round(abs(strtotime($finishdate)-strtotime($startdate))/86400);
   
   $begindate = str_split($startdate, 19);
@@ -169,29 +169,32 @@ function googleplushangoutevent_time($startdate, $finishdate, $type) {
   $output = null;
   
   if ( $type == 'shortcode'  ) {
-    $timezone = isset($begindate[1]) ? googleplushangoutevent_timezone( $begindate[1] ) : null;
-    $output = date('D, F d, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone;
-    if ($years > 0) $output = date('D, F d Y, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone;
+    $timezone_abbreviations = googleplushangoutevent_timezone_abbreviations( $timezone );
+    
+    $output = date('D, F d, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone_abbreviations;
+    if ($years > 0) $output = date('D, F d Y, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone_abbreviations;
   } elseif ( $type == 'widget' ) {
-    $timezone = isset($begindate[1]) ? googleplushangoutevent_timezone( $begindate[1] ) : null;
+    $timezone_abbreviations = googleplushangoutevent_timezone_abbreviations( $timezone );
+    
     $enddate = str_split($finishdate, 19);
-    $output = '<span>' . date('F jS Y', strtotime($begindate[0])) . '</span><br><span>' . date('g:i a', strtotime($begindate[0])) . '&nbsp;-&nbsp;' . date('g:i a', strtotime($enddate[0])) . '&nbsp;' . $timezone . '</span>';
+    $output = '<span>' . date('F jS Y', strtotime($begindate[0])) . '</span><br><span>' . date('g:i a', strtotime($begindate[0])) . '&nbsp;-&nbsp;' . date('g:i a', strtotime($enddate[0])) . '&nbsp;' . $timezone_abbreviations . '</span>';
   }
   
   if ( $diff >= 1 ) {
-    $timezone = isset($begindate[1]) ? googleplushangoutevent_timezone( $begindate[1] ) : null;
+    $timezone_abbreviations = googleplushangoutevent_timezone_abbreviations( $timezone );
+    
     $enddate = str_split($finishdate, 19);
     if ( $type == 'shortcode' ) {
-      $output = date('D, F d, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone . ' - ' . date('D, F d, g:i A', strtotime($enddate[0])) . '&nbsp;' . $timezone;
-      if ($years > 0) $output = date('D, F d Y, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone . ' - ' . date('D, F d Y, g:i A', strtotime($enddate[0])) . '&nbsp;' . $timezone;
+      $output = date('D, F d, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone_abbreviations . ' - ' . date('D, F d, g:i A', strtotime($enddate[0])) . '&nbsp;' . $timezone_abbreviations;
+      if ($years > 0) $output = date('D, F d Y, g:i A', strtotime($begindate[0])) . '&nbsp;' . $timezone_abbreviations . ' - ' . date('D, F d Y, g:i A', strtotime($enddate[0])) . '&nbsp;' . $timezone_abbreviations;
       
-      if ( !isset($timezone) ) {
+      if ( !isset($timezone_abbreviations) ) {
         $output = date('D, F d, ', strtotime($begindate[0])) . 'All day';
         if ($years > 0) $output = date('D, F d Y, ', strtotime($begindate[0])) . 'All day';
       }
     } elseif ( $type == 'widget' ) {
-      $output = '<span>' . date('F jS Y g:i a', strtotime($begindate[0])) . '&nbsp;to</span><br><span>' . date('F jS Y g:i a', strtotime($enddate[0])) . '&nbsp;' . $timezone . '</span>';
-      if ( !isset($timezone) ) {
+      $output = '<span>' . date('F jS Y g:i a', strtotime($begindate[0])) . '&nbsp;to</span><br><span>' . date('F jS Y g:i a', strtotime($enddate[0])) . '&nbsp;' . $timezone_abbreviations . '</span>';
+      if ( !isset($timezone_abbreviations) ) {
         $output = '<span>' . date('F jS Y', strtotime($begindate[0])) . '</span><br><span>All day</span>';
       }
     }
@@ -222,39 +225,14 @@ function googleplushangoutevent_ago($datetime1, $datetime2) {
   return $o;
 }
 
-function googleplushangoutevent_timezone( $time = null ) {
+function googleplushangoutevent_timezone_abbreviations( $timezone = null ) {
   $output = null;
   
-  if ( $time == '+01:00' ) $output = 'ECT'; // European Central Time
-  elseif ( $time == '+02:00' ) $output = 'EET'; // Eastern European Time
-  //elseif ( $time == '+02:00' ) $output = 'ART'; // (Arabic) Egypt Standard Time
-  elseif ( $time == '+03:00' ) $output = 'EAT'; // Eastern African Time
-  elseif ( $time == '+03:30' ) $output = 'MET'; // Middle East Time
-  elseif ( $time == '+04:00' ) $output = 'NET'; // Near East Time
-  elseif ( $time == '+05:00' ) $output = 'PLT'; // Pakistan Lahore Time
-  elseif ( $time == '+05:30' ) $output = 'IST'; // India Standard Time
-  elseif ( $time == '+06:00' ) $output = 'BST'; // Bangladesh Standard Time
-  elseif ( $time == '+07:00' ) $output = 'VST'; // Vietnam Standard Time
-  elseif ( $time == '+08:00' ) $output = 'CTT'; // China Taiwan Time
-  elseif ( $time == '+09:00' ) $output = 'JST'; // Japan Standard Time
-  elseif ( $time == '+09:30' ) $output = 'ACT'; // Australia Central Time
-  elseif ( $time == '+10:00' ) $output = 'AET'; // Australia Eastern Time
-  elseif ( $time == '+11:00' ) $output = 'SST'; // Solomon Standard Time
-  elseif ( $time == '+12:00' ) $output = 'NST'; // New Zealand Standard Time
-  elseif ( $time == '-11:00' ) $output = 'MIT'; // Midway Islands Time
-  elseif ( $time == '-10:00' ) $output = 'HST'; // Hawaii Standard Time
-  elseif ( $time == '-09:00' ) $output = 'AST'; // Alaska Standard Time
-  elseif ( $time == '-08:00' ) $output = 'PST'; // Pacific Standard Time
-  elseif ( $time == '-07:00' ) $output = 'PNT'; // Phoenix Standard Time
-  //elseif ( $time == '-07:00' ) $output = 'MST'; // Mountain Standard Time
-  elseif ( $time == '-06:00' ) $output = 'CST'; // Central Standard Time
-  elseif ( $time == '-05:00' ) $output = 'EST'; // Eastern Standard Time
-  //elseif ( $time == '-05:00' ) $output = 'IET'; // Indiana Eastern Standard Time
-  elseif ( $time == '-04:00' ) $output = 'PRT'; // Puerto Rico and US Virgin Islands Time
-  elseif ( $time == '-03:30' ) $output = 'CNT'; // Canada Newfoundland Time
-  elseif ( $time == '-03:00' ) $output = 'AGT'; // Argentina Standard Time
-  //elseif ( $time == '-03:00' ) $output = 'BET'; // Brazil Eastern Time
-  elseif ( $time == '-01:00' ) $output = 'CAT'; // Central African Time
+  if ( $timezone ) {
+    $dateTime = new DateTime();
+    $dateTime->setTimeZone(new DateTimeZone( $timezone ));
+    $output = $dateTime->format('T');
+  }
   
   return $output;
 }

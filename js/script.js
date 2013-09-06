@@ -27,6 +27,13 @@ jQuery(function($){
       $(selected = this).css('opacity', 1).addClass('colorwell-selected');
     });
     
+    $('#googleplushangoutevent-help-tab').on('click', function(e) {
+      $('#contextual-help-link').trigger('click');
+      $('#tab-link-googleplushangoutevent-setup a').trigger('click');
+      $("html, body").animate({ scrollTop: $('#wpbody').offset().top }, 500);
+      e.preventDefault();
+    });
+    
   }
   
   /* In frontend */

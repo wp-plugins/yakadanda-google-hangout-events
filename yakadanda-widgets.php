@@ -57,7 +57,7 @@ class googlePlusEvents extends WP_Widget {
           ?>
             <div class="ghe-vessel">
               <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
-              <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, 'widget'); ?></div>
+              <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, $event['timeZone'], 'widget'); ?></div>
               <div class="ghe-detail"><?php echo isset($event['description']) ? nl2br( $event['description'] ) : null; ?></div>
               
               <ul class="ghe-icons">
@@ -211,7 +211,7 @@ class googlePlusHangoutEvents extends WP_Widget {
             ?>
             <div class="ghe-vessel">
               <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
-              <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, 'widget'); ?></div>
+              <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, $event['timeZone'], 'widget'); ?></div>
               <div class="ghe-detail"><?php echo nl2br( $event['description'] ); ?></div>
               
               <ul class="ghe-icons">
@@ -438,7 +438,7 @@ function googleplushangoutevent_response( $months = null, $event_id = null, $sea
     
     $service = new Google_CalendarService($client);
     
-    $calendar_ids = googleplushangoutevent_calendar_list($service, $data['calendar_id']);
+    $calendar_list = googleplushangoutevent_calendar_list($service, $data['calendar_id']);
     
     // the date is today
     $timeMin = date('c');
@@ -472,12 +472,28 @@ function googleplushangoutevent_response( $months = null, $event_id = null, $sea
       $output = $event;
     } else {
       // Events list
-      //$events = $service->events->listEvents( $data['calendar_id'], $args );     
-      foreach ( $calendar_ids as $calendar_id ) {
-        $events = $service->events->listEvents( $calendar_id, $args );
-        $the_events = isset($events['error']['code']) ? $events : $events['items'];
-        $output = array_merge((array)$output, (array)$the_events);
+      //$events = $service->events->listEvents( $data['calendar_id'], $args );
+      
+      foreach ( $calendar_list as $calendar ) {
+        $events = $service->events->listEvents( $calendar['id'], $args );
+        
+        if ( isset($events['error']['code']) ) {
+          $the_events = $events;
+        } else {
+          $the_events = array();
+          foreach ( $events['items'] as $event ) {
+            $the_event = array_merge( (array) $event, array( 'timeZone' => $calendar['timeZone'] ) );
+            $the_events[] = $the_event;
+          }
+        }
+        
+        $the_events = array_filter($the_events);
+        if (!empty($the_events)) {
+          $output = array_merge((array) $output, (array) $the_events);
+        }
+        
       }
+      
       // Remove duplicate
       if ($output) {
         foreach ($output as $k => $v) {
@@ -500,7 +516,7 @@ function googleplushangoutevent_calendar_list($service, $calendar_id) {
   if ( $calendarList['items'] ) { $output = null;
     while(true) {
       foreach ($calendarList['items'] as $calendarListEntry) {
-        if (strpos($calendarListEntry['id'],'group.v') == false) $output[] = $calendarListEntry['id'];
+        if (strpos($calendarListEntry['id'],'group.v') == false) $output[] = $calendarListEntry;
       }
       
       $pageToken = isset($calendarList['nextPageToken']) ? $calendarList['nextPageToken'] : null;

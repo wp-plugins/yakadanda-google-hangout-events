@@ -28,7 +28,9 @@ if (isset($_GET['code'])) {
   
   $client->setAccessToken($client->getAccessToken());
   
-  $calendar_ids = googleplushangoutevent_calendar_list($service);
+  $calendar_list = googleplushangoutevent_calendar_list($service);
+  $calendar_ids = array();
+  foreach ( $calendar_list as $calendar) $calendar_ids[] = $calendar['id'];
   $is_calendar_id = in_array($data['calendar_id'], $calendar_ids);
   
   $response = '&calendar_id=false';

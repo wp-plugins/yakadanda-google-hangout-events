@@ -11,16 +11,16 @@ function googleplushangoutevent_register_menu_page() {
   // Call javascripts
   add_action( 'admin_enqueue_scripts', 'googleplushangoutevent_admin_enqueue_scripts' );
   
-  add_submenu_page( 'options-general.php', 'Google+ Hangout Events', 'Google+ Hangout Events', 'manage_options', 'googleplus-hangout-events', 'googleplushangoutevent_page' );
+  $settings_page = add_submenu_page( 'options-general.php', 'Google+ Hangout Events', 'Google+ Hangout Events', 'manage_options', 'googleplus-hangout-events', 'googleplushangoutevent_page' );
+  
+  add_action( 'load-' . $settings_page, 'googleplushangoutevent_admin_add_help_tab' );
 }
 
 function googleplushangoutevent_page() {
-	if (!current_user_can('manage_options'))  {
-		wp_die( __('You do not have sufficient permissions to access this page.') );
-	}
+  if (!current_user_can('manage_options'))
+    wp_die( __('You do not have sufficient permissions to access this page.') );
   
-  $data = get_option( 'yakadanda_googleplus_hangout_event_options' );
-  $manual_url = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/manual.php';
+  $data = (array) get_option( 'yakadanda_googleplus_hangout_event_options' );
   
   $response = null;
   if (isset($_GET["calendar_id"])) {
@@ -28,6 +28,78 @@ function googleplushangoutevent_page() {
   }
   
   include('page.php');
+}
+
+function googleplushangoutevent_admin_add_help_tab() {
+  $screen = get_current_screen();
+  
+  $screen->add_help_tab(array(
+      'id' => 'googleplushangoutevent-setup',
+      'title' => __('Setup'),
+      'content' => googleplushangoutevent_section_setup(),
+  ));
+  
+  $screen->add_help_tab(array(
+      'id' => 'googleplushangoutevent-shortcode',
+      'title' => __('Shortcode'),
+      'content' => googleplushangoutevent_section_shortcode(),
+  ));
+}
+
+function googleplushangoutevent_section_setup() {
+  $output = '<h1>How to get your Google Api Key, Client ID, and Client Secret</h1>';
+  $output .= '<ol>';
+  $output .= '<li>Go to <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a></li>';
+  $output .= '<li>In selectbox click create to create project<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-1.png"/></li>';
+  $output .= '<li>Enter the name of your project, e.g. <em>Yakadanda Google+ Hangout Events</em></li>';
+  $output .= '<li>On Services menu of your project, turn on calendar api<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-2.png"/><br/><br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-3.png"/></li>';
+  $output .= '<li>On API Access menu of your project, create an OAuth 2.0 client ID<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-4.png"/></li>';
+  $output .= '<li>Fill Branding Information form and click next.</li>';
+  $output .= '<li>Client ID Settings form:';
+  $output .= '<dl>';
+  $output .= '<dt><strong>Application type</strong></dt>';
+  $output .= '<dd><em>Web application</em></dd>';
+  $output .= '<dt><strong>Your site or hostname</strong></dt>';
+  $output .= '<dd>Change the selectbox to "<em>http://</em>"<br/>';
+  $output .= 'Copy and paste this url <em>' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php</em> to the textbox.</dd>';
+  $output .= '<dt><strong>Redirect URI</strong></dt>';
+  $output .= '<dd>It will automatically be filled with "<em>' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php</em>" after paste and click outside the textbox.</dd>';
+  $output .= '</dl>';
+  $output .= '<strong>Finally click Create client ID button.</strong>';
+  $output .= '</li>';
+  $output .= '<li>Now you have an Api Key, Client ID, and Client Secret.</li>';
+  $output .= '</ol>';
+      
+  return $output;
+}
+
+function googleplushangoutevent_section_shortcode() {
+  $output = '<p><strong>Shortcode Examples</strong></p>';
+  $output .= '<ul class="sc_examples">';
+  $output .= '<li>[google+events]</li>';
+  $output .= '<li>[google+events type="hangout"]</li>';
+  $output .= '<li>[google+events limit="3"]</li>';
+  $output .= '<li>[google+events past="2"]</li>';
+  $output .= '<li>[google+events author="all"]</li>';
+  $output .= '<li>[google+events limit="5" type="normal" past="1" author="all"]</li>';
+  $output .= '<li>[google+events id="xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>';
+  $output .= '<li>[google+events filter_out="xxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>';
+  $output .= '<li>[google+events search="free text search terms"]</li>';
+  $output .= '<li>[google+events attendees="show"]</li>';
+  $output .= '</ul>';
+  $output .= '<p><strong>Attributes</strong></p>';
+  $output .= '<table class="sc_key"><tbody>';
+  $output .= '<tr><td>type</td><td>=</td><td>all, normal, or hangout, by default type is all</td></tr>';
+  $output .= '<tr><td>limit</td><td>=</td><td>number of events to display (maximum 20)</td></tr>';
+  $output .= '<tr><td>past</td><td>=</td><td>number of months to display past events in X months ago, by default past is false</td></tr>';
+  $output .= '<tr><td>author</td><td>=</td><td>self, or all, by default author is all</td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">id</td><td style="vertical-align: top;">=</td><td>Event identifier (string). Single Event Example: <a href="https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so" target="_blank">https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u></a> To create a single event you would place in shortcode <span>[google+events id="snlc77gi4v519jom5gb28217so"]</span></td></tr>';
+  $output .= '<tr><td>filter_out</td><td>=</td><td>Filter out certain events by event identifiers, seperated by comma</td></tr>';
+  $output .= '<tr><td>search</td><td>=</td><td>Text search terms (string) to display events that match these terms in any field, except for extended properties</td></tr>';
+  $output .= '<tr><td>attendees</td><td>=</td><td>Events can have attendees, the value can be \'show\', \'show_all\', or \'hide\', the default value for attendees attribute is \'hide\'</td></tr>';
+  $output .= '<tbody></table>';
+  
+  return $output;
 }
 
 // echo font theme
@@ -109,7 +181,13 @@ function googleplushangoutevent_font_styles( $id, $data = null ) {
 }
 
 function googleplushangoutevent_google_fonts() {
-  $data = get_option('yakadanda_googleplus_hangout_event_options');
+  $data = (array) get_option('yakadanda_googleplus_hangout_event_options');
+  
+  $data['title_theme'] = isset($data['title_theme']) ? $data['title_theme'] : null;
+  $data['date_theme'] = isset($data['date_theme']) ? $data['date_theme'] : null;
+  $data['detail_theme'] = isset($data['detail_theme']) ? $data['detail_theme'] : null;
+  $data['countdown_theme'] = isset($data['countdown_theme']) ? $data['countdown_theme'] : null;
+  
   $fonts = array(
       $data['title_theme'],
       $data['date_theme'],

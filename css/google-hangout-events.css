@@ -173,3 +173,17 @@ Default Stylesheet
   color: #fff;
   background: #c03c34;
 }
+
+.settings_page_googleplus-hangout-events .help-tab-content ul.sc_examples li {
+  list-style: none;
+  margin-left: 0;
+  font-family:"Courier New", Courier, monospace;
+}
+
+.settings_page_googleplus-hangout-events .sc_key a {
+  text-decoration:none;
+}
+
+.settings_page_googleplus-hangout-events .sc_key span {
+  font-family:"Courier New", Courier, monospace;
+}
