@@ -6,6 +6,7 @@
     </div>
   <?php endif; ?>
   <form method="post" action="<?php echo GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/admin/posteddata.php'; ?>">
+    <p>Visit <a href="https://code.google.com/apis/console" target="_blank">Google APIs Console</a> or <a href="https://cloud.google.com/console" target="_blank">Google Cloud Console</a> to get your api key, client id, and client secret. For more details see <a id="googleplushangoutevent-help-tab" href="#">Setup section</a> on Help tab above.</p>
     <table class="form-table">
       <tr valign="top">
         <th scope="row"><label for="calendar_id"><?php _e('Calendar ID') ?></label></th>
@@ -152,6 +153,5 @@
         <input id="submit" class="button-primary" type="submit" value="Save and Connect" name="submit">
       <?php endif; ?>
     </p>
-    <p class="description">Visit <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a> to generate your api key, client id, client secret, and to register your redirect uri, or <a id="googleplushangoutevent-help-tab" href="#">follow these instructions</a>.</p>
   </form>
 </div>

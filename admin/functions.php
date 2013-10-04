@@ -48,28 +48,44 @@ function googleplushangoutevent_admin_add_help_tab() {
 
 function googleplushangoutevent_section_setup() {
   $output = '<h1>How to get your Google Api Key, Client ID, and Client Secret</h1>';
+  $output .= '<div id="setup_tabs">';
+  $output .= '<ul>';
+  $output .= '<li><a href="#setup-tabs-1">Google APIs Console</a></li>';
+  $output .= '<li><a href="#setup-tabs-2">Google Cloud Console</a></li>';
+  $output .= '</ul>';
+  $output .= '<div id="setup-tabs-1">';
   $output .= '<ol>';
-  $output .= '<li>Go to <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a></li>';
-  $output .= '<li>In selectbox click create to create project<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-1.png"/></li>';
-  $output .= '<li>Enter the name of your project, e.g. <em>Yakadanda Google+ Hangout Events</em></li>';
-  $output .= '<li>On Services menu of your project, turn on calendar api<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-2.png"/><br/><br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-3.png"/></li>';
-  $output .= '<li>On API Access menu of your project, create an OAuth 2.0 client ID<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-4.png"/></li>';
-  $output .= '<li>Fill Branding Information form and click next.</li>';
-  $output .= '<li>Client ID Settings form:';
-  $output .= '<dl>';
-  $output .= '<dt><strong>Application type</strong></dt>';
-  $output .= '<dd><em>Web application</em></dd>';
-  $output .= '<dt><strong>Your site or hostname</strong></dt>';
-  $output .= '<dd>Change the selectbox to "<em>http://</em>"<br/>';
-  $output .= 'Copy and paste this url <em>' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php</em> to the textbox.</dd>';
-  $output .= '<dt><strong>Redirect URI</strong></dt>';
-  $output .= '<dd>It will automatically be filled with "<em>' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php</em>" after paste and click outside the textbox.</dd>';
-  $output .= '</dl>';
-  $output .= '<strong>Finally click Create client ID button.</strong>';
+  $output .= '<li>At <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a> create new project.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a1.png"/><br/>Enter your project name, e.g. <span>Yakadanda Google+ Hangout Events</span></li>';
+  $output .= '<li>Turn on Calendar API service.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a2.png"/><br/><br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a3.png"/></li>';
+  $output .= '<li>On API Access menu of your project, create an OAuth 2.0 client ID.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a4.png"/></li>';
+  $output .= '<li>Fill Branding Information form as you want and then click <strong>Next</strong>.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a5.png"/></li>';
+  $output .= '<li>Setup Client ID Settings form.<br/><br/>a. Choose <span>Web application</span> for Application type<br/>';
+  $output .= 'b. Select <span>http://</span> for Your site or hostname<br/>';
+  $output .= 'c. Click (more options) link<br/>';
+  $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a6.png"/><br/><br/>';
+  $output .= 'd. Fill Authorized Redirect URIs textarea with <span>' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php</span><br/>';
+  $output .= 'e. Fill Authorized JavaScript Origins textarea with <span>' . home_url() . '</span><br/>';
+  $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a7.png"/><br/><br/>';
+  $output .= 'Finally, click <strong>Create client ID</strong> button to finish.';
   $output .= '</li>';
-  $output .= '<li>Now you have an Api Key, Client ID, and Client Secret.</li>';
+  $output .= '<li>Now you have API key, Client ID, and Client secret.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a8.png"/></li>';
   $output .= '</ol>';
-      
+  $output .= '</div>';
+  $output .= '<div id="setup-tabs-2">';
+  $output .= '<ol>';
+  $output .= '<li>At <a href="https://cloud.google.com/console" target="_blank">https://cloud.google.com/console</a> create new project.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b1.png"/></li>';
+  $output .= '<li>Fill Project name textbox with your suitable information.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b2.png"/></li>';
+  $output .= '<li>On Overview menu of your project, click APIs & auth menu.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b3.png"/></li>';
+  $output .= '<li>Turn on Calendar API.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b4.png"/></li>';
+  $output .= '<li>On Registered apps menu, please register new application by click REGISTER APP button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b5.png"/></li>';
+  $output .= '<li>Fill Name textbox, and choose <span>Web Application</span> as a platform.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b6.png"/></li>';
+  $output .= '<li>On your app web application click OAuth 2.0 Client ID for setup and to get Client ID and Client Secret. And click Server Key to get Api Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b7.png"/></li>';
+  $output .= '<li>Setup OAuth 2.0 Client ID.<br/><br/>a. Fill WEB ORIGIN textbox with <span>' . home_url() . '</span><br/> b. And REDIRECT URI textbox with <span>' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php</span><br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b8.png"/></li>';
+  $output .= '<li>Your Api Key on Server Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b9.png"/></li>';
+  $output .= '</ol>';
+  $output .= '</div>';
+  $output .= '</div>';
+  
   return $output;
 }
 
@@ -86,17 +102,19 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<li>[google+events filter_out="xxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>';
   $output .= '<li>[google+events search="free text search terms"]</li>';
   $output .= '<li>[google+events attendees="show"]</li>';
+  $output .= '<li>[google+events timezone="America/Los_Angeles"]</li>';
   $output .= '</ul>';
   $output .= '<p><strong>Attributes</strong></p>';
   $output .= '<table class="sc_key"><tbody>';
-  $output .= '<tr><td>type</td><td>=</td><td>all, normal, or hangout, by default type is all</td></tr>';
-  $output .= '<tr><td>limit</td><td>=</td><td>number of events to display (maximum 20)</td></tr>';
-  $output .= '<tr><td>past</td><td>=</td><td>number of months to display past events in X months ago, by default past is false</td></tr>';
-  $output .= '<tr><td>author</td><td>=</td><td>self, or all, by default author is all</td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">type</td><td style="vertical-align: top;">=</td><td><span>all</span>, <span>normal</span>, or <span>hangout</span>, by default type is <span>all</span></td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">limit</td><td style="vertical-align: top;">=</td><td>number of events to display (maximum is <span>20</span>)</td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">past</td><td style="vertical-align: top;">=</td><td>number of months to display past events in <span>X</span> months ago, by default past is false</td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">author</td><td style="vertical-align: top;">=</td><td><span>self</span>, or <span>all</span>, by default author is <span>all</span></td></tr>';
   $output .= '<tr><td style="vertical-align: top;">id</td><td style="vertical-align: top;">=</td><td>Event identifier (string). Single Event Example: <a href="https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so" target="_blank">https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u></a> To create a single event you would place in shortcode <span>[google+events id="snlc77gi4v519jom5gb28217so"]</span></td></tr>';
-  $output .= '<tr><td>filter_out</td><td>=</td><td>Filter out certain events by event identifiers, seperated by comma</td></tr>';
-  $output .= '<tr><td>search</td><td>=</td><td>Text search terms (string) to display events that match these terms in any field, except for extended properties</td></tr>';
-  $output .= '<tr><td>attendees</td><td>=</td><td>Events can have attendees, the value can be \'show\', \'show_all\', or \'hide\', the default value for attendees attribute is \'hide\'</td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">filter_out</td><td style="vertical-align: top;">=</td><td>Filter out certain events by event identifiers, seperated by comma</td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">search</td><td style="vertical-align: top;">=</td><td>Text search terms (string) to display events that match these terms in any field, except for extended properties</td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">attendees</td><td style="vertical-align: top;">=</td><td>Events can have attendees, the value can be <span>show</span>, <span>show_all</span>, or <span>hide</span>, the default value for attendees attribute is <span>hide</span></td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">timezone</td><td style="vertical-align: top;">=</td><td>Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at <a href="http://www.php.net/manual/en/timezones.php" target="_blank">http://www.php.net/manual/en/timezones.php</a> (string)</td></tr>';
   $output .= '<tbody></table>';
   
   return $output;

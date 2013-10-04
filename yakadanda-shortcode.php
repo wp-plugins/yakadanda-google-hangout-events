@@ -10,6 +10,7 @@
  * filter_out = Filter out certain events by event identifiers, seperated by comma
  * search = Text search terms (string) to display events that match these terms in any field, except for extended properties
  * attendees = show, show_all, or hide, default is hide
+ * timeZone = Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at http://www.php.net/manual/en/timezones.php (string)
  */
 function googleplushangoutevent_shortcode( $atts ) {
   extract( shortcode_atts( array(
@@ -20,20 +21,21 @@ function googleplushangoutevent_shortcode( $atts ) {
     'id' => null,
     'filter_out' => array(),
     'search' => null,
-    'attendees' => 'hide'
+    'attendees' => 'hide',
+    'timezone' => null
   ), $atts ) );
     
   if ($limit > 20) $limit = 20;
   
   if ($id) {
-    $events = googleplushangoutevent_response( null, $id );
+    $events = googleplushangoutevent_response( null, $id, null, $timezone );
   } else {
-    $events = googleplushangoutevent_response( $past, null, $search );
+    $events = googleplushangoutevent_response( $past, null, $search, $timezone );
     // Sorting events
     if ( $past ) uasort( $events , 'googleplushangoutevent_sort_events_desc' );
     else uasort( $events , 'googleplushangoutevent_sort_events_asc' );
   }
-    
+  
   $data = get_option('yakadanda_googleplus_hangout_event_options');
   $token = get_option('yakadanda_googleplus_hangout_event_access_token');
   
@@ -57,6 +59,9 @@ function googleplushangoutevent_shortcode( $atts ) {
       $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
 
       if ( $visibility != 'private' ) {
+        $used_timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
+        $used_timezone = ($timezone) ? $timezone : $used_timezone;
+        
         $output .= '<div class="yghe-event">';
         
         $output .= '<div class="yghe-organizer">' . googleplushangoutevent_organizer($event);
@@ -67,7 +72,7 @@ function googleplushangoutevent_shortcode( $atts ) {
         $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
         $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
 
-        $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $event['timeZone'], 'shortcode') . '</div>';
+        $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $used_timezone, 'shortcode') . '</div>';
 
         if ( isset($event['location']) ) {
           $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
@@ -105,18 +110,21 @@ function googleplushangoutevent_shortcode( $atts ) {
         }
         
         if ( $filter && $creator && ($visibility != 'private') && !in_array($event['id'], $filter_out) ) { $i++;
+          $used_timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
+          $used_timezone = ($timezone) ? $timezone : $used_timezone;
+          
           $output .= '<div class="yghe-event">';
           
           $output .= '<div class="yghe-organizer">' . googleplushangoutevent_organizer($event);
           $output .= googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
           
           $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '">' . $event['summary'] . '</a></div>';
-
+          
           $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
           $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
-
-          $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $event['timeZone'],'shortcode') . '</div>';
-
+          
+          $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $used_timezone,'shortcode') . '</div>';
+          
           if ( isset($event['location']) ) {
             $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
           } else {
@@ -159,6 +167,17 @@ function googleplushangoutevent_shortcode( $atts ) {
 add_shortcode( 'google+events', 'googleplushangoutevent_shortcode' );
 
 function googleplushangoutevent_time($startdate, $finishdate, $timezone, $type) {
+  $startdate = new DateTime( $startdate );
+  $finishdate = new DateTime( $finishdate );
+  
+  $dateTimeZone = new DateTimeZone( $timezone );
+  
+  $startdate->setTimezone($dateTimeZone);
+  $startdate = $startdate->format('c');
+  
+  $finishdate->setTimezone($dateTimeZone);
+  $finishdate = $finishdate->format('c');
+  
   $diff = round(abs(strtotime($finishdate)-strtotime($startdate))/86400);
   
   $begindate = str_split($startdate, 19);
@@ -328,6 +347,53 @@ function googleplushangoutevent_get_attendees( $guests, $view ) {
       $output .= '<p>Unknown (' . $k . ')</p>' . substr_replace($needsAction ,"",-2);
       if ( ($view == 'show') && ($k>4) ) $output .= ', <span title="' . substr_replace($needsAction_title ,"",-2) . '">...</span>';
     }
+  }
+  
+  return $output;
+}
+
+function googleplushangoutevent_fetch_data($url) {
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  $result = curl_exec($ch);
+  curl_close($ch);
+  return $result;
+}
+
+function googleplushangoutevent_google_geocoding( $address=null ) {
+  $output = null;
+  
+  if ( $address ) {
+    $address = str_replace( ' ', '+', $address );
+    
+    $url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false';
+    $responses = googleplushangoutevent_fetch_data($url);
+    $data = json_decode( $responses );
+    
+    if ( $data->status == 'OK' ) {
+      $lat = $data->results[0]->geometry->location->lat;
+      $lng = $data->results[0]->geometry->location->lng;
+      
+      $output = $lat . ',' . $lng;
+    }
+  }
+  
+  return $output;
+}
+
+function googleplushangoutevent_location_timezone( $location=null, $time=null) {
+  $output = null;
+  
+  if ( $location && $time ) {
+    $timestamp = strtotime($time);
+    $url = 'https://maps.googleapis.com/maps/api/timezone/json?location=' . $location . '&timestamp=' . $timestamp . '&sensor=false';
+    $responses = googleplushangoutevent_fetch_data($url);
+    $data = json_decode( $responses );
+    
+    if ( $data->status == 'OK' ) $output = $data->timeZoneId;
   }
   
   return $output;

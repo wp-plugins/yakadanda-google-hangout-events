@@ -1,7 +1,7 @@
 jQuery(function($){
   
   // In admin page settings
-  if ( $('body').find('#google-hangout-event').length == 1 ) {
+  if ( $('body').find('#google-hangout-event').length === 1 ) {
     // select themes, sizes, and styles
     var optionsFirst = new Array("title", "date", "detail", "icon", "countdown", "event_button"),
     optionsLast = new Array("theme", "size", "style");
@@ -34,28 +34,30 @@ jQuery(function($){
       e.preventDefault();
     });
     
+    $( "#setup_tabs" ).tabs();
+    
   }
   
   /* In frontend */
   // 1st widget
-  if ( $('body').find('#ghe-1st-widget').length == 1 ) {
+  if ( $('body').find('#ghe-1st-widget').length === 1 ) {
     var gheStartTimes1st = $('#ghe-start-times-1st').val();
-    if (typeof gheStartTimes1st != "undefined") {
+    if (typeof gheStartTimes1st !== "undefined") {
       startTimes1st = gheStartTimes1st.split(';');
       for (i in startTimes1st) {
-        if ( ($('body').find('#ghe-countdown-1st-'+i).length == 1) && startTimes1st[i]) {
+        if ( ($('body').find('#ghe-countdown-1st-'+i).length === 1) && startTimes1st[i]) {
           loadCountDown(i, startTimes1st[i], 'ghe-countdown-1st-');
         }
       }
     }
   }
   // 2nd widget
-  if ( $('body').find('#ghe-2nd-widget').length == 1 ) {
+  if ( $('body').find('#ghe-2nd-widget').length === 1 ) {
     var gheStartTimes2nd = $('#ghe-start-times-2nd').val();
-    if (typeof gheStartTimes2nd != "undefined") {
+    if (typeof gheStartTimes2nd !== "undefined") {
       startTimes2nd = gheStartTimes2nd.split(';');
       for (i in startTimes2nd) {
-        if ( ($('body').find('#ghe-countdown-2nd-'+i).length == 1) && startTimes2nd[i] ) {
+        if ( ($('body').find('#ghe-countdown-2nd-'+i).length === 1) && startTimes2nd[i] ) {
           loadCountDown(i, startTimes2nd[i], 'ghe-countdown-2nd-');
         }
       }
