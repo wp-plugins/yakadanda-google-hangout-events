@@ -78,10 +78,10 @@ function googleplushangoutevent_section_setup() {
   $output .= '<li>On Overview menu of your project, click APIs & auth menu.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b3.png"/></li>';
   $output .= '<li>Turn on Calendar API.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b4.png"/></li>';
   $output .= '<li>On Registered apps menu, please register new application by click REGISTER APP button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b5.png"/></li>';
-  $output .= '<li>Fill Name textbox, and choose <span>Web Application</span> as a platform.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b6.png"/></li>';
+  $output .= '<li>Fill Name textbox, and choose <span>Web Application</span> as a Platform.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b6.png"/></li>';
   $output .= '<li>On your app web application click OAuth 2.0 Client ID for setup and to get Client ID and Client Secret. And click Server Key to get Api Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b7.png"/></li>';
   $output .= '<li>Setup OAuth 2.0 Client ID.<br/><br/>a. Fill WEB ORIGIN textbox with <span>' . home_url() . '</span><br/> b. And REDIRECT URI textbox with <span>' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php</span><br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b8.png"/></li>';
-  $output .= '<li>Your Api Key on Server Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b9.png"/></li>';
+  $output .= '<li>Your API Key on Server Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b9.png"/></li>';
   $output .= '</ol>';
   $output .= '</div>';
   $output .= '</div>';
