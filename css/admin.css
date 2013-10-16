@@ -7,7 +7,8 @@
   text-decoration:none;
 }
 .settings_page_googleplus-hangout-events .sc_key span,
-#tab-panel-googleplushangoutevent-setup ol li span {
+#tab-panel-googleplushangoutevent-setup ol li span,
+#tab-panel-googleplushangoutevent-embedded-posts p span {
   font-family:"Courier New", Courier, monospace;
 }
 

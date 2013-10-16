@@ -36,13 +36,19 @@ function googleplushangoutevent_admin_add_help_tab() {
   $screen->add_help_tab(array(
       'id' => 'googleplushangoutevent-setup',
       'title' => __('Setup'),
-      'content' => googleplushangoutevent_section_setup(),
+      'content' => googleplushangoutevent_section_setup()
   ));
   
   $screen->add_help_tab(array(
       'id' => 'googleplushangoutevent-shortcode',
       'title' => __('Shortcode'),
-      'content' => googleplushangoutevent_section_shortcode(),
+      'content' => googleplushangoutevent_section_shortcode()
+  ));
+  
+  $screen->add_help_tab(array(
+      'id' => 'googleplushangoutevent-embedded-posts',
+      'title' => __('Google+ Embedded Posts'),
+      'content' => googleplushangoutevent_section_embedded_posts()
   ));
 }
 
@@ -116,6 +122,18 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<tr><td style="vertical-align: top;">attendees</td><td style="vertical-align: top;">=</td><td>Events can have attendees, the value can be <span>show</span>, <span>show_all</span>, or <span>hide</span>, the default value for attendees attribute is <span>hide</span></td></tr>';
   $output .= '<tr><td style="vertical-align: top;">timezone</td><td style="vertical-align: top;">=</td><td>Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at <a href="http://www.php.net/manual/en/timezones.php" target="_blank">http://www.php.net/manual/en/timezones.php</a> (string)</td></tr>';
   $output .= '<tbody></table>';
+  
+  return $output;
+}
+
+function googleplushangoutevent_section_embedded_posts() {
+  $output = '<p><strong>Adding the embedded posts</strong></p>';
+  $output .= '<p>Locate the post that you want to embed on <a href="plus.google.com" target="_blank">Google+</a> and click the <img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/gplus-post-menu-icon.png" title="A downward pointing arrow that indicates the menu" alt="A downward pointing arrow that indicates the menu"/> menu icon and choose Embed post.</p>';
+  $output .= '<p><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-embedded-posts-1.png"/></p>';
+  $output .= '<p>Copy the tag <span>' . htmlentities('<div class="g-post" data-href="https://plus.google.com/116442957294662581658/posts/9Mu57w1iBFj"></div>') . '</span> to post or page.</p>';
+  $output .= '<p><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-embedded-posts-2.png"/></p>';
+  
+  $output .= '<p>For more detail you can look at <a href="https://developers.google.com/+/web/embedded-post/" target="_blank">https://developers.google.com/+/web/embedded-post/</a>.</p>';
   
   return $output;
 }
