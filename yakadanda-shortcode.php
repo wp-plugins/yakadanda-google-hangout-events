@@ -75,9 +75,12 @@ function googleplushangoutevent_shortcode( $atts ) {
         $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $used_timezone, 'shortcode') . '</div>';
 
         if ( isset($event['location']) ) {
-          $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
+          $output .= '<div class="yghe-event-location" title="Location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
         } else {
-          $output .= '<div class="yghe-event-hangout">';
+          $onair = googleplushangoutevent_onair($start_event, $end_event);
+          if ( $onair ) $output .= '<div class="yghe-event-onair" title="On Air">';
+          else $output .= '<div class="yghe-event-hangout" title="Hangout">';
+          
           if ( isset($event['hangoutLink']) ) $output .= '<a href="' . $event['hangoutLink'] . '" title="Google+ Hangout">Google+ Hangout</a>';
           $output .= '</div>';
         }
@@ -126,9 +129,12 @@ function googleplushangoutevent_shortcode( $atts ) {
           $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $used_timezone,'shortcode') . '</div>';
           
           if ( isset($event['location']) ) {
-            $output .= '<div class="yghe-event-location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
+            $output .= '<div class="yghe-event-location" title="Location"><a href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
           } else {
-            $output .= '<div class="yghe-event-hangout">';
+            $onair = googleplushangoutevent_onair($start_event, $end_event);
+            if ( $onair ) $output .= '<div class="yghe-event-onair" title="On Air">';
+            else $output .= '<div class="yghe-event-hangout" title="Hangout">';
+          
             if ( isset($event['hangoutLink']) ) $output .= '<a href="' . $event['hangoutLink'] . '" title="Google+ Hangout">Google+ Hangout</a>';
             $output .= '</div>';
           }

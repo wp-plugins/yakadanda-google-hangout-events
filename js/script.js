@@ -126,7 +126,7 @@ function loadCountDown(i, startTime, selector) {
       },*/
       hoursOnly: false,
       onComplete: function( event ) {
-        $(this).html("Completed");
+        $(this).html("Ongoing");
       },
       onPause: function( event, timer ) {
         $(this).html("Pause");

@@ -32,7 +32,7 @@ class googlePlusEvents extends WP_Widget {
     $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
     
     extract( $args );
-    $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Google+ Events' ) : $instance['title'], $instance, $this->id_base );
+    $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? null : $instance['title'], $instance, $this->id_base );
     
     echo $before_widget;
     if ( ! empty( $title ) ) echo $before_title . $title . $after_title;
@@ -196,7 +196,7 @@ class googlePlusHangoutEvents extends WP_Widget {
     $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
     
     extract( $args );
-    $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Google+ Hangout Events' ) : $instance['title'], $instance, $this->id_base );
+    $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? null : $instance['title'], $instance, $this->id_base );
     
     echo $before_widget;
     if ( ! empty( $title ) ) echo $before_title . $title . $after_title;
