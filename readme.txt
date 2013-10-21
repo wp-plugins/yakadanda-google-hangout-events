@@ -53,7 +53,7 @@ To create a single event you would place in shortcode [google+events id="snlc77g
 
 = 0.2.0 =
 * Differentiated events and hangout events on shortcode
-* Fixed widget tiltle on Event widget and Hangout widget
+* Fixed widget title on Event widget and Hangout widget
 
 = 0.1.9 =
 * Upgraded Google APIs Client Library to v0.6.7
