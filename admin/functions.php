@@ -109,6 +109,7 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<li>[google+events search="free text search terms"]</li>';
   $output .= '<li>[google+events attendees="show"]</li>';
   $output .= '<li>[google+events timezone="America/Los_Angeles"]</li>';
+  $output .= '<li>[google+events countdown="true"]</li>';
   $output .= '</ul>';
   $output .= '<p><strong>Attributes</strong></p>';
   $output .= '<table class="sc_key"><tbody>';
@@ -121,6 +122,7 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<tr><td style="vertical-align: top;">search</td><td style="vertical-align: top;">=</td><td>Text search terms (string) to display events that match these terms in any field, except for extended properties</td></tr>';
   $output .= '<tr><td style="vertical-align: top;">attendees</td><td style="vertical-align: top;">=</td><td>Events can have attendees, the value can be <span>show</span>, <span>show_all</span>, or <span>hide</span>, the default value for attendees attribute is <span>hide</span></td></tr>';
   $output .= '<tr><td style="vertical-align: top;">timezone</td><td style="vertical-align: top;">=</td><td>Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at <a href="http://www.php.net/manual/en/timezones.php" target="_blank">http://www.php.net/manual/en/timezones.php</a> (string)</td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">countdown</td><td style="vertical-align: top;">=</td><td><span>true</span>, or <span>false</span>, by default countdown is <span>false</span></td></tr>';
   $output .= '<tbody></table>';
   
   return $output;

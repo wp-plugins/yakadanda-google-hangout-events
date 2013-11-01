@@ -1,7 +1,7 @@
 <?php
 /*
  * [google+events]
- * [google+events type="all" limit="6" past="8"]
+ * [google+events type="hangout" limit="6" past="8"]
  * type = all, normal, or hangout, default is all
  * limit = number of events to show, it limited to 20
  * past = number of months, to display past events in X months ago
@@ -11,6 +11,7 @@
  * search = Text search terms (string) to display events that match these terms in any field, except for extended properties
  * attendees = show, show_all, or hide, default is hide
  * timeZone = Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at http://www.php.net/manual/en/timezones.php (string)
+ * countdown = true, or false, by default countdown is false
  */
 function googleplushangoutevent_shortcode( $atts ) {
   extract( shortcode_atts( array(
@@ -22,7 +23,8 @@ function googleplushangoutevent_shortcode( $atts ) {
     'filter_out' => array(),
     'search' => null,
     'attendees' => 'hide',
-    'timezone' => null
+    'timezone' => null,
+    'countdown' => false
   ), $atts ) );
     
   if ($limit > 20) $limit = 20;
@@ -93,6 +95,11 @@ function googleplushangoutevent_shortcode( $atts ) {
           $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $guests, $attendees ) . '</div>';
         }
         
+        if ($countdown == 'true') {
+          $time = googleplushangoutevent_start_time($start_event, $used_timezone);
+          $output .= '<div id="' . uniqid() . '" class="yghe-shortcode-countdown" time="' . $time . '">' . $time . '</div>';
+        }
+        
         $output .= '</div>';
       }
       
@@ -145,6 +152,11 @@ function googleplushangoutevent_shortcode( $atts ) {
           if ( ($attendees == 'show') || ($attendees == 'show_all') ) {
             $guests = isset($event['attendees']) ? $event['attendees'] : null;
             $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $guests, $attendees ) . '</div>';
+          }
+          
+          if ( $countdown == 'true' ) {
+            $time = googleplushangoutevent_start_time( $start_event, $used_timezone );
+            $output .= '<div id="' . uniqid() . '" class="yghe-shortcode-countdown" time="' . $time . '">' . $time . '</div>';
           }
           
           $output .= '</div>';

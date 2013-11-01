@@ -85,9 +85,9 @@ Default Stylesheet
   font-size: 95%;
   margin: 1.5% 0 0;
 }
-.yghe-event .yghe-event-attendees {
+.yghe-event .yghe-event-attendees, .yghe-event .yghe-shortcode-countdown {
   clear: both;
-  font-size: 12px;
+  font-size: 90%;
 }
 .yghe-event .yghe-event-attendees p {
   margin: 1.5% 0 0;

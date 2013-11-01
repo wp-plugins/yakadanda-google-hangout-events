@@ -1,6 +1,6 @@
 jQuery(function($){
   
-  // In admin page settings
+  /* backend */
   if ( $('body').find('#google-hangout-event').length === 1 ) {
     // select themes, sizes, and styles
     var optionsFirst = new Array("title", "date", "detail", "icon", "countdown", "event_button"),
@@ -38,45 +38,36 @@ jQuery(function($){
     
   }
   
-  /* In frontend */
-  // 1st widget
-  if ( $('body').find('#ghe-1st-widget').length === 1 ) {
-    var gheStartTimes1st = $('#ghe-start-times-1st').val();
-    if (typeof gheStartTimes1st !== "undefined") {
-      startTimes1st = gheStartTimes1st.split(';');
-      for (i in startTimes1st) {
-        if ( ($('body').find('#ghe-countdown-1st-'+i).length === 1) && startTimes1st[i]) {
-          loadCountDown(i, startTimes1st[i], 'ghe-countdown-1st-');
-        }
+  /* frontend */
+  // shortcode
+  if ( $('body').find('.yghe-event').length >= 1 ) {
+    $(".yghe-shortcode-countdown").each(function() {
+      if (typeof $(this).attr('time') !== "undefined") {  
+        makeCountDown( $(this).attr('id'), $(this).attr('time') );
       }
-    }
+    });
   }
-  // 2nd widget
-  if ( $('body').find('#ghe-2nd-widget').length === 1 ) {
-    var gheStartTimes2nd = $('#ghe-start-times-2nd').val();
-    if (typeof gheStartTimes2nd !== "undefined") {
-      startTimes2nd = gheStartTimes2nd.split(';');
-      for (i in startTimes2nd) {
-        if ( ($('body').find('#ghe-countdown-2nd-'+i).length === 1) && startTimes2nd[i] ) {
-          loadCountDown(i, startTimes2nd[i], 'ghe-countdown-2nd-');
-        }
+  // widget
+  if ( ( $('body').find('#ghe-event-widget').length === 1 ) || ( $('body').find('#ghe-hangout-widget').length === 1 ) ) {
+    $(".ghe-countdown").each(function() {
+      if (typeof $(this).attr('time') !== "undefined") {  
+        makeCountDown( $(this).attr('id'), $(this).attr('time') );
       }
-    }
+    });
   }
   
 });
 
-function loadCountDown(i, startTime, selector) {
+function makeCountDown(selector, startTime) {
   jQuery(function($){
-    var theSelector = selector + i,
-    todayTime = new Date(),
-    beginTime = new Date(startTime),
-    diff = new Date(beginTime-todayTime),
-    diffMinutes = diff/1000/60;
-    diffHours = diff/1000/60/60;
-    diffDays = diff/1000/60/60/24;
-    diffMonths = diff/2628000000,
-    diffYears = diffMonths/12;
+    var todayTime = new Date(),
+      beginTime = new Date(startTime),
+      diff = new Date(beginTime-todayTime),
+      diffMinutes = diff/1000/60;
+      diffHours = diff/1000/60/60;
+      diffDays = diff/1000/60/60/24;
+      diffMonths = diff/2628000000,
+      diffYears = diffMonths/12;
     
     minutes = hours = days = months = years = '';
     if (diffMinutes >=1) {
@@ -105,7 +96,7 @@ function loadCountDown(i, startTime, selector) {
       years = '%y<span>&nbsp;'+text+'</span><em>|</em>';
     }
     
-    $("#"+theSelector).countdown({
+    $("#"+selector).countdown({
       htmlTemplate: years + months + days + hours + minutes + "%s<span>&nbsp;Seconds</span>",
       date: startTime,
       yearsAndMonths: true,
@@ -126,7 +117,7 @@ function loadCountDown(i, startTime, selector) {
       },*/
       hoursOnly: false,
       onComplete: function( event ) {
-        $(this).html("Ongoing");
+        $(this).html("Completed");
       },
       onPause: function( event, timer ) {
         $(this).html("Pause");
