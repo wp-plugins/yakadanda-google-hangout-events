@@ -48,6 +48,8 @@ To create a single event you would place in shortcode [google+events id="snlc77g
 
 == Screenshots ==
 
+1. Shortcode
+2. Widget
 
 == Changelog ==
 
