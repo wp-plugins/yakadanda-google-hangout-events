@@ -62,10 +62,10 @@ class googlePlusEvent extends WP_Widget {
               
               $time = googleplushangoutevent_start_time($start_event, $timezone);
           ?>
-            <div class="ghe-vessel">
-              <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
+            <div itemscope itemtype="http://data-vocabulary.org/Event" class="ghe-vessel">
+              <h4 itemprop="summary" class="ghe-title"><?php echo $event['summary']; ?></h4>
               <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, $timezone, 'widget'); ?></div>
-              <div class="ghe-detail"><?php echo isset($event['description']) ? nl2br( $event['description'] ) : null; ?></div>
+              <div itemprop="description" class="ghe-detail"><?php echo isset($event['description']) ? nl2br( $event['description'] ) : null; ?></div>
               
               <ul class="ghe-icons">
                 <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Event</a></li>
@@ -75,7 +75,7 @@ class googlePlusEvent extends WP_Widget {
                 <div id="<?php echo uniqid(); ?>" class="ghe-countdown" time="<?php echo $time; ?>"><?php echo $time; ?></div>
               <?php endif; ?>
               
-              <div class="ghe-button"><a href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
+              <div class="ghe-button"><a itemprop="url" href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
             </div>
             
             <?php if ( ($countdown == 'first') && ($i==0) ) $is_countdown = false; ?>
@@ -230,10 +230,10 @@ class googlePlusHangout extends WP_Widget {
               
               $onair = googleplushangoutevent_onair($event['start']['dateTime'], $event['end']['dateTime']);
             ?>
-            <div class="ghe-vessel">
-              <h4 class="ghe-title"><?php echo $event['summary']; ?></h4>
+            <div itemscope itemtype="http://data-vocabulary.org/Event" class="ghe-vessel">
+              <h4 itemprop="summary" class="ghe-title"><?php echo $event['summary']; ?></h4>
               <div class="ghe-time"><?php echo googleplushangoutevent_time($start_event, $end_event, $timezone, 'widget'); ?></div>
-              <div class="ghe-detail"><?php echo nl2br( $event['description'] ); ?></div>
+              <div itemprop="description" class="ghe-detail"><?php echo nl2br( $event['description'] ); ?></div>
               
               <ul class="ghe-icons">
                 <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Event</a></li>
@@ -247,7 +247,7 @@ class googlePlusHangout extends WP_Widget {
                 <div id="<?php echo uniqid(); ?>" class="ghe-countdown" time="<?php echo $time; ?>"><?php echo $time; ?></div>
               <?php endif; ?>
               
-              <div class="ghe-button"><a href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
+              <div class="ghe-button"><a itemprop="url" href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
             </div>
             
             <?php if ( ($countdown == 'first') && ($i==0) ) $is_countdown = false; ?>
