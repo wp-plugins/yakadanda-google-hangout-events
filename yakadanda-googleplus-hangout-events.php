@@ -3,7 +3,7 @@
 Plugin Name: Yakadanda Google+ Hangout Events
 Plugin URI: http://www.yakadanda.com/plugins/yakadanda-google-hangout-events/
 Description: A countdown function to time of the Google+ Hangout Events.
-Version: 0.2.2
+Version: 0.2.3
 Author: Peter Ricci
 Author URI: http://www.yakadanda.com/
 License: GPL2
@@ -25,11 +25,34 @@ function googleplushangoutevent_deactivate() {
 }
 register_deactivation_hook( __FILE__, 'googleplushangoutevent_deactivate' );
 
-if( !defined('GPLUS_HANGOUT_EVENTS_VER') ) { define('GPLUS_HANGOUT_EVENTS_VER', '0.2.2'); }
-if( !defined('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR') ) { define('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR', plugin_dir_path(__FILE__) ); }
-if( !defined('GPLUS_HANGOUT_EVENTS_PLUGIN_URL') ) { define('GPLUS_HANGOUT_EVENTS_PLUGIN_URL', plugins_url(null, __FILE__) ); }
-if( !defined('GPLUS_HANGOUT_EVENTS_THEME_DIR') ) { define('GPLUS_HANGOUT_EVENTS_THEME_DIR', get_stylesheet_directory() ); }
-if( !defined('GPLUS_HANGOUT_EVENTS_THEME_URL') ) { define('GPLUS_HANGOUT_EVENTS_THEME_URL', get_stylesheet_directory_uri() ); }
+if( ! defined('GPLUS_HANGOUT_EVENTS_VER') ) define('GPLUS_HANGOUT_EVENTS_VER', '0.2.3');
+if( ! defined('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR') ) define('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR', plugin_dir_path(__FILE__) );
+if( ! defined('GPLUS_HANGOUT_EVENTS_PLUGIN_URL') ) define('GPLUS_HANGOUT_EVENTS_PLUGIN_URL', plugins_url(null, __FILE__) );
+if( ! defined('GPLUS_HANGOUT_EVENTS_THEME_DIR') ) define('GPLUS_HANGOUT_EVENTS_THEME_DIR', get_stylesheet_directory() );
+if( ! defined('GPLUS_HANGOUT_EVENTS_THEME_URL') ) define('GPLUS_HANGOUT_EVENTS_THEME_URL', get_stylesheet_directory_uri() );
+
+// Store plugin version
+if ( ! get_option('yakadanda_googleplus_hangout_event_version') ) add_option('yakadanda_googleplus_hangout_event_version', GPLUS_HANGOUT_EVENTS_VER);
+
+// Upgrade
+if ( GPLUS_HANGOUT_EVENTS_VER != get_option('yakadanda_googleplus_hangout_event_version') ) {
+  update_option( 'yakadanda_googleplus_hangout_event_version', GPLUS_HANGOUT_EVENTS_VER );
+  
+}
+
+add_filter('plugin_action_links', 'googleplushangoutevent_action_links', 10, 2);
+function googleplushangoutevent_action_links($links, $file) {
+  static $googleplus_hangout_events;
+  
+  if (!$googleplus_hangout_events) $googleplus_hangout_events = plugin_basename(__FILE__);
+  
+  if ($file == $googleplus_hangout_events) {
+    $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/options-general.php?page=googleplus-hangout-events">Settings</a>';
+    array_unshift($links, $settings_link);
+  }
+  
+  return $links;
+}
 
 // Register scripts & styles
 add_action( 'init', 'googleplushangoutevent_register' );

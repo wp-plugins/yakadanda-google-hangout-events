@@ -2,6 +2,22 @@
 /*
  * Functions for Google Hangout Event plugin in Admin area
  */
+require_once( dirname( __FILE__ ) . '/../src/Google_Client.php');
+require_once( dirname( __FILE__ ) . '/../src/contrib/Google_CalendarService.php');
+
+function googleplushangoutevent_callback($buffer) {
+  return $buffer;
+}
+
+add_action('init', 'googleplushangoutevent_add_ob_start');
+function googleplushangoutevent_add_ob_start() {
+  ob_start("googleplushangoutevent_callback");
+}
+
+add_action('wp_footer', 'googleplushangoutevent_flush_ob_end');
+function googleplushangoutevent_flush_ob_end() {
+  ob_end_flush();
+}
 
 // Register menu page
 add_action('admin_menu', 'googleplushangoutevent_register_menu_page');
@@ -20,12 +36,123 @@ function googleplushangoutevent_page() {
   if (!current_user_can('manage_options'))
     wp_die( __('You do not have sufficient permissions to access this page.') );
   
+  $message = null;
+  
+  /* postData */
+  if( isset($_POST['calendar_id']) && isset($_POST['api_key']) && isset($_POST['client_id']) && isset($_POST['client_secret']) ) {
+    $value = array(
+      'calendar_id' => $_POST['calendar_id'],
+      'api_key' => $_POST['api_key'],
+      'client_id' => $_POST['client_id'],
+      'client_secret' => $_POST['client_secret'],
+      'widget_border' => $_POST['widget_border'],
+      'widget_background' => $_POST['widget_background'],
+      'title_color' => $_POST['title_color'],
+      'title_theme' => $_POST['title_theme'],
+      'title_size' => $_POST['title_size'],
+      'title_style' => $_POST['title_style'],
+      'date_color' => $_POST['date_color'],
+      'date_theme' => $_POST['date_theme'],
+      'date_size' => $_POST['date_size'],
+      'date_style' => $_POST['date_style'],
+      'detail_color' => $_POST['detail_color'],
+      'detail_theme' => $_POST['detail_theme'],
+      'detail_size' => $_POST['detail_size'],
+      'detail_style' => $_POST['detail_style'],
+      'icon_border' => $_POST['icon_border'],
+      'icon_background' => $_POST['icon_background'],
+      'icon_color' => $_POST['icon_color'],
+      'icon_theme' => $_POST['icon_theme'],
+      'icon_size' => $_POST['icon_size'],
+      'icon_style' => $_POST['icon_style'],
+      'countdown_background' => $_POST['countdown_background'],
+      'countdown_color' => $_POST['countdown_color'],
+      'countdown_theme' => $_POST['countdown_theme'],
+      'countdown_size' => $_POST['countdown_size'],
+      'countdown_style' => $_POST['countdown_style'],
+      'event_button_background' => $_POST['event_button_background'],
+      'event_button_hover' => $_POST['event_button_hover'],
+      'event_button_color' => $_POST['event_button_color'],
+      'event_button_theme' => $_POST['event_button_theme'],
+      'event_button_size' => $_POST['event_button_size'],
+      'event_button_style' => $_POST['event_button_style']
+    );
+    
+    $option = 'yakadanda_googleplus_hangout_event_options';
+    update_option( $option, $value );
+    $message = array('class' => 'updated', 'msg' => 'Settings updated.');
+    
+    $data = get_option( 'yakadanda_googleplus_hangout_event_options' );
+    $token = get_option('yakadanda_googleplus_hangout_event_access_token');
+    
+    if ( ($data['api_key'] != $_POST['api_key']) || ($data['client_id'] != $_POST['client_id']) || ($data['client_secret'] != $_POST['client_secret']) || !$token ) {
+      $client = new Google_Client();
+      $client->setApplicationName("Yakadanda GooglePlus Hangout Event");
+      
+      // Visit https://code.google.com/apis/console?api=calendar to generate your
+      // client id, client secret, and to register your redirect uri.
+      $client->setClientId( $_POST['client_id'] );
+      $client->setClientSecret( $_POST['client_secret'] );
+      $client->setRedirectUri( admin_url('options-general.php?page=googleplus-hangout-events') );
+      $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
+      $client->setDeveloperKey( $_POST['api_key'] );
+      
+      // make null the token from database
+      $option = 'yakadanda_googleplus_hangout_event_access_token';
+      $value = null;
+      update_option( $option, $value );
+      
+      wp_redirect( $client->createAuthUrl() ); exit;
+    }
+  }
+  /* endPostData*/
+  
+  /* OAuth2Callback */
+  if (isset($_GET['code'])) {
+    $data = get_option('yakadanda_googleplus_hangout_event_options');
+    
+    $client = new Google_Client();
+    $client->setApplicationName("Yakadanda GooglePlus Hangout Event");
+    
+    // Visit https://code.google.com/apis/console?api=calendar to generate your
+    // client id, client secret, and to register your redirect uri.
+    $client->setClientId( $data['client_id'] );
+    $client->setClientSecret( $data['client_secret'] );
+    $client->setRedirectUri( admin_url('options-general.php?page=googleplus-hangout-events') );
+    $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
+    $client->setDeveloperKey( $data['api_key'] );
+    
+    $service = new Google_CalendarService($client);
+    
+    $client->authenticate($_GET['code']);
+    $option = 'yakadanda_googleplus_hangout_event_access_token';
+    
+    $client->setAccessToken($client->getAccessToken());
+    
+    $calendar_list = googleplushangoutevent_calendar_list($service);
+    $calendar_ids = array();
+    
+    foreach ( $calendar_list as $calendar) $calendar_ids[] = $calendar['id'];
+    
+    $is_calendar_id = in_array($data['calendar_id'], $calendar_ids);
+    
+    if ($is_calendar_id) {
+      update_option( $option, $client->getAccessToken() );
+      $message = maybe_serialize(array('cookie' => 1, 'class' => 'updated', 'msg' => 'Connection to Google API succeeded.'));
+    } else {
+      $message = maybe_serialize(array('cookie' => 1, 'class' => 'error', 'msg' => 'Please login as ' . $data['calendar_id']));
+    }
+    
+    setcookie('googleplushangoutevent_message', $message, time()+1, '/');
+    
+    wp_redirect( admin_url( 'options-general.php?page=googleplus-hangout-events' ) ); exit;
+  }
+  /* endOAuth2Callback */
+  
   $data = (array) get_option( 'yakadanda_googleplus_hangout_event_options' );
   
-  $response = null;
-  if (isset($_GET["calendar_id"])) {
-    $response = array('class' => 'error', 'msg' => 'Please login as ' . $data['calendar_id']);
-  }
+  // message
+  if (isset($_COOKIE['googleplushangoutevent_message'])) $message = maybe_unserialize(stripslashes($_COOKIE['googleplushangoutevent_message']));
   
   include('page.php');
 }
@@ -57,11 +184,11 @@ function googleplushangoutevent_section_setup() {
   $output .= '<div id="setup_tabs">';
   $output .= '<ul>';
   $output .= '<li><a href="#setup-tabs-1">Google APIs Console</a></li>';
-  $output .= '<li><a href="#setup-tabs-2">Google Cloud Console</a></li>';
+  $output .= '<li><a href="#setup-tabs-2">Google Developers Console</a></li>';
   $output .= '</ul>';
   $output .= '<div id="setup-tabs-1">';
   $output .= '<ol>';
-  $output .= '<li>At <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a> create new project.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a1.png"/><br/>Enter your project name, e.g. <span>Yakadanda Google+ Hangout Events</span></li>';
+  $output .= '<li>At <a href="https://code.google.com/apis/console" target="_blank">https://code.google.com/apis/console</a> create new project.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a1.png"/><br/>Enter your project name, e.g. <code>Yakadanda Google+ Hangout Events</code></li>';
   $output .= '<li>Turn on Calendar API service.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a2.png"/><br/><br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a3.png"/></li>';
   $output .= '<li>On API Access menu of your project, create an OAuth 2.0 client ID.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a4.png"/></li>';
   $output .= '<li>Fill Branding Information form as you want and then click <strong>Next</strong>.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a5.png"/></li>';
@@ -69,8 +196,8 @@ function googleplushangoutevent_section_setup() {
   $output .= 'b. Select <span>http://</span> for Your site or hostname<br/>';
   $output .= 'c. Click (more options) link<br/>';
   $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a6.png"/><br/><br/>';
-  $output .= 'd. Fill Authorized Redirect URIs textarea with <span>' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php</span><br/>';
-  $output .= 'e. Fill Authorized JavaScript Origins textarea with <span>' . home_url() . '</span><br/>';
+  $output .= 'd. Fill Authorized Redirect URIs textarea with <code>' . admin_url('options-general.php?page=googleplus-hangout-events') . '</code><br/>';
+  $output .= 'e. Fill Authorized JavaScript Origins textarea with <code>' . home_url() . '</code><br/>';
   $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-a7.png"/><br/><br/>';
   $output .= 'Finally, click <strong>Create client ID</strong> button to finish.';
   $output .= '</li>';
@@ -79,15 +206,19 @@ function googleplushangoutevent_section_setup() {
   $output .= '</div>';
   $output .= '<div id="setup-tabs-2">';
   $output .= '<ol>';
-  $output .= '<li>At <a href="https://cloud.google.com/console" target="_blank">https://cloud.google.com/console</a> create new project.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b1.png"/></li>';
+  $output .= '<li>At <a href="https://cloud.google.com/console/project" target="_blank">https://cloud.google.com/console/project</a> create new project.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b1.png"/></li>';
   $output .= '<li>Fill Project name textbox with your suitable information.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b2.png"/></li>';
   $output .= '<li>On Overview menu of your project, click APIs & auth menu.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b3.png"/></li>';
   $output .= '<li>Turn on Calendar API.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b4.png"/></li>';
-  $output .= '<li>On Registered apps menu, please register new application by click REGISTER APP button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b5.png"/></li>';
-  $output .= '<li>Fill Name textbox, and choose <span>Web Application</span> as a Platform.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b6.png"/></li>';
-  $output .= '<li>On your app web application click OAuth 2.0 Client ID for setup and to get Client ID and Client Secret. And click Server Key to get Api Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b7.png"/></li>';
-  $output .= '<li>Setup OAuth 2.0 Client ID.<br/><br/>a. Fill WEB ORIGIN textbox with <span>' . home_url() . '</span><br/> b. And REDIRECT URI textbox with <span>' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php</span><br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b8.png"/></li>';
-  $output .= '<li>Your API Key on Server Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b9.png"/></li>';
+  $output .= '<li>On Credentials menu, create new client ID.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b5.png"/></li>';
+  $output .= '<li>Setup Create Client ID form.<br/><br/>a. Choose <span>Web application</span> for Application type<br/>';
+  $output .= 'b. Fill Authorized Javascript origins with <code>' . home_url() . '</code><br/>';
+  $output .= 'c. Fill Authorized redirect URI with <code>' . admin_url('options-general.php?page=googleplus-hangout-events') . '</code><br/>';
+  $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b6.png"/></li>';
+  $output .= '<li>Still on Credentials menu, create new key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b7.png"/></li>';
+  $output .= '<li>Click Server key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b8.png"/></li>';
+  $output .= '<li>Leave the textarea blank to make any IP allowed.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b9.png"/></li>';
+  $output .= '<li>Congratulation now you have Client ID, Client secret, and API key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-b10.png"/></li>';
   $output .= '</ol>';
   $output .= '</div>';
   $output .= '</div>';
@@ -98,18 +229,18 @@ function googleplushangoutevent_section_setup() {
 function googleplushangoutevent_section_shortcode() {
   $output = '<p><strong>Shortcode Examples</strong></p>';
   $output .= '<ul class="sc_examples">';
-  $output .= '<li>[google+events]</li>';
-  $output .= '<li>[google+events type="hangout"]</li>';
-  $output .= '<li>[google+events limit="3"]</li>';
-  $output .= '<li>[google+events past="2"]</li>';
-  $output .= '<li>[google+events author="all"]</li>';
-  $output .= '<li>[google+events limit="5" type="normal" past="1" author="all"]</li>';
-  $output .= '<li>[google+events id="xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>';
-  $output .= '<li>[google+events filter_out="xxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxx"]</li>';
-  $output .= '<li>[google+events search="free text search terms"]</li>';
-  $output .= '<li>[google+events attendees="show"]</li>';
-  $output .= '<li>[google+events timezone="America/Los_Angeles"]</li>';
-  $output .= '<li>[google+events countdown="true"]</li>';
+  $output .= '<li><code>[google+events]</code></li>';
+  $output .= '<li><code>[google+events type="hangout"]</code></li>';
+  $output .= '<li><code>[google+events limit="3"]</code></li>';
+  $output .= '<li><code>[google+events past="2"]</code></li>';
+  $output .= '<li><code>[google+events author="all"]</code></li>';
+  $output .= '<li><code>[google+events limit="5" type="normal" past="1" author="all"]</code></li>';
+  $output .= '<li><code>[google+events id="xxxxxxxxxxxxxxxxxxxxxxxxxx"]</code></li>';
+  $output .= '<li><code>[google+events filter_out="xxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxx"]</code></li>';
+  $output .= '<li><code>[google+events search="free text search terms"]</code></li>';
+  $output .= '<li><code>[google+events attendees="show"]</code></li>';
+  $output .= '<li><code>[google+events timezone="America/Los_Angeles"]</code></li>';
+  $output .= '<li><code>[google+events countdown="true"]</code></li>';
   $output .= '</ul>';
   $output .= '<p><strong>Attributes</strong></p>';
   $output .= '<table class="sc_key"><tbody>';
@@ -117,7 +248,7 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<tr><td style="vertical-align: top;">limit</td><td style="vertical-align: top;">=</td><td>number of events to display (maximum is <span>20</span>)</td></tr>';
   $output .= '<tr><td style="vertical-align: top;">past</td><td style="vertical-align: top;">=</td><td>number of months to display past events in <span>X</span> months ago, by default past is false</td></tr>';
   $output .= '<tr><td style="vertical-align: top;">author</td><td style="vertical-align: top;">=</td><td><span>self</span>, or <span>all</span>, by default author is <span>all</span></td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">id</td><td style="vertical-align: top;">=</td><td>Event identifier (string). Single Event Example: <a href="https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so" target="_blank">https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u></a> To create a single event you would place in shortcode <span>[google+events id="snlc77gi4v519jom5gb28217so"]</span></td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">id</td><td style="vertical-align: top;">=</td><td>Event identifier (string). Single Event Example: <a href="https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so" target="_blank">https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u></a> To create a single event you would place in shortcode <code>[google+events id="snlc77gi4v519jom5gb28217so"]</code></td></tr>';
   $output .= '<tr><td style="vertical-align: top;">filter_out</td><td style="vertical-align: top;">=</td><td>Filter out certain events by event identifiers, seperated by comma</td></tr>';
   $output .= '<tr><td style="vertical-align: top;">search</td><td style="vertical-align: top;">=</td><td>Text search terms (string) to display events that match these terms in any field, except for extended properties</td></tr>';
   $output .= '<tr><td style="vertical-align: top;">attendees</td><td style="vertical-align: top;">=</td><td>Events can have attendees, the value can be <span>show</span>, <span>show_all</span>, or <span>hide</span>, the default value for attendees attribute is <span>hide</span></td></tr>';
@@ -132,7 +263,7 @@ function googleplushangoutevent_section_embedded_posts() {
   $output = '<p><strong>Adding the embedded posts</strong></p>';
   $output .= '<p>Locate the post that you want to embed on <a href="plus.google.com" target="_blank">Google+</a> and click the <img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/gplus-post-menu-icon.png" title="A downward pointing arrow that indicates the menu" alt="A downward pointing arrow that indicates the menu"/> menu icon and choose Embed post.</p>';
   $output .= '<p><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-embedded-posts-1.png"/></p>';
-  $output .= '<p>Copy the tag <span>' . htmlentities('<div class="g-post" data-href="https://plus.google.com/116442957294662581658/posts/9Mu57w1iBFj"></div>') . '</span> to post or page.</p>';
+  $output .= '<p>Copy the tag <code>' . htmlentities('<div class="g-post" data-href="https://plus.google.com/116442957294662581658/posts/9Mu57w1iBFj"></div>') . '</code> to post or page.</p>';
   $output .= '<p><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/images/manual-embedded-posts-2.png"/></p>';
   
   $output .= '<p>For more detail you can look at <a href="https://developers.google.com/+/web/embedded-post/" target="_blank">https://developers.google.com/+/web/embedded-post/</a>.</p>';
@@ -231,7 +362,7 @@ function googleplushangoutevent_google_fonts() {
       $data['date_theme'],
       $data['detail_theme'],
       $data['countdown_theme']
-  );
+    );
   
   $unique_fonts = array_unique($fonts);
   $defaultfonts = array('Arial', 'Arial Black', 'Book Antiqua', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Lucida Sans Unicode', 'Palatino Linotype', 'Times New Roman', 'Tahoma', 'Verdana');
@@ -260,4 +391,49 @@ function googleplushangoutevent_google_fonts() {
   }
   
   return $output;
+}
+
+if (!get_option( 'yakadanda_googleplus_hangout_event_ignore_notice' )) add_action('admin_notices', 'googleplushangoutevent_admin_notice');
+function googleplushangoutevent_admin_notice() {
+  $url = basename($_SERVER['PHP_SELF']) . "?" . $_SERVER['QUERY_STRING'];
+  $data = get_option('yakadanda_googleplus_hangout_event_options');
+  
+  if ( ($url == 'options-general.php?page=googleplus-hangout-events') && $data ) {
+    ?>
+      <div class="updated googleplushangoutevent-notice">
+        <p><a id="googleplushangoutevent-dismiss" href="#">Close</a></p>
+        <p>Since 0.2.3, Redirect URI changed to <code><?php echo admin_url('options-general.php?page=googleplus-hangout-events'); ?></code>. You can change your Redirect URI at <a href="https://code.google.com/apis/console" target="_blank">Google APIs Console</a> or <a href="https://cloud.google.com/console" target="_blank">Google Cloud Console</a>. Ignore this notice if this the first time you're using this plugin. Thank you.</p>
+      </div>
+    <?php
+  }
+}
+
+add_action('wp_ajax_googleplushangoutevent_dismiss', 'googleplushangoutevent_dismiss_callback');
+function googleplushangoutevent_dismiss_callback() {
+  update_option('yakadanda_googleplus_hangout_event_ignore_notice', 1);
+  die();
+}
+
+add_action('wp_ajax_googleplushangoutevent_logout', 'googleplushangoutevent_logout_callback');
+function googleplushangoutevent_logout_callback() {
+  $data = get_option('yakadanda_googleplus_hangout_event_options');
+  
+  $client = new Google_Client();
+  $client->setApplicationName("Yakadanda GooglePlus Hangout Event");
+  
+  // Visit https://code.google.com/apis/console?api=calendar to generate your
+  // client id, client secret, and to register your redirect uri.
+  $client->setClientId( $data['client_id'] );
+  $client->setClientSecret( $data['client_secret'] );
+  $client->setRedirectUri( admin_url('options-general.php?page=googleplus-hangout-events') );
+  $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
+  $client->setDeveloperKey( $data['api_key'] );
+  
+  $client->revokeToken();
+  
+  $option = 'yakadanda_googleplus_hangout_event_access_token';
+  $value = null;
+  update_option( $option, $value );
+  
+  die();
 }

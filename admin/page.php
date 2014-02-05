@@ -1,11 +1,11 @@
 <div id="google-hangout-event" class="wrap">
   <div id="icon-edit" class="icon32 icon32-posts-quote"><br></div><h2>Google+ Hangout Events</h2>
-  <?php if ($response): ?>
-    <div id="message" class="<?php echo $response['class']; ?>">
-      <p><?php echo $response['msg']; ?></p>
+  <?php if ($message): ?>
+    <div class="<?php echo $message['class']; ?>">
+      <p><?php echo $message['msg']; ?></p>
     </div>
-  <?php endif; ?>
-  <form method="post" action="<?php echo GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/admin/posteddata.php'; ?>">
+  <?php if (isset($message['cookie'])) setcookie('googleplushangoutevent_message', null, time()-1, '/'); endif; ?>
+  <form method="post" action="">
     <p>Visit <a href="https://code.google.com/apis/console" target="_blank">Google APIs Console</a> or <a href="https://cloud.google.com/console" target="_blank">Google Cloud Console</a> to get your api key, client id, and client secret. For more details see <a id="googleplushangoutevent-help-tab" href="#">Setup section</a> on Help tab above.</p>
     <table class="form-table">
       <tr valign="top">
@@ -33,7 +33,7 @@
       <tr valign="top">
         <th scope="row"><label for="widget_border"><?php _e('Widget Border') ?></label></th>
         <td><input name="widget_border" type="text" id="event_border" value="<?php echo isset($data['widget_border']) ? $data['widget_border'] : '#D2D2D2'; ?>" class="regular-text colorwheel" /></td>
-        <td rowspan="12"><div id="picker"></div></td>
+        <td rowspan="13"><div id="picker"></div></td>
       </tr>
       <tr valign="top">
         <th scope="row"><label for="widget_background"><?php _e('Widget Background') ?></label></th>
@@ -148,7 +148,7 @@
     <p class="submit">
       <?php if ( get_option('yakadanda_googleplus_hangout_event_access_token') ): ?>
         <input id="submit" class="button-primary" type="submit" value="Save Changes" name="submit">&nbsp;
-        <a href="<?php echo GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/admin/posteddata.php?logout=1'; ?>" class="button-primary">Logout</a>
+        <a id="googleplushangoutevent-logout" href="#" class="button-primary">Logout</a>
       <?php else: ?>
         <input id="submit" class="button-primary" type="submit" value="Save and Connect" name="submit">
       <?php endif; ?>

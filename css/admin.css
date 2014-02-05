@@ -1,14 +1,15 @@
 .settings_page_googleplus-hangout-events .help-tab-content ul.sc_examples li {
   list-style: none;
   margin-left: 0;
-  font-family:"Courier New", Courier, monospace;
 }
 .settings_page_googleplus-hangout-events .sc_key a {
   text-decoration:none;
 }
+.settings_page_googleplus-hangout-events .help-tab-content ul.sc_examples li,
 .settings_page_googleplus-hangout-events .sc_key span,
 #tab-panel-googleplushangoutevent-setup ol li span,
-#tab-panel-googleplushangoutevent-embedded-posts p span {
+#tab-panel-googleplushangoutevent-embedded-posts p span,
+.googleplushangoutevent-notice p span {
   font-family:"Courier New", Courier, monospace;
 }
 
@@ -89,4 +90,8 @@
 .settings_page_googleplus-hangout-events #setup_tabs .ui-tabs-nav .ui-state-active a {
   color: #000;
   font-weight: bold;
+}
+
+.googleplushangoutevent-notice p:first-child {
+  text-align: right;
 }

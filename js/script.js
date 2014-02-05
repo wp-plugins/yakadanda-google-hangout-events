@@ -36,7 +36,31 @@ jQuery(function($){
     
     $( "#setup_tabs" ).tabs();
     
+    // close notice
+    $('#googleplushangoutevent-dismiss').click(function(e) {
+      var data = {
+          action: 'googleplushangoutevent_dismiss'
+        };
+      $.post(ajax_object.ajax_url, data, function(response) {
+        $('.googleplushangoutevent-notice').remove();
+      });
+      
+      e.preventDefault();
+    });
+    
+    // logout
+    $('#googleplushangoutevent-logout').click(function(e) {
+      var data = {
+        action: 'googleplushangoutevent_logout'
+      };
+      $.post(ajax_object.ajax_url, data, function(response) {
+        location.reload();
+      });
+      e.preventDefault();
+    });
+    
   }
+  /* endBackend */
   
   /* frontend */
   // shortcode
@@ -55,6 +79,7 @@ jQuery(function($){
       }
     });
   }
+  /* endFrontend */
   
 });
 
