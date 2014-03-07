@@ -148,10 +148,14 @@
     <p class="submit">
       <?php if ( get_option('yakadanda_googleplus_hangout_event_access_token') ): ?>
         <input id="submit" class="button-primary" type="submit" value="Save Changes" name="submit">&nbsp;
-        <a id="googleplushangoutevent-logout" href="#" class="button-primary">Logout</a>
+        <a id="googleplushangoutevent-logout" href="#" class="button-primary">Logout</a>&nbsp;
       <?php else: ?>
-        <input id="submit" class="button-primary" type="submit" value="Save and Connect" name="submit">
+        <input id="submit" class="button-primary" type="submit" value="Save and Connect" name="submit">&nbsp;
       <?php endif; ?>
+        <a id="googleplushangoutevent-restore-settings" href="#" class="button-primary">Reset</a>
     </p>
   </form>
+</div>
+<div id="googleplushangoutevent-dialog-confirm" title="Confirmation">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These will also disconnect from Google API if connected. Are you sure?</p>
 </div>

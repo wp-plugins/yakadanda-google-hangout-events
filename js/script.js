@@ -58,7 +58,34 @@ jQuery(function($){
       });
       e.preventDefault();
     });
-    
+    // reset settings
+    $('#googleplushangoutevent-restore-settings').click(function(e){
+      $('#googleplushangoutevent-dialog-confirm').dialog('open');
+      e.preventDefault();
+    });
+    // Confirmation dialog
+    $("#googleplushangoutevent-dialog-confirm").dialog({
+      autoOpen: false,
+      resizable: false,
+      draggable: false,
+      height: 200,
+      width: 300,
+      modal: true,
+      buttons: {
+        "OK": function() {
+          $(this).dialog("close");
+          var data = {
+            action: 'googleplushangoutevent_restore_settings'
+          };
+          $.post(ajax_object.ajax_url, data, function(response) {
+            window.location.replace(response);
+          });
+        },
+        Cancel: function() {
+          $(this).dialog("close");
+        }
+      }
+    });
   }
   /* endBackend */
   

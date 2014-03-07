@@ -2,8 +2,10 @@
 /*
  * Functions for Google Hangout Event plugin in Admin area
  */
-require_once( dirname( __FILE__ ) . '/../src/Google_Client.php');
-require_once( dirname( __FILE__ ) . '/../src/contrib/Google_CalendarService.php');
+function googleplushangoutevent_google_lib() {
+  require_once( dirname( __FILE__ ) . '/../src/Google_Client.php');
+  require_once( dirname( __FILE__ ) . '/../src/contrib/Google_CalendarService.php');
+}
 
 function googleplushangoutevent_callback($buffer) {
   return $buffer;
@@ -19,14 +21,15 @@ function googleplushangoutevent_flush_ob_end() {
   ob_end_flush();
 }
 
+function googleplushangoutevent_get_page() {
+  $requet_uri = str_replace('/wp-admin/', '', $_SERVER['REQUEST_URI']);
+  
+  return ($requet_uri) ? $requet_uri : 'index.php';
+}
+
 // Register menu page
 add_action('admin_menu', 'googleplushangoutevent_register_menu_page');
 function googleplushangoutevent_register_menu_page() {
-  // Call stylesheets
-  add_action( 'admin_enqueue_scripts', 'googleplushangoutevent_admin_enqueue_styles' );
-  // Call javascripts
-  add_action( 'admin_enqueue_scripts', 'googleplushangoutevent_admin_enqueue_scripts' );
-  
   $settings_page = add_submenu_page( 'options-general.php', 'Google+ Hangout Events', 'Google+ Hangout Events', 'manage_options', 'googleplus-hangout-events', 'googleplushangoutevent_page' );
   
   add_action( 'load-' . $settings_page, 'googleplushangoutevent_admin_add_help_tab' );
@@ -40,6 +43,9 @@ function googleplushangoutevent_page() {
   
   /* postData */
   if( isset($_POST['calendar_id']) && isset($_POST['api_key']) && isset($_POST['client_id']) && isset($_POST['client_secret']) ) {
+    $data = get_option( 'yakadanda_googleplus_hangout_event_options' );
+    $token = get_option('yakadanda_googleplus_hangout_event_access_token');
+    
     $value = array(
       'calendar_id' => $_POST['calendar_id'],
       'api_key' => $_POST['api_key'],
@@ -82,10 +88,10 @@ function googleplushangoutevent_page() {
     update_option( $option, $value );
     $message = array('class' => 'updated', 'msg' => 'Settings updated.');
     
-    $data = get_option( 'yakadanda_googleplus_hangout_event_options' );
-    $token = get_option('yakadanda_googleplus_hangout_event_access_token');
-    
     if ( ($data['api_key'] != $_POST['api_key']) || ($data['client_id'] != $_POST['client_id']) || ($data['client_secret'] != $_POST['client_secret']) || !$token ) {
+      // load google library
+      googleplushangoutevent_google_lib();
+      
       $client = new Google_Client();
       $client->setApplicationName("Yakadanda GooglePlus Hangout Event");
       
@@ -109,6 +115,9 @@ function googleplushangoutevent_page() {
   
   /* OAuth2Callback */
   if (isset($_GET['code'])) {
+    // load google library
+    googleplushangoutevent_google_lib();
+    
     $data = get_option('yakadanda_googleplus_hangout_event_options');
     
     $client = new Google_Client();
@@ -416,6 +425,9 @@ function googleplushangoutevent_dismiss_callback() {
 
 add_action('wp_ajax_googleplushangoutevent_logout', 'googleplushangoutevent_logout_callback');
 function googleplushangoutevent_logout_callback() {
+  // load google library
+  googleplushangoutevent_google_lib();
+  
   $data = get_option('yakadanda_googleplus_hangout_event_options');
   
   $client = new Google_Client();
@@ -435,5 +447,20 @@ function googleplushangoutevent_logout_callback() {
   $value = null;
   update_option( $option, $value );
   
+  $message = maybe_serialize(array('cookie' => 1, 'class' => 'updated', 'msg' => 'Disconnect.'));
+  setcookie('googleplushangoutevent_message', $message, time()+1, '/');  
+  
+  die();
+}
+
+add_action('wp_ajax_googleplushangoutevent_restore_settings', 'googleplushangoutevent_restore_settings_callback');
+function googleplushangoutevent_restore_settings_callback() {
+  update_option('yakadanda_googleplus_hangout_event_access_token', null);
+  $action = update_option('yakadanda_googleplus_hangout_event_options', null);
+  if ($action) {
+    $message = maybe_serialize(array('cookie' => 1, 'class' => 'updated', 'msg' => 'Settings restored to default settings.'));
+    setcookie('googleplushangoutevent_message', $message, time()+1, '/');
+    echo admin_url('options-general.php?page=googleplus-hangout-events');
+  }
   die();
 }
