@@ -62,7 +62,7 @@ class googlePlusEvent extends WP_Widget {
                 break;
             }
             
-            if ($instance['src'] != 'all') $src_filter = googleplushangoutevent_src_filter($instance['src'], $event['htmlLink']);
+            if ( ($instance['src'] != 'all') && ($instance['src'] != null) ) $src_filter = googleplushangoutevent_src_filter($instance['src'], $event['htmlLink']);
             
             if ( !$hangoutlink && $creator && ($visibility != 'private') && $src_filter ):
               $timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
