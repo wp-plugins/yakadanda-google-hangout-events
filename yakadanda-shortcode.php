@@ -3,9 +3,10 @@
  * [google+events]
  * [google+events type="hangout" limit="6" past="8"]
  * type = all, normal, or hangout, default is all
+ * src = all, gcal, or gplus, by default source is all
  * limit = number of events to show, it limited to 20
  * past = number of months, to display past events in X months ago
- * author = self, or all, default is all
+ * author = self, other, or all, default is all
  * id = Event identifier (string), e.g. https://plus.google.com/events/cXXXXX XXXXX is event identifier
  * filter_out = Filter out certain events by event identifiers, seperated by comma
  * search = Text search terms (string) to display events that match these terms in any field, except for extended properties
@@ -13,6 +14,7 @@
  * timeZone = Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at http://www.php.net/manual/en/timezones.php (string)
  * countdown = true, or false, by default countdown is false
  */
+add_shortcode( 'google+events', 'googleplushangoutevent_shortcode' );
 function googleplushangoutevent_shortcode( $atts ) {
   extract( shortcode_atts( array(
     'type' => 'all',
@@ -24,7 +26,8 @@ function googleplushangoutevent_shortcode( $atts ) {
     'search' => null,
     'attendees' => 'hide',
     'timezone' => null,
-    'countdown' => false
+    'countdown' => false,
+    'src' => 'all'
   ), $atts ) );
     
   if ($limit > 20) $limit = 20;
@@ -43,7 +46,7 @@ function googleplushangoutevent_shortcode( $atts ) {
   
   $output = null;
   $i = 0;
-  $filter = true;
+  $filter = $src_filter = true;
   $creator = 1;
   $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
   
@@ -70,10 +73,12 @@ function googleplushangoutevent_shortcode( $atts ) {
         $output .= googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
         
         $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '" itemprop="url"><span itemprop="summary">' . $event['summary'] . '</span></a></div>';
-
-        $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
-        $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
-
+        
+        $start = (array) $event["\0*\0modelData"]['start'];
+        $end = (array) $event["\0*\0modelData"]['end'];
+        $start_event = isset($start['dateTime']) ? $start['dateTime'] : $start['date'];
+        $end_event = isset($end['dateTime']) ? $end['dateTime'] : $end['date'];
+        
         $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $used_timezone, 'shortcode') . '</div>';
 
         if ( isset($event['location']) ) {
@@ -91,7 +96,7 @@ function googleplushangoutevent_shortcode( $atts ) {
         $output .= '<div itemprop="description" class="yghe-event-description">' . $description . '</div>';
         
         if ( ($attendees == 'show') || ($attendees == 'show_all') ) {
-          $guests = isset($event['attendees']) ? $event['attendees'] : null;
+          $guests = isset($event["\0*\0modelData"]['attendees']) ? $event["\0*\0modelData"]['attendees'] : null;
           $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $guests, $attendees ) . '</div>';
         }
         
@@ -111,15 +116,25 @@ function googleplushangoutevent_shortcode( $atts ) {
 
         if ($type == 'normal') $filter = !$hangoutlink;
         elseif ($type == 'hangout') $filter = $hangoutlink;
-
-        if ( $author == 'self' ) {
-          if ( isset($event['creator']['self']) )
-            $creator = $event['creator']['self'];
-          else
-            $creator = ($event['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+        
+        switch($author) {
+          case 'self':
+            if ( isset($event["\0*\0modelData"]['creator']['self']) )
+              $creator = $event["\0*\0modelData"]['creator']['self'];
+            else
+              $creator = ($event["\0*\0modelData"]['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+            break;
+          case 'other':
+            if ( isset($event["\0*\0modelData"]['creator']['self']) )
+              $creator = !$event["\0*\0modelData"]['creator']['self'];
+            else
+              $creator = ($event["\0*\0modelData"]['creator']['email'] == $data['calendar_id']) ? 0 : 1;
+            break;
         }
         
-        if ( $filter && $creator && ($visibility != 'private') && !in_array($event['id'], $filter_out) ) { $i++;
+        if ($src != 'all') $src_filter = googleplushangoutevent_src_filter($src, $event['htmlLink']);
+        
+        if ( $filter && $creator && ($visibility != 'private') && !in_array($event['id'], $filter_out) && $src_filter ) { $i++;
           $used_timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
           $used_timezone = ($timezone) ? $timezone : $used_timezone;
           
@@ -130,8 +145,10 @@ function googleplushangoutevent_shortcode( $atts ) {
           
           $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '" itemprop="url"><span itemprop="summary">' . $event['summary'] . '</span></a></div>';
           
-          $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
-          $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
+          $start = (array) $event["\0*\0modelData"]['start'];
+          $end = (array) $event["\0*\0modelData"]['end'];
+          $start_event = isset($start['dateTime']) ? $start['dateTime'] : $start['date'];
+          $end_event = isset($end['dateTime']) ? $end['dateTime'] : $end['date'];
           
           $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $used_timezone,'shortcode') . '</div>';
           
@@ -150,7 +167,7 @@ function googleplushangoutevent_shortcode( $atts ) {
           $output .= '<div itemprop="description" class="yghe-event-description">'. $description . '</div>';
           
           if ( ($attendees == 'show') || ($attendees == 'show_all') ) {
-            $guests = isset($event['attendees']) ? $event['attendees'] : null;
+            $guests = isset($event["\0*\0modelData"]['attendees']) ? $event["\0*\0modelData"]['attendees'] : null;
             $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $guests, $attendees ) . '</div>';
           }
           
@@ -182,7 +199,6 @@ function googleplushangoutevent_shortcode( $atts ) {
   
   return $output;
 }
-add_shortcode( 'google+events', 'googleplushangoutevent_shortcode' );
 
 function googleplushangoutevent_time($startdate, $finishdate, $timezone, $type) {
   $startdate = new DateTime( $startdate );
@@ -277,18 +293,18 @@ function googleplushangoutevent_timezone_abbreviations( $timezone = null ) {
 function googleplushangoutevent_organizer($event) {
   $output = null;
   
-  if ( isset($event['organizer']['id']) ) {
-    $output = '<a href="https://plus.google.com/' . $event['organizer']['id'] . '" title="Organizer">' . $event['organizer']['displayName'] . '</a> ';
+  if ( isset($event["\0*\0modelData"]['organizer']['id']) ) {
+    $output = '<a href="https://plus.google.com/' . $event["\0*\0modelData"]['organizer']['id'] . '" title="Organizer">' . $event["\0*\0modelData"]['organizer']['displayName'] . '</a> ';
   } else {
-    if ( strpos($event['organizer']['email'], '.calendar.') !== false ) {
-      $output = '<a href="mailto:' . $event['creator']['email'] . '" title="Calendar">' . $event['organizer']['displayName'] . '</a> ';
+    if ( strpos($event["\0*\0modelData"]['organizer']['email'], '.calendar.') !== false ) {
+      $output = '<a href="mailto:' . $event["\0*\0modelData"]['creator']['email'] . '" title="Calendar">' . $event["\0*\0modelData"]['organizer']['displayName'] . '</a> ';
     } else {
-      if (isset($event['organizer']['displayName'])) {
-        $output = '<a href="mailto:' . $event['organizer']['email'] . '" title="Organizer">' . $event['organizer']['displayName'] . '</a> ';
+      if (isset($event["\0*\0modelData"]['organizer']['displayName'])) {
+        $output = '<a href="mailto:' . $event["\0*\0modelData"]['organizer']['email'] . '" title="Organizer">' . $event["\0*\0modelData"]['organizer']['displayName'] . '</a> ';
       } else {
         $display_name = googleplushangoutevent_display_name( $event );
         if ( $display_name )
-          $output = '<a href="mailto:' . $event['organizer']['email'] . '" title="Coworker\'s Calendar">' . $display_name . '</a> ';
+          $output = '<a href="mailto:' . $event["\0*\0modelData"]['organizer']['email'] . '" title="Coworker\'s Calendar">' . $display_name . '</a> ';
       }
     }
   }
@@ -298,9 +314,9 @@ function googleplushangoutevent_organizer($event) {
 
 function googleplushangoutevent_display_name($event) {
   $output = null;
-  if ( isset($event['attendees']) ) {
-    foreach ( $event['attendees'] as $attendee ) {
-      if ( $attendee['email'] == $event['organizer']['email'] ) {
+  if ( isset($event["\0*\0modelData"]['attendees']) ) {
+    foreach ( $event["\0*\0modelData"]['attendees'] as $attendee ) {
+      if ( $attendee['email'] == $event["\0*\0modelData"]['organizer']['email'] ) {
         $output = ( $attendee['displayName'] ) ? $attendee['displayName'] : null;
         break;
       }
@@ -417,5 +433,22 @@ function googleplushangoutevent_location_timezone( $location=null, $time=null) {
     if ( $data->status == 'OK' ) $output = $data->timeZoneId;
   }
   
+  return $output;
+}
+
+function googleplushangoutevent_src_filter($src, $url) {
+  $output = false;
+  switch ($src) {
+    case 'gcal':
+      if (strpos($url, 'google.com/calendar/') !== false) {
+        $output = true;
+      }
+      break;
+    case 'gplus':
+      if (strpos($url, 'plus.google.com/events/') !== false) {
+        $output = true;
+      }
+      break;
+  }
   return $output;
 }

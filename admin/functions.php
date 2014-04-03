@@ -1,10 +1,8 @@
 <?php
-/*
- * Functions for Google Hangout Event plugin in Admin area
- */
 function googleplushangoutevent_google_lib() {
-  require_once( dirname( __FILE__ ) . '/../src/Google_Client.php');
-  require_once( dirname( __FILE__ ) . '/../src/contrib/Google_CalendarService.php');
+  set_include_path( dirname( __FILE__ ) . '/../src/' . PATH_SEPARATOR . get_include_path());
+  require_once('Google/Client.php');
+  require_once('Google/Service/Calendar.php');
 }
 
 function googleplushangoutevent_callback($buffer) {
@@ -100,8 +98,17 @@ function googleplushangoutevent_page() {
       $client->setClientId( $_POST['client_id'] );
       $client->setClientSecret( $_POST['client_secret'] );
       $client->setRedirectUri( admin_url('options-general.php?page=googleplus-hangout-events') );
-      $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
+      
+      $scopes = array('https://www.googleapis.com/auth/calendar');
+      
+      $client->setScopes( $scopes );
       $client->setDeveloperKey( $_POST['api_key'] );
+      
+      //http://stackoverflow.com/questions/8942340/get-refresh-token-google-api
+      //http://stackoverflow.com/questions/22268134/cant-get-an-offline-access-token-with-the-google-php-sdk-1-0-0
+      //https://developers.google.com/accounts/docs/OAuth2WebServer#offline
+      $client->setApprovalPrompt('force');
+      $client->setAccessType('offline');
       
       // make null the token from database
       $option = 'yakadanda_googleplus_hangout_event_access_token';
@@ -128,10 +135,13 @@ function googleplushangoutevent_page() {
     $client->setClientId( $data['client_id'] );
     $client->setClientSecret( $data['client_secret'] );
     $client->setRedirectUri( admin_url('options-general.php?page=googleplus-hangout-events') );
-    $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
+    
+    $scopes = array('https://www.googleapis.com/auth/calendar');
+    
+    $client->setScopes( $scopes );
     $client->setDeveloperKey( $data['api_key'] );
     
-    $service = new Google_CalendarService($client);
+    $service = new Google_Service_Calendar($client);
     
     $client->authenticate($_GET['code']);
     $option = 'yakadanda_googleplus_hangout_event_access_token';
@@ -240,6 +250,7 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<ul class="sc_examples">';
   $output .= '<li><code>[google+events]</code></li>';
   $output .= '<li><code>[google+events type="hangout"]</code></li>';
+  $output .= '<li><code>[google+events src="gplus"]</code></li>';
   $output .= '<li><code>[google+events limit="3"]</code></li>';
   $output .= '<li><code>[google+events past="2"]</code></li>';
   $output .= '<li><code>[google+events author="all"]</code></li>';
@@ -254,9 +265,10 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<p><strong>Attributes</strong></p>';
   $output .= '<table class="sc_key"><tbody>';
   $output .= '<tr><td style="vertical-align: top;">type</td><td style="vertical-align: top;">=</td><td><span>all</span>, <span>normal</span>, or <span>hangout</span>, by default type is <span>all</span></td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">src</td><td style="vertical-align: top;">=</td><td><span>all</span>, <span>gcal</span> (event from calendar), or <span>gplus</span> (event from google+), by default source is <span>all</span></td></tr>';
   $output .= '<tr><td style="vertical-align: top;">limit</td><td style="vertical-align: top;">=</td><td>number of events to display (maximum is <span>20</span>)</td></tr>';
   $output .= '<tr><td style="vertical-align: top;">past</td><td style="vertical-align: top;">=</td><td>number of months to display past events in <span>X</span> months ago, by default past is false</td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">author</td><td style="vertical-align: top;">=</td><td><span>self</span>, or <span>all</span>, by default author is <span>all</span></td></tr>';
+  $output .= '<tr><td style="vertical-align: top;">author</td><td style="vertical-align: top;">=</td><td><span>self</span>, <span>other</span>, or <span>all</span>, by default author is <span>all</span></td></tr>';
   $output .= '<tr><td style="vertical-align: top;">id</td><td style="vertical-align: top;">=</td><td>Event identifier (string). Single Event Example: <a href="https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so" target="_blank">https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u></a> To create a single event you would place in shortcode <code>[google+events id="snlc77gi4v519jom5gb28217so"]</code></td></tr>';
   $output .= '<tr><td style="vertical-align: top;">filter_out</td><td style="vertical-align: top;">=</td><td>Filter out certain events by event identifiers, seperated by comma</td></tr>';
   $output .= '<tr><td style="vertical-align: top;">search</td><td style="vertical-align: top;">=</td><td>Text search terms (string) to display events that match these terms in any field, except for extended properties</td></tr>';
@@ -438,7 +450,10 @@ function googleplushangoutevent_logout_callback() {
   $client->setClientId( $data['client_id'] );
   $client->setClientSecret( $data['client_secret'] );
   $client->setRedirectUri( admin_url('options-general.php?page=googleplus-hangout-events') );
-  $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
+  
+  $scopes = array('https://www.googleapis.com/auth/calendar');
+  
+  $client->setScopes( $scopes );
   $client->setDeveloperKey( $data['api_key'] );
   
   $client->revokeToken();
@@ -463,4 +478,145 @@ function googleplushangoutevent_restore_settings_callback() {
     echo admin_url('options-general.php?page=googleplus-hangout-events');
   }
   die();
+}
+
+function googleplushangoutevent_response( $months = null, $event_id = null, $search = null, $timezone = null ) {
+  $data = get_option('yakadanda_googleplus_hangout_event_options');
+  
+  $output = array();
+  if ($data) {
+    googleplushangoutevent_google_lib();
+    
+    $client = new Google_Client();
+    $client->setApplicationName("Yakadanda GooglePlus Hangout Event");
+    
+    // Visit https://code.google.com/apis/console?api=calendar to generate your
+    // client id, client secret, and to register your redirect uri.
+    $client->setClientId( $data['client_id'] );
+    $client->setClientSecret( $data['client_secret'] );
+    $client->setRedirectUri( GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php' );
+    
+    $scopes = array('https://www.googleapis.com/auth/calendar');
+    
+    $client->setScopes( $scopes );
+    $client->setDeveloperKey( $data['api_key'] );
+    
+    $token = get_option('yakadanda_googleplus_hangout_event_access_token');
+    
+    if ($token) {
+      $client->setAccessToken($token);
+
+      // http://stackoverflow.com/questions/11908420/trying-to-get-a-list-of-events-from-a-calendar-using-php
+      //$client->setUseObjects(true);
+
+      $service = new Google_Service_Calendar($client);
+
+      $calendar_list = googleplushangoutevent_calendar_list( $service );
+
+      // the date is today
+      $timeMin = date('c');
+
+      $args = array(
+        'maxResults' => 20,
+        'orderBy' => 'startTime',
+        'singleEvents' => true,
+        'timeMin' => $timeMin,
+        'q' => $search,
+        'timeZone' => $timezone
+      );
+
+      // Past Events
+      if ( $months ) {
+        // the today date minus by months
+        $timeMin = date('c', strtotime("-" . $months . " month", strtotime($timeMin)));
+
+        $args = array(
+          'maxResults' => 20,
+          'orderBy' => 'startTime',
+          'singleEvents' => true,
+          'timeMin' => $timeMin,
+          'timeMax' => date('c'),
+          'q' => $search,
+          'timeZone' => $timezone
+        );
+      }
+
+      if ( $event_id ) {
+        // Events get
+        $event = $service->events->get( $data['calendar_id'], $event_id );
+
+        $calendar = $service->calendars->get('primary');
+
+        $timezonelocation = null;
+        if ( isset($event['location']) ) {
+          $lat_lng = googleplushangoutevent_google_geocoding($event['location']);
+
+          if ( $lat_lng ) {
+            $time = isset( $event['start']['dateTime'] ) ? $event['start']['dateTime'] : $event['start']['date'];
+
+            $timezonelocation = googleplushangoutevent_location_timezone( $lat_lng, $time );
+          }
+        }
+
+        $the_event = array_merge( (array) $event, array( 'timeZoneCalendar' => $calendar['timeZone'] ) );
+
+        if ( $timezonelocation ) $the_event = array_merge( (array) $the_event, array( 'timeZoneLocation' => $timezonelocation ) );
+
+        if ( $timezone ) $the_event = array_merge( (array) $the_event, array( 'timeZoneRequest' => $timezone ) );
+
+        $output = $the_event;
+      } else {
+        // Events list
+        //$events = $service->events->listEvents( $data['calendar_id'], $args );
+
+        foreach ( $calendar_list as $calendar ) {
+          $events = $service->events->listEvents( $calendar['id'], $args );
+
+          if ( isset($events['error']['code']) ) {
+            $the_events = $events;
+          } else {
+            $the_events = array();
+            foreach ( $events['items'] as $event ) {
+
+              $timezonelocation = null;
+              if ( isset($event['location']) ) {
+                $lat_lng = googleplushangoutevent_google_geocoding($event['location']);
+
+                if ( $lat_lng ) {
+                  $time = isset( $event['start']['dateTime'] ) ? $event['start']['dateTime'] : $event['start']['date'];
+
+                  $timezonelocation = googleplushangoutevent_location_timezone( $lat_lng, $time );
+                }
+              }
+
+              $the_event = array_merge( (array) $event, array( 'timeZoneCalendar' => $calendar['timeZone'] ) );
+
+              if ( $timezonelocation ) $the_event = array_merge( (array) $the_event, array( 'timeZoneLocation' => $timezonelocation ) );
+
+              if ( $timezone ) $the_event = array_merge( (array) $the_event, array( 'timeZoneRequest' => $timezone ) );
+
+              $the_events[] = $the_event;
+            }
+          }
+
+          $the_events = array_filter($the_events);
+          if (!empty($the_events)) {
+            $output = array_merge((array) $output, (array) $the_events);
+          }
+
+        }
+
+        // Remove duplicate
+        if ($output) {
+          foreach ($output as $k => $v) {
+            $result[$v['id']] = $v;
+          }
+          // Reset key
+          $output = array_values($result);
+        }
+      }
+    }
+  }
+  
+  return $output;
 }

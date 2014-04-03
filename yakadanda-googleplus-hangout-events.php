@@ -3,29 +3,29 @@
 Plugin Name: Yakadanda Google+ Hangout Events
 Plugin URI: http://www.yakadanda.com/plugins/yakadanda-google-hangout-events/
 Description: A countdown function to time of the Google+ Hangout Events.
-Version: 0.2.4
+Version: 0.2.5
 Author: Peter Ricci
 Author URI: http://www.yakadanda.com/
 License: GPL2
 */
 
 /* Put setup procedures to be run when the plugin is activated in the following function */
+register_activation_hook(__FILE__, 'googleplushangoutevent_activate');
 function googleplushangoutevent_activate() {
   if (!get_option('yakadanda_googleplus_hangout_event_options'))
     add_option('yakadanda_googleplus_hangout_event_options', null, false, false);
   if (!get_option('yakadanda_googleplus_hangout_event_access_token'))
     add_option('yakadanda_googleplus_hangout_event_access_token', null, false, false);
 }
-register_activation_hook(__FILE__, 'googleplushangoutevent_activate');
 
 // On deacativation, clean up anything your component has added.
+register_deactivation_hook( __FILE__, 'googleplushangoutevent_deactivate');
 function googleplushangoutevent_deactivate() {
 	// You might want to delete any options or tables that your component created.
   
 }
-register_deactivation_hook( __FILE__, 'googleplushangoutevent_deactivate');
 
-if(!defined('GPLUS_HANGOUT_EVENTS_VER')) define('GPLUS_HANGOUT_EVENTS_VER', '0.2.4');
+if(!defined('GPLUS_HANGOUT_EVENTS_VER')) define('GPLUS_HANGOUT_EVENTS_VER', '0.2.5');
 if(!defined('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR')) define('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 if(!defined('GPLUS_HANGOUT_EVENTS_PLUGIN_URL')) define('GPLUS_HANGOUT_EVENTS_PLUGIN_URL', plugins_url(null, __FILE__));
 if(!defined('GPLUS_HANGOUT_EVENTS_THEME_DIR')) define('GPLUS_HANGOUT_EVENTS_THEME_DIR', get_stylesheet_directory());

@@ -41,24 +41,37 @@ class googlePlusEvent extends WP_Widget {
       <div id="ghe-event-widget">
         <?php if ($events && !$http_status):
           $is_countdown = ($countdown == 'none') ? false : true;
+          $src_filter = true;
         ?>
           <?php foreach ( $events as $event ):
             $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
             $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
             
-            if ( $author == 'self' ) {
-              if ( isset($event['creator']['self']) )
-                $creator = $event['creator']['self'];
-              else
-                $creator = ($event['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+            switch($author) {
+              case 'self':
+                if ( isset($event["\0*\0modelData"]['creator']['self']) )
+                  $creator = $event["\0*\0modelData"]['creator']['self'];
+                else
+                  $creator = ($event["\0*\0modelData"]['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+                break;
+              case 'other':
+                if ( isset($event["\0*\0modelData"]['creator']['self']) )
+                  $creator = !$event["\0*\0modelData"]['creator']['self'];
+                else
+                  $creator = ($event["\0*\0modelData"]['creator']['email'] == $data['calendar_id']) ? 0 : 1;
+                break;
             }
             
-            if ( !$hangoutlink && $creator && ($visibility != 'private') ): 
+            if ($instance['src'] != 'all') $src_filter = googleplushangoutevent_src_filter($instance['src'], $event['htmlLink']);
+            
+            if ( !$hangoutlink && $creator && ($visibility != 'private') && $src_filter ):
               $timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
               $timezone = ($instance['timezone']) ? $instance['timezone'] : $timezone;
               
-              $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
-              $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
+              $start = (array) $event["\0*\0modelData"]['start'];
+              $end = (array) $event["\0*\0modelData"]['end'];
+              $start_event = isset($start['dateTime']) ? $start['dateTime'] : $start['date'];
+              $end_event = isset($end['dateTime']) ? $end['dateTime'] : $end['date'];
               
               $time = googleplushangoutevent_start_time($start_event, $timezone);
           ?>
@@ -97,6 +110,7 @@ class googlePlusEvent extends WP_Widget {
     $instance = array();
     $instance['title'] = strip_tags($new_instance['title']);
     $instance['author'] = strip_tags($new_instance['author']);
+    $instance['src'] = strip_tags($new_instance['src']);
     $instance['display'] = strip_tags($new_instance['display']);
     $instance['countdown'] = strip_tags($new_instance['countdown']);
     $instance['timezone'] = strip_tags($new_instance['timezone']);
@@ -107,6 +121,7 @@ class googlePlusEvent extends WP_Widget {
   public function form( $instance ) {
     if ( isset( $instance[ 'title' ] ) ) $title = $instance[ 'title' ];
     $author = isset( $instance[ 'author' ] ) ? $instance[ 'author' ] : null;
+    $src = isset( $instance[ 'src' ] ) ? $instance[ 'src' ] : null;
     $display = isset( $instance[ 'display' ] ) ? $instance[ 'display' ] : null;
     $countdown = isset( $instance[ 'countdown' ] ) ? $instance[ 'countdown' ] : null;
     $timezone = isset( $instance[ 'timezone' ] ) ? $instance[ 'timezone' ] : null;
@@ -117,15 +132,19 @@ class googlePlusEvent extends WP_Widget {
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
-        <label title="All">
-          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( ( $author == 'all' ) || empty( $author ) ) ? 'checked="checked"' : null; ?>>
-          <span>All</span>
-        </label>
-        <br/>
-        <label title="Self">
-          <input type="radio" value="self" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( $author == 'self' ) ? 'checked="checked"' : null; ?>>
-          <span>Self</span>
-        </label>
+        <select id="<?php echo $this->get_field_id( 'author' ); ?>" name="<?php echo $this->get_field_name( 'author' ); ?>">
+          <option value="all" <?php echo ($author == 'all') ? 'selected="selected"': null; ?>>All&nbsp;</option>
+          <option value="self" <?php echo ($author == 'self') ? 'selected="selected"': null; ?>>Self&nbsp;</option>
+          <option value="other" <?php echo ($author == 'other') ? 'selected="selected"': null; ?>>Other&nbsp;</option>
+        </select>
+      </p>
+      <p>
+        <label for="<?php echo $this->get_field_id( 'src' ); ?>"><?php _e( 'Source:' ); ?></label><br/>
+        <select id="<?php echo $this->get_field_id( 'src' ); ?>" name="<?php echo $this->get_field_name( 'src' ); ?>">
+          <option value="all" <?php echo ($src == 'all') ? 'selected="selected"': null; ?>>All&nbsp;</option>
+          <option value="gcal" <?php echo ($src == 'gcal') ? 'selected="selected"': null; ?>>Google Calendar&nbsp;</option>
+          <option value="gplus" <?php echo ($src == 'gplus') ? 'selected="selected"': null; ?>>Google+&nbsp;</option>
+        </select>
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Display:' ); ?></label><br/>
@@ -212,23 +231,33 @@ class googlePlusHangout extends WP_Widget {
             $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
             $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
             
-            if ( $author == 'self' ) {
-              if ( isset($event['creator']['self']) )
-                $creator = $event['creator']['self'];
-              else
-                $creator = ($event['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+            switch($author) {
+              case 'self':
+                if ( isset($event["\0*\0modelData"]['creator']['self']) )
+                  $creator = $event["\0*\0modelData"]['creator']['self'];
+                else
+                  $creator = ($event["\0*\0modelData"]['creator']['email'] == $data['calendar_id']) ? 1 : 0;
+                break;
+              case 'other':
+                if ( isset($event["\0*\0modelData"]['creator']['self']) )
+                  $creator = !$event["\0*\0modelData"]['creator']['self'];
+                else
+                  $creator = ($event["\0*\0modelData"]['creator']['email'] == $data['calendar_id']) ? 0 : 1;
+                break;
             }
             
             if ( $hangoutlink && $creator && ($visibility != 'private') ):
               $timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
               $timezone = ($instance['timezone']) ? $instance['timezone'] : $timezone;
-            
-              $start_event = isset($event['start']['dateTime']) ? $event['start']['dateTime'] : $event['start']['date'];
-              $end_event = isset($event['end']['dateTime']) ? $event['end']['dateTime'] : $event['end']['date'];
+              
+              $start = (array) $event["\0*\0modelData"]['start'];
+              $end = (array) $event["\0*\0modelData"]['end'];
+              $start_event = isset($start['dateTime']) ? $start['dateTime'] : $start['date'];
+              $end_event = isset($end['dateTime']) ? $end['dateTime'] : $end['date'];
               
               $time = googleplushangoutevent_start_time($start_event, $timezone);
               
-              $onair = googleplushangoutevent_onair($event['start']['dateTime'], $event['end']['dateTime']);
+              $onair = googleplushangoutevent_onair($start['dateTime'], $end['dateTime']);
             ?>
             <div itemscope itemtype="http://data-vocabulary.org/Event" class="ghe-vessel">
               <h4 itemprop="summary" class="ghe-title"><?php echo $event['summary']; ?></h4>
@@ -289,15 +318,11 @@ class googlePlusHangout extends WP_Widget {
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
-        <label title="All">
-          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( ( $author == 'all' ) || empty( $author ) ) ? 'checked="checked"' : null; ?>>
-          <span>All</span>
-        </label>
-        <br/>
-        <label title="Self">
-          <input type="radio" value="self" name="<?php echo $this->get_field_name( 'author' ); ?>" <?php echo ( $author == 'self' ) ? 'checked="checked"' : null; ?>>
-          <span>Self</span>
-        </label>
+        <select id="<?php echo $this->get_field_id( 'author' ); ?>" name="<?php echo $this->get_field_name( 'author' ); ?>">
+          <option value="all" <?php echo ($author == 'all') ? 'selected="selected"': null; ?>>All&nbsp;</option>
+          <option value="self" <?php echo ($author == 'self') ? 'selected="selected"': null; ?>>Self&nbsp;</option>
+          <option value="other" <?php echo ($author == 'other') ? 'selected="selected"': null; ?>>Other&nbsp;</option>
+        </select>
       </p>
       <p>
         <label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Display:' ); ?></label><br/>
@@ -337,6 +362,7 @@ class googlePlusHangout extends WP_Widget {
   
 }/* end of googlePlusHangoutEvents class */
 
+add_action('wp_head', 'googleplushangoutevent_css');
 function googleplushangoutevent_css() {
   $data = get_option('yakadanda_googleplus_hangout_event_options');
   ?>
@@ -436,144 +462,6 @@ function googleplushangoutevent_css() {
     </style>
   <?php
 }
-add_action('wp_head', 'googleplushangoutevent_css');
-
-function googleplushangoutevent_response( $months = null, $event_id = null, $search = null, $timezone = null ) {
-  require_once( dirname( __FILE__ ) . '/src/Google_Client.php');
-  require_once( dirname( __FILE__ ) . '/src/contrib/Google_CalendarService.php');
-  
-  $data = get_option('yakadanda_googleplus_hangout_event_options');
-  
-  $client = new Google_Client();
-  $client->setApplicationName("Yakadanda GooglePlus Hangout Event");
-  
-  // Visit https://code.google.com/apis/console?api=calendar to generate your
-  // client id, client secret, and to register your redirect uri.
-  $client->setClientId( $data['client_id'] );
-  $client->setClientSecret( $data['client_secret'] );
-  $client->setRedirectUri( GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/oauth2callback.php' );
-  $client->setScopes( 'https://www.googleapis.com/auth/calendar' );
-  $client->setDeveloperKey( $data['api_key'] );
-  
-  $token = get_option('yakadanda_googleplus_hangout_event_access_token');
-  
-  $output = array();
-  if ($token) {
-    $client->setAccessToken($token);
-    
-    // http://stackoverflow.com/questions/11908420/trying-to-get-a-list-of-events-from-a-calendar-using-php
-    //$client->setUseObjects(true);
-    
-    $service = new Google_CalendarService($client);
-    
-    $calendar_list = googleplushangoutevent_calendar_list( $service );
-    
-    // the date is today
-    $timeMin = date('c');
-    
-    $args = array(
-      'maxResults' => 20,
-      'orderBy' => 'startTime',
-      'singleEvents' => true,
-      'timeMin' => $timeMin,
-      'q' => $search,
-      'timeZone' => $timezone
-    );
-    
-    // Past Events
-    if ( $months ) {
-      // the today date minus by months
-      $timeMin = date('c', strtotime("-" . $months . " month", strtotime($timeMin)));
-      
-      $args = array(
-        'maxResults' => 20,
-        'orderBy' => 'startTime',
-        'singleEvents' => true,
-        'timeMin' => $timeMin,
-        'timeMax' => date('c'),
-        'q' => $search,
-        'timeZone' => $timezone
-      );
-    }
-    
-    if ( $event_id ) {
-      // Events get
-      $event = $service->events->get( $data['calendar_id'], $event_id );
-      
-      $calendar = $service->calendars->get('primary');
-      
-      $timezonelocation = null;
-      if ( isset($event['location']) ) {
-        $lat_lng = googleplushangoutevent_google_geocoding($event['location']);
-
-        if ( $lat_lng ) {
-          $time = isset( $event['start']['dateTime'] ) ? $event['start']['dateTime'] : $event['start']['date'];
-
-          $timezonelocation = googleplushangoutevent_location_timezone( $lat_lng, $time );
-        }
-      }
-      
-      $the_event = array_merge( (array) $event, array( 'timeZoneCalendar' => $calendar['timeZone'] ) );
-            
-      if ( $timezonelocation ) $the_event = array_merge( (array) $the_event, array( 'timeZoneLocation' => $timezonelocation ) );
-
-      if ( $timezone ) $the_event = array_merge( (array) $the_event, array( 'timeZoneRequest' => $timezone ) );
-      
-      $output = $the_event;
-    } else {
-      // Events list
-      //$events = $service->events->listEvents( $data['calendar_id'], $args );
-      
-      foreach ( $calendar_list as $calendar ) {
-        $events = $service->events->listEvents( $calendar['id'], $args );
-        
-        if ( isset($events['error']['code']) ) {
-          $the_events = $events;
-        } else {
-          $the_events = array();
-          foreach ( $events['items'] as $event ) {
-            
-            $timezonelocation = null;
-            if ( isset($event['location']) ) {
-              $lat_lng = googleplushangoutevent_google_geocoding($event['location']);
-              
-              if ( $lat_lng ) {
-                $time = isset( $event['start']['dateTime'] ) ? $event['start']['dateTime'] : $event['start']['date'];
-                
-                $timezonelocation = googleplushangoutevent_location_timezone( $lat_lng, $time );
-              }
-            }
-            
-            $the_event = array_merge( (array) $event, array( 'timeZoneCalendar' => $calendar['timeZone'] ) );
-            
-            if ( $timezonelocation ) $the_event = array_merge( (array) $the_event, array( 'timeZoneLocation' => $timezonelocation ) );
-            
-            if ( $timezone ) $the_event = array_merge( (array) $the_event, array( 'timeZoneRequest' => $timezone ) );
-            
-            $the_events[] = $the_event;
-          }
-        }
-        
-        $the_events = array_filter($the_events);
-        if (!empty($the_events)) {
-          $output = array_merge((array) $output, (array) $the_events);
-        }
-        
-      }
-      
-      // Remove duplicate
-      if ($output) {
-        foreach ($output as $k => $v) {
-          $result[$v['id']] = $v;
-        }
-        // Reset key
-        $output = array_values($result);
-      }
-    }
-  }
-  
-  return $output;
-}
 
 function googleplushangoutevent_calendar_list( $service ) {
   $output = array( array( 'id' => null ) );
@@ -664,14 +552,18 @@ function googleplushangoutevent_onair($datetime1, $datetime2) {
 }
 
 function googleplushangoutevent_sort_events_asc($a,$b) {
-  $x = isset($a['start']['dateTime']) ? strtotime($a['start']['dateTime']) : strtotime($a['start']['date']);
-  $y = isset($b['start']['dateTime']) ? strtotime($b['start']['dateTime']) : strtotime($b['start']['date']);
+  $aStart = (array) $a["\0*\0modelData"]['start'];
+  $bStart = (array) $b["\0*\0modelData"]['start'];
+  $x = isset($aStart['dateTime']) ? strtotime($aStart['dateTime']) : strtotime($aStart['date']);
+  $y = isset($bStart['dateTime']) ? strtotime($bStart['dateTime']) : strtotime($bStart['date']);
   return $x > $y ? 1 : -1;
 }
 
 function googleplushangoutevent_sort_events_desc($a,$b) {
-  $x = isset($a['start']['dateTime']) ? strtotime($a['start']['dateTime']) : strtotime($a['start']['date']);
-  $y = isset($b['start']['dateTime']) ? strtotime($b['start']['dateTime']) : strtotime($b['start']['date']);
+  $aStart = (array) $a["\0*\0modelData"]['start'];
+  $bStart = (array) $b["\0*\0modelData"]['start'];
+  $x = isset($aStart['dateTime']) ? strtotime($aStart['dateTime']) : strtotime($aStart['date']);
+  $y = isset($bStart['dateTime']) ? strtotime($bStart['dateTime']) : strtotime($bStart['date']);
   return $x < $y ? 1 : -1;
 }
 
