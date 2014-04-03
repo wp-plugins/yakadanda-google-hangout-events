@@ -28,6 +28,7 @@ class googlePlusEvent extends WP_Widget {
     $creator = 1;
     $author = isset($instance['author']) ? $instance['author'] : 'all';
     $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
+    $source = empty($instance['src']) ? 'all' : $instance['src'];
     
     $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
     
@@ -62,7 +63,7 @@ class googlePlusEvent extends WP_Widget {
                 break;
             }
             
-            if ( ($instance['src'] != 'all') && ($instance['src'] != null) ) $src_filter = googleplushangoutevent_src_filter($instance['src'], $event['htmlLink']);
+            if ($source != 'all') $src_filter = googleplushangoutevent_src_filter($source, $event['htmlLink']);
             
             if ( !$hangoutlink && $creator && ($visibility != 'private') && $src_filter ):
               $timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
