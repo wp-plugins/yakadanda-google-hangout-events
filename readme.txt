@@ -45,13 +45,27 @@ You only need an Google+ account.
 Use google-hangout-events.css in yakadanda-google-hangout-events/css/google-hangout-events.css as reference. Copy that file to your active-theme/css/ as google-hangout-events.css
 
 = How to find event identifier to create a single event shortcode? =
-Single Event Example: (https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so)
+Single Event Example: https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so
 The letters after `***.com/u/0/events/c` is an event id, so the event identifier will be `snlc77gi4v519jom5gb28217so` without first letter 'c'.
 To create a single event you would place in shortcode `[google+events id="snlc77gi4v519jom5gb28217so"]`
 
 = Shortcode Reference =
 
 **Shortcode Examples**
+
+* `[google+events]`
+* `[google+events type="hangout"]`
+* `[google+events src="gplus"]`
+* `[google+events limit="3"]`
+* `[google+events past="2"]`
+* `[google+events author="all"]`
+* `[google+events limit="5" type="normal" past="1" author="all"]`
+* `[google+events id="xxxxxxxxxxxxxxxxxxxxxxxxxx"]`
+* `[google+events filter_out="xxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxx"]`
+* `[google+events search="free text search terms"]`
+* `[google+events attendees="show"]`
+* `[google+events timezone="America/Los_Angeles"]`
+* `[google+events countdown="true"]`
 
 
 == Screenshots ==
