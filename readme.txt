@@ -13,6 +13,9 @@ Generate linked Google+ Hangout Event notifications in a widget from a Google Ca
 
 This plugin will generate linked Google+ Hangout Event notifications in a widget from a Google Calendar with a nifty Countdown Clock to each event. Fully customizable with fonts and colors.
 
+= New Version 0.2.5 =
+Ability to filter by only Google+ created Events
+
 = Features =
 * Display Regular Google+ Events in Posts or Pages via Widgets
 * Display Google+ Hangouts Events in Posts or Pages via Widgets
@@ -42,9 +45,39 @@ You only need an Google+ account.
 Use google-hangout-events.css in yakadanda-google-hangout-events/css/google-hangout-events.css as reference. Copy that file to your active-theme/css/ as google-hangout-events.css
 
 = How to find event identifier to create a single event shortcode? =
-Single Event Example: https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so
-The letters after ***.com/u/0/events/c is an event id, so the event identifier will be snlc77gi4v519jom5gb28217so without first letter 'c'.
-To create a single event you would place in shortcode [google+events id="snlc77gi4v519jom5gb28217so"]
+Single Event Example: (https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so)
+The letters after `***.com/u/0/events/c` is an event id, so the event identifier will be `snlc77gi4v519jom5gb28217so` without first letter 'c'.
+To create a single event you would place in shortcode `[google+events id="snlc77gi4v519jom5gb28217so"]`
+
+= Shortcode Reference =
+
+**Shortcode Examples**
+* `[google+events]`
+* `[google+events type="hangout"]`
+* `[google+events src="gplus"]`
+* `[google+events limit="3"]`
+* `[google+events past="2"]`
+* `[google+events author="all"]`
+* `[google+events limit="5" type="normal" past="1" author="all"]`
+* `[google+events id="xxxxxxxxxxxxxxxxxxxxxxxxxx"]`
+* `[google+events filter_out="xxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxx"]`
+* `[google+events search="free text search terms"]`
+* `[google+events attendees="show"]`
+* `[google+events timezone="America/Los_Angeles"]`
+* `[google+events countdown="true"]`
+
+**Attributes**
+1. type	=	`all`, `normal`, or `hangout`, by default type is `all`
+2. src	=	`all`, `gcal` (event from calendar), or `gplus` (event from google+), by default source is `all`
+3. limit	=	number of events to display (maximum is 20)
+4. past	=	number of months to display past events in `X` months ago, by default past is false
+5. author	=	`self`, `other`, or `all`, by default author is `all`
+6. id	=	Event identifier (string). Single Event Example: (https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so) To create a single event you would place in shortcode `[google+events id="snlc77gi4v519jom5gb28217so"]`
+7. filter_out	=	Filter out certain events by event identifiers, seperated by comma
+8. search	=	Text search terms (string) to display events that match these terms in any field, except for extended properties
+9. attendees	=	Events can have attendees, the value can be `show`, `show_all`, or `hide`, the default value for attendees attribute is `hide`
+10. timezone	=	Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at (http://www.php.net/manual/en/timezones.php) (string)
+11. countdown	=	`true`, or `false`, by default countdown is `false`
 
 == Screenshots ==
 
