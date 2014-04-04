@@ -52,7 +52,6 @@ To create a single event you would place in shortcode `[google+events id="snlc77
 = Shortcode Reference =
 
 **Shortcode Examples**
-
 * `[google+events]`
 * `[google+events type="hangout"]`
 * `[google+events src="gplus"]`
@@ -67,6 +66,8 @@ To create a single event you would place in shortcode `[google+events id="snlc77
 * `[google+events timezone="America/Los_Angeles"]`
 * `[google+events countdown="true"]`
 
+**Attributes**
+1. type	=	`all`, `normal`, or `hangout`, by default type is `all`
 
 == Screenshots ==
 
