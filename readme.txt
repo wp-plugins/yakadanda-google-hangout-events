@@ -33,7 +33,7 @@ Extend google+ event on WordPress admin
 
 1. Upload the full directory into your wp-content/plugins directory
 2. Activate the plugin at the plugin administration page
-3. Configure Google+ Hangout Events using the following pages in the admin panel: Settings -> Google+ Hangout Events.
+3. Configure Google+ Hangout Events using the following pages in the admin panel: Events -> Settings.
 
 That's it your done, you can add the Google Plus Hangout Events Widget to any sidebar.
 
