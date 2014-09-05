@@ -3,7 +3,7 @@ Contributors: Yakadanda.com
 Donate link: http://www.yakadanda.com/
 Tags: Calendar, Event, Google, Googleplus, Hangout, Plus, Yakadanda
 Requires at least: 3.8
-Tested up to: 3.9.2
+Tested up to: 4.0
 Stable tag: 0.2.7
 License: GPLv2 or later
 
@@ -214,6 +214,7 @@ To create a single event you would place in shortcode `[google+events id="snlc77
 = 0.2.6 =
 * Fix logout feature and reset feature
 * Fix undefined index for timezone
+
 
 
 = 0.2.5 =
