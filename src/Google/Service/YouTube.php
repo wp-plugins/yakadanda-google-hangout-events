@@ -1893,7 +1893,7 @@ class Google_Service_YouTube_LiveBroadcasts_Resource extends Google_Service_Reso
     * broadcast stream is delayed.
    * @opt_param string walltime
    * The walltime parameter specifies the wall clock time at which the specified slate change will
-    * occur. The value is specified in ISO 8601 (YYYY-MM-DDThh:mm:ss.sZ) format.
+    * occur. The value is specified in ISO 8601 (YYYY-MM-DDThh:mm:ss.sssZ) format.
    * @return Google_Service_YouTube_LiveBroadcast
    */
   public function control($id, $part, $optParams = array())
@@ -3333,6 +3333,9 @@ class Google_Service_YouTube_Watermarks_Resource extends Google_Service_Resource
 
 class Google_Service_YouTube_AccessPolicy extends Google_Collection
 {
+  protected $collection_key = 'exception';
+  protected $internal_gapi_mappings = array(
+  );
   public $allowed;
   public $exception;
 
@@ -3359,6 +3362,8 @@ class Google_Service_YouTube_AccessPolicy extends Google_Collection
 
 class Google_Service_YouTube_Activity extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $contentDetailsType = 'Google_Service_YouTube_ActivityContentDetails';
   protected $contentDetailsDataType = '';
   public $etag;
@@ -3420,6 +3425,8 @@ class Google_Service_YouTube_Activity extends Google_Model
 
 class Google_Service_YouTube_ActivityContentDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $bulletinType = 'Google_Service_YouTube_ActivityContentDetailsBulletin';
   protected $bulletinDataType = '';
   protected $channelItemType = 'Google_Service_YouTube_ActivityContentDetailsChannelItem';
@@ -3556,6 +3563,8 @@ class Google_Service_YouTube_ActivityContentDetails extends Google_Model
 
 class Google_Service_YouTube_ActivityContentDetailsBulletin extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $resourceIdType = 'Google_Service_YouTube_ResourceId';
   protected $resourceIdDataType = '';
 
@@ -3572,6 +3581,8 @@ class Google_Service_YouTube_ActivityContentDetailsBulletin extends Google_Model
 
 class Google_Service_YouTube_ActivityContentDetailsChannelItem extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $resourceIdType = 'Google_Service_YouTube_ResourceId';
   protected $resourceIdDataType = '';
 
@@ -3588,6 +3599,8 @@ class Google_Service_YouTube_ActivityContentDetailsChannelItem extends Google_Mo
 
 class Google_Service_YouTube_ActivityContentDetailsComment extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $resourceIdType = 'Google_Service_YouTube_ResourceId';
   protected $resourceIdDataType = '';
 
@@ -3604,6 +3617,8 @@ class Google_Service_YouTube_ActivityContentDetailsComment extends Google_Model
 
 class Google_Service_YouTube_ActivityContentDetailsFavorite extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $resourceIdType = 'Google_Service_YouTube_ResourceId';
   protected $resourceIdDataType = '';
 
@@ -3620,6 +3635,8 @@ class Google_Service_YouTube_ActivityContentDetailsFavorite extends Google_Model
 
 class Google_Service_YouTube_ActivityContentDetailsLike extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $resourceIdType = 'Google_Service_YouTube_ResourceId';
   protected $resourceIdDataType = '';
 
@@ -3636,6 +3653,8 @@ class Google_Service_YouTube_ActivityContentDetailsLike extends Google_Model
 
 class Google_Service_YouTube_ActivityContentDetailsPlaylistItem extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $playlistId;
   public $playlistItemId;
   protected $resourceIdType = 'Google_Service_YouTube_ResourceId';
@@ -3674,6 +3693,9 @@ class Google_Service_YouTube_ActivityContentDetailsPlaylistItem extends Google_M
 
 class Google_Service_YouTube_ActivityContentDetailsPromotedItem extends Google_Collection
 {
+  protected $collection_key = 'impressionUrl';
+  protected $internal_gapi_mappings = array(
+  );
   public $adTag;
   public $clickTrackingUrl;
   public $creativeViewUrl;
@@ -3788,6 +3810,8 @@ class Google_Service_YouTube_ActivityContentDetailsPromotedItem extends Google_C
 
 class Google_Service_YouTube_ActivityContentDetailsRecommendation extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $reason;
   protected $resourceIdType = 'Google_Service_YouTube_ResourceId';
   protected $resourceIdDataType = '';
@@ -3827,6 +3851,8 @@ class Google_Service_YouTube_ActivityContentDetailsRecommendation extends Google
 
 class Google_Service_YouTube_ActivityContentDetailsSocial extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $author;
   public $imageUrl;
   public $referenceUrl;
@@ -3887,6 +3913,8 @@ class Google_Service_YouTube_ActivityContentDetailsSocial extends Google_Model
 
 class Google_Service_YouTube_ActivityContentDetailsSubscription extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $resourceIdType = 'Google_Service_YouTube_ResourceId';
   protected $resourceIdDataType = '';
 
@@ -3903,6 +3931,8 @@ class Google_Service_YouTube_ActivityContentDetailsSubscription extends Google_M
 
 class Google_Service_YouTube_ActivityContentDetailsUpload extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $videoId;
 
   public function setVideoId($videoId)
@@ -3918,6 +3948,9 @@ class Google_Service_YouTube_ActivityContentDetailsUpload extends Google_Model
 
 class Google_Service_YouTube_ActivityListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_Activity';
@@ -4024,6 +4057,8 @@ class Google_Service_YouTube_ActivityListResponse extends Google_Collection
 
 class Google_Service_YouTube_ActivitySnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $channelTitle;
   public $description;
@@ -4117,6 +4152,8 @@ class Google_Service_YouTube_ActivitySnippet extends Google_Model
 
 class Google_Service_YouTube_CdnSettings extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $format;
   protected $ingestionInfoType = 'Google_Service_YouTube_IngestionInfo';
   protected $ingestionInfoDataType = '';
@@ -4155,6 +4192,8 @@ class Google_Service_YouTube_CdnSettings extends Google_Model
 
 class Google_Service_YouTube_Channel extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $auditDetailsType = 'Google_Service_YouTube_ChannelAuditDetails';
   protected $auditDetailsDataType = '';
   protected $brandingSettingsType = 'Google_Service_YouTube_ChannelBrandingSettings';
@@ -4312,6 +4351,8 @@ class Google_Service_YouTube_Channel extends Google_Model
 
 class Google_Service_YouTube_ChannelAuditDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $communityGuidelinesGoodStanding;
   public $contentIdClaimsGoodStanding;
   public $copyrightStrikesGoodStanding;
@@ -4360,6 +4401,8 @@ class Google_Service_YouTube_ChannelAuditDetails extends Google_Model
 
 class Google_Service_YouTube_ChannelBannerResource extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $kind;
   public $url;
@@ -4397,6 +4440,9 @@ class Google_Service_YouTube_ChannelBannerResource extends Google_Model
 
 class Google_Service_YouTube_ChannelBrandingSettings extends Google_Collection
 {
+  protected $collection_key = 'hints';
+  protected $internal_gapi_mappings = array(
+  );
   protected $channelType = 'Google_Service_YouTube_ChannelSettings';
   protected $channelDataType = '';
   protected $hintsType = 'Google_Service_YouTube_PropertyValue';
@@ -4449,6 +4495,8 @@ class Google_Service_YouTube_ChannelBrandingSettings extends Google_Collection
 
 class Google_Service_YouTube_ChannelContentDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $googlePlusUserId;
   protected $relatedPlaylistsType = 'Google_Service_YouTube_ChannelContentDetailsRelatedPlaylists';
   protected $relatedPlaylistsDataType = '';
@@ -4476,6 +4524,8 @@ class Google_Service_YouTube_ChannelContentDetails extends Google_Model
 
 class Google_Service_YouTube_ChannelContentDetailsRelatedPlaylists extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $favorites;
   public $likes;
   public $uploads;
@@ -4535,6 +4585,8 @@ class Google_Service_YouTube_ChannelContentDetailsRelatedPlaylists extends Googl
 
 class Google_Service_YouTube_ChannelContentOwnerDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $contentOwner;
   public $timeLinked;
 
@@ -4561,6 +4613,8 @@ class Google_Service_YouTube_ChannelContentOwnerDetails extends Google_Model
 
 class Google_Service_YouTube_ChannelConversionPing extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $context;
   public $conversionUrl;
 
@@ -4587,6 +4641,9 @@ class Google_Service_YouTube_ChannelConversionPing extends Google_Model
 
 class Google_Service_YouTube_ChannelConversionPings extends Google_Collection
 {
+  protected $collection_key = 'pings';
+  protected $internal_gapi_mappings = array(
+  );
   protected $pingsType = 'Google_Service_YouTube_ChannelConversionPing';
   protected $pingsDataType = 'array';
 
@@ -4603,6 +4660,9 @@ class Google_Service_YouTube_ChannelConversionPings extends Google_Collection
 
 class Google_Service_YouTube_ChannelListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_Channel';
@@ -4709,6 +4769,8 @@ class Google_Service_YouTube_ChannelListResponse extends Google_Collection
 
 class Google_Service_YouTube_ChannelSection extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $contentDetailsType = 'Google_Service_YouTube_ChannelSectionContentDetails';
   protected $contentDetailsDataType = '';
   public $etag;
@@ -4770,6 +4832,9 @@ class Google_Service_YouTube_ChannelSection extends Google_Model
 
 class Google_Service_YouTube_ChannelSectionContentDetails extends Google_Collection
 {
+  protected $collection_key = 'playlists';
+  protected $internal_gapi_mappings = array(
+  );
   public $channels;
   public $playlists;
 
@@ -4796,6 +4861,9 @@ class Google_Service_YouTube_ChannelSectionContentDetails extends Google_Collect
 
 class Google_Service_YouTube_ChannelSectionListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_ChannelSection';
@@ -4856,6 +4924,8 @@ class Google_Service_YouTube_ChannelSectionListResponse extends Google_Collectio
 
 class Google_Service_YouTube_ChannelSectionSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $position;
   public $style;
@@ -4915,6 +4985,9 @@ class Google_Service_YouTube_ChannelSectionSnippet extends Google_Model
 
 class Google_Service_YouTube_ChannelSettings extends Google_Collection
 {
+  protected $collection_key = 'featuredChannelsUrls';
+  protected $internal_gapi_mappings = array(
+  );
   public $defaultTab;
   public $description;
   public $featuredChannelsTitle;
@@ -5051,6 +5124,8 @@ class Google_Service_YouTube_ChannelSettings extends Google_Collection
 
 class Google_Service_YouTube_ChannelSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $description;
   public $publishedAt;
   protected $thumbnailsType = 'Google_Service_YouTube_ThumbnailDetails';
@@ -5100,6 +5175,8 @@ class Google_Service_YouTube_ChannelSnippet extends Google_Model
 
 class Google_Service_YouTube_ChannelStatistics extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $commentCount;
   public $hiddenSubscriberCount;
   public $subscriberCount;
@@ -5159,7 +5236,10 @@ class Google_Service_YouTube_ChannelStatistics extends Google_Model
 
 class Google_Service_YouTube_ChannelStatus extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $isLinked;
+  public $longUploadsStatus;
   public $privacyStatus;
 
   public function setIsLinked($isLinked)
@@ -5170,6 +5250,16 @@ class Google_Service_YouTube_ChannelStatus extends Google_Model
   public function getIsLinked()
   {
     return $this->isLinked;
+  }
+
+  public function setLongUploadsStatus($longUploadsStatus)
+  {
+    $this->longUploadsStatus = $longUploadsStatus;
+  }
+
+  public function getLongUploadsStatus()
+  {
+    return $this->longUploadsStatus;
   }
 
   public function setPrivacyStatus($privacyStatus)
@@ -5185,6 +5275,9 @@ class Google_Service_YouTube_ChannelStatus extends Google_Model
 
 class Google_Service_YouTube_ChannelTopicDetails extends Google_Collection
 {
+  protected $collection_key = 'topicIds';
+  protected $internal_gapi_mappings = array(
+  );
   public $topicIds;
 
   public function setTopicIds($topicIds)
@@ -5200,6 +5293,8 @@ class Google_Service_YouTube_ChannelTopicDetails extends Google_Collection
 
 class Google_Service_YouTube_ContentRating extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $acbRating;
   public $agcomRating;
   public $anatelRating;
@@ -5897,6 +5992,8 @@ class Google_Service_YouTube_ContentRating extends Google_Model
 
 class Google_Service_YouTube_GeoPoint extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $altitude;
   public $latitude;
   public $longitude;
@@ -5934,6 +6031,8 @@ class Google_Service_YouTube_GeoPoint extends Google_Model
 
 class Google_Service_YouTube_GuideCategory extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $id;
   public $kind;
@@ -5983,6 +6082,9 @@ class Google_Service_YouTube_GuideCategory extends Google_Model
 
 class Google_Service_YouTube_GuideCategoryListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_GuideCategory';
@@ -6089,6 +6191,8 @@ class Google_Service_YouTube_GuideCategoryListResponse extends Google_Collection
 
 class Google_Service_YouTube_GuideCategorySnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $title;
 
@@ -6115,6 +6219,8 @@ class Google_Service_YouTube_GuideCategorySnippet extends Google_Model
 
 class Google_Service_YouTube_I18nLanguage extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $id;
   public $kind;
@@ -6164,6 +6270,9 @@ class Google_Service_YouTube_I18nLanguage extends Google_Model
 
 class Google_Service_YouTube_I18nLanguageListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_I18nLanguage';
@@ -6224,6 +6333,8 @@ class Google_Service_YouTube_I18nLanguageListResponse extends Google_Collection
 
 class Google_Service_YouTube_I18nLanguageSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $hl;
   public $name;
 
@@ -6250,6 +6361,8 @@ class Google_Service_YouTube_I18nLanguageSnippet extends Google_Model
 
 class Google_Service_YouTube_I18nRegion extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $id;
   public $kind;
@@ -6299,6 +6412,9 @@ class Google_Service_YouTube_I18nRegion extends Google_Model
 
 class Google_Service_YouTube_I18nRegionListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_I18nRegion';
@@ -6359,6 +6475,8 @@ class Google_Service_YouTube_I18nRegionListResponse extends Google_Collection
 
 class Google_Service_YouTube_I18nRegionSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $gl;
   public $name;
 
@@ -6385,6 +6503,8 @@ class Google_Service_YouTube_I18nRegionSnippet extends Google_Model
 
 class Google_Service_YouTube_ImageSettings extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $backgroundImageUrlType = 'Google_Service_YouTube_LocalizedProperty';
   protected $backgroundImageUrlDataType = '';
   public $bannerExternalUrl;
@@ -6636,6 +6756,8 @@ class Google_Service_YouTube_ImageSettings extends Google_Model
 
 class Google_Service_YouTube_IngestionInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $backupIngestionAddress;
   public $ingestionAddress;
   public $streamName;
@@ -6673,6 +6795,8 @@ class Google_Service_YouTube_IngestionInfo extends Google_Model
 
 class Google_Service_YouTube_InvideoBranding extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $imageBytes;
   public $imageUrl;
   protected $positionType = 'Google_Service_YouTube_InvideoPosition';
@@ -6734,6 +6858,8 @@ class Google_Service_YouTube_InvideoBranding extends Google_Model
 
 class Google_Service_YouTube_InvideoPosition extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $cornerPosition;
   public $type;
 
@@ -6760,12 +6886,16 @@ class Google_Service_YouTube_InvideoPosition extends Google_Model
 
 class Google_Service_YouTube_InvideoPromotion extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $defaultTimingType = 'Google_Service_YouTube_InvideoTiming';
   protected $defaultTimingDataType = '';
   protected $itemsType = 'Google_Service_YouTube_PromotedItem';
   protected $itemsDataType = 'array';
   protected $positionType = 'Google_Service_YouTube_InvideoPosition';
   protected $positionDataType = '';
+  public $useSmartTiming;
 
   public function setDefaultTiming(Google_Service_YouTube_InvideoTiming $defaultTiming)
   {
@@ -6796,10 +6926,22 @@ class Google_Service_YouTube_InvideoPromotion extends Google_Collection
   {
     return $this->position;
   }
+
+  public function setUseSmartTiming($useSmartTiming)
+  {
+    $this->useSmartTiming = $useSmartTiming;
+  }
+
+  public function getUseSmartTiming()
+  {
+    return $this->useSmartTiming;
+  }
 }
 
 class Google_Service_YouTube_InvideoTiming extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $durationMs;
   public $offsetMs;
   public $type;
@@ -6837,6 +6979,8 @@ class Google_Service_YouTube_InvideoTiming extends Google_Model
 
 class Google_Service_YouTube_LiveBroadcast extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $contentDetailsType = 'Google_Service_YouTube_LiveBroadcastContentDetails';
   protected $contentDetailsDataType = '';
   public $etag;
@@ -6910,6 +7054,8 @@ class Google_Service_YouTube_LiveBroadcast extends Google_Model
 
 class Google_Service_YouTube_LiveBroadcastContentDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $boundStreamId;
   public $enableClosedCaptions;
   public $enableContentEncryption;
@@ -7003,6 +7149,9 @@ class Google_Service_YouTube_LiveBroadcastContentDetails extends Google_Model
 
 class Google_Service_YouTube_LiveBroadcastListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_LiveBroadcast';
@@ -7109,6 +7258,8 @@ class Google_Service_YouTube_LiveBroadcastListResponse extends Google_Collection
 
 class Google_Service_YouTube_LiveBroadcastSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $actualEndTime;
   public $actualStartTime;
   public $channelId;
@@ -7213,6 +7364,8 @@ class Google_Service_YouTube_LiveBroadcastSnippet extends Google_Model
 
 class Google_Service_YouTube_LiveBroadcastStatus extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $lifeCycleStatus;
   public $liveBroadcastPriority;
   public $privacyStatus;
@@ -7261,6 +7414,8 @@ class Google_Service_YouTube_LiveBroadcastStatus extends Google_Model
 
 class Google_Service_YouTube_LiveStream extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $cdnType = 'Google_Service_YouTube_CdnSettings';
   protected $cdnDataType = '';
   protected $contentDetailsType = 'Google_Service_YouTube_LiveStreamContentDetails';
@@ -7346,7 +7501,10 @@ class Google_Service_YouTube_LiveStream extends Google_Model
 
 class Google_Service_YouTube_LiveStreamContentDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $closedCaptionsIngestionUrl;
+  public $isReusable;
 
   public function setClosedCaptionsIngestionUrl($closedCaptionsIngestionUrl)
   {
@@ -7357,10 +7515,23 @@ class Google_Service_YouTube_LiveStreamContentDetails extends Google_Model
   {
     return $this->closedCaptionsIngestionUrl;
   }
+
+  public function setIsReusable($isReusable)
+  {
+    $this->isReusable = $isReusable;
+  }
+
+  public function getIsReusable()
+  {
+    return $this->isReusable;
+  }
 }
 
 class Google_Service_YouTube_LiveStreamListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_LiveStream';
@@ -7467,6 +7638,8 @@ class Google_Service_YouTube_LiveStreamListResponse extends Google_Collection
 
 class Google_Service_YouTube_LiveStreamSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $description;
   public $publishedAt;
@@ -7515,6 +7688,8 @@ class Google_Service_YouTube_LiveStreamSnippet extends Google_Model
 
 class Google_Service_YouTube_LiveStreamStatus extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $streamStatus;
 
   public function setStreamStatus($streamStatus)
@@ -7530,6 +7705,9 @@ class Google_Service_YouTube_LiveStreamStatus extends Google_Model
 
 class Google_Service_YouTube_LocalizedProperty extends Google_Collection
 {
+  protected $collection_key = 'localized';
+  protected $internal_gapi_mappings = array(
+  );
   public $default;
   protected $localizedType = 'Google_Service_YouTube_LocalizedString';
   protected $localizedDataType = 'array';
@@ -7557,6 +7735,8 @@ class Google_Service_YouTube_LocalizedProperty extends Google_Collection
 
 class Google_Service_YouTube_LocalizedString extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $language;
   public $value;
 
@@ -7583,6 +7763,8 @@ class Google_Service_YouTube_LocalizedString extends Google_Model
 
 class Google_Service_YouTube_MonitorStreamInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $broadcastStreamDelayMs;
   public $embedHtml;
   public $enableMonitorStream;
@@ -7620,6 +7802,8 @@ class Google_Service_YouTube_MonitorStreamInfo extends Google_Model
 
 class Google_Service_YouTube_PageInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $resultsPerPage;
   public $totalResults;
 
@@ -7646,6 +7830,8 @@ class Google_Service_YouTube_PageInfo extends Google_Model
 
 class Google_Service_YouTube_Playlist extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $contentDetailsType = 'Google_Service_YouTube_PlaylistContentDetails';
   protected $contentDetailsDataType = '';
   public $etag;
@@ -7731,6 +7917,8 @@ class Google_Service_YouTube_Playlist extends Google_Model
 
 class Google_Service_YouTube_PlaylistContentDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $itemCount;
 
   public function setItemCount($itemCount)
@@ -7746,6 +7934,8 @@ class Google_Service_YouTube_PlaylistContentDetails extends Google_Model
 
 class Google_Service_YouTube_PlaylistItem extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $contentDetailsType = 'Google_Service_YouTube_PlaylistItemContentDetails';
   protected $contentDetailsDataType = '';
   public $etag;
@@ -7819,6 +8009,8 @@ class Google_Service_YouTube_PlaylistItem extends Google_Model
 
 class Google_Service_YouTube_PlaylistItemContentDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $endAt;
   public $note;
   public $startAt;
@@ -7867,6 +8059,9 @@ class Google_Service_YouTube_PlaylistItemContentDetails extends Google_Model
 
 class Google_Service_YouTube_PlaylistItemListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_PlaylistItem';
@@ -7973,6 +8168,8 @@ class Google_Service_YouTube_PlaylistItemListResponse extends Google_Collection
 
 class Google_Service_YouTube_PlaylistItemSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $channelTitle;
   public $description;
@@ -8078,6 +8275,8 @@ class Google_Service_YouTube_PlaylistItemSnippet extends Google_Model
 
 class Google_Service_YouTube_PlaylistItemStatus extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $privacyStatus;
 
   public function setPrivacyStatus($privacyStatus)
@@ -8093,6 +8292,9 @@ class Google_Service_YouTube_PlaylistItemStatus extends Google_Model
 
 class Google_Service_YouTube_PlaylistListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_Playlist';
@@ -8199,6 +8401,8 @@ class Google_Service_YouTube_PlaylistListResponse extends Google_Collection
 
 class Google_Service_YouTube_PlaylistPlayer extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $embedHtml;
 
   public function setEmbedHtml($embedHtml)
@@ -8214,6 +8418,9 @@ class Google_Service_YouTube_PlaylistPlayer extends Google_Model
 
 class Google_Service_YouTube_PlaylistSnippet extends Google_Collection
 {
+  protected $collection_key = 'tags';
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $channelTitle;
   public $description;
@@ -8296,6 +8503,8 @@ class Google_Service_YouTube_PlaylistSnippet extends Google_Collection
 
 class Google_Service_YouTube_PlaylistStatus extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $privacyStatus;
 
   public function setPrivacyStatus($privacyStatus)
@@ -8311,6 +8520,8 @@ class Google_Service_YouTube_PlaylistStatus extends Google_Model
 
 class Google_Service_YouTube_PromotedItem extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $customMessage;
   protected $idType = 'Google_Service_YouTube_PromotedItemId';
   protected $idDataType = '';
@@ -8361,6 +8572,8 @@ class Google_Service_YouTube_PromotedItem extends Google_Model
 
 class Google_Service_YouTube_PromotedItemId extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $recentlyUploadedBy;
   public $type;
   public $videoId;
@@ -8409,6 +8622,8 @@ class Google_Service_YouTube_PromotedItemId extends Google_Model
 
 class Google_Service_YouTube_PropertyValue extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $property;
   public $value;
 
@@ -8435,6 +8650,8 @@ class Google_Service_YouTube_PropertyValue extends Google_Model
 
 class Google_Service_YouTube_ResourceId extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $kind;
   public $playlistId;
@@ -8483,6 +8700,9 @@ class Google_Service_YouTube_ResourceId extends Google_Model
 
 class Google_Service_YouTube_SearchListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_SearchResult';
@@ -8589,6 +8809,8 @@ class Google_Service_YouTube_SearchListResponse extends Google_Collection
 
 class Google_Service_YouTube_SearchResult extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   protected $idType = 'Google_Service_YouTube_ResourceId';
   protected $idDataType = '';
@@ -8639,6 +8861,8 @@ class Google_Service_YouTube_SearchResult extends Google_Model
 
 class Google_Service_YouTube_SearchResultSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $channelTitle;
   public $description;
@@ -8721,6 +8945,8 @@ class Google_Service_YouTube_SearchResultSnippet extends Google_Model
 
 class Google_Service_YouTube_Subscription extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $contentDetailsType = 'Google_Service_YouTube_SubscriptionContentDetails';
   protected $contentDetailsDataType = '';
   public $etag;
@@ -8794,6 +9020,8 @@ class Google_Service_YouTube_Subscription extends Google_Model
 
 class Google_Service_YouTube_SubscriptionContentDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $activityType;
   public $newItemCount;
   public $totalItemCount;
@@ -8831,6 +9059,9 @@ class Google_Service_YouTube_SubscriptionContentDetails extends Google_Model
 
 class Google_Service_YouTube_SubscriptionListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_Subscription';
@@ -8937,6 +9168,8 @@ class Google_Service_YouTube_SubscriptionListResponse extends Google_Collection
 
 class Google_Service_YouTube_SubscriptionSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $channelTitle;
   public $description;
@@ -9020,6 +9253,8 @@ class Google_Service_YouTube_SubscriptionSnippet extends Google_Model
 
 class Google_Service_YouTube_SubscriptionSubscriberSnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $channelId;
   public $description;
   protected $thumbnailsType = 'Google_Service_YouTube_ThumbnailDetails';
@@ -9069,6 +9304,8 @@ class Google_Service_YouTube_SubscriptionSubscriberSnippet extends Google_Model
 
 class Google_Service_YouTube_Thumbnail extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $height;
   public $url;
   public $width;
@@ -9106,6 +9343,8 @@ class Google_Service_YouTube_Thumbnail extends Google_Model
 
 class Google_Service_YouTube_ThumbnailDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $defaultType = 'Google_Service_YouTube_Thumbnail';
   protected $defaultDataType = '';
   protected $highType = 'Google_Service_YouTube_Thumbnail';
@@ -9170,6 +9409,9 @@ class Google_Service_YouTube_ThumbnailDetails extends Google_Model
 
 class Google_Service_YouTube_ThumbnailSetResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_ThumbnailDetails';
@@ -9230,11 +9472,14 @@ class Google_Service_YouTube_ThumbnailSetResponse extends Google_Collection
 
 class Google_Service_YouTube_TokenPagination extends Google_Model
 {
-
+  protected $internal_gapi_mappings = array(
+  );
 }
 
 class Google_Service_YouTube_Video extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $ageGatingType = 'Google_Service_YouTube_VideoAgeGating';
   protected $ageGatingDataType = '';
   protected $contentDetailsType = 'Google_Service_YouTube_VideoContentDetails';
@@ -9452,6 +9697,8 @@ class Google_Service_YouTube_Video extends Google_Model
 
 class Google_Service_YouTube_VideoAgeGating extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $alcoholContent;
   public $restricted;
   public $videoGameRating;
@@ -9489,6 +9736,8 @@ class Google_Service_YouTube_VideoAgeGating extends Google_Model
 
 class Google_Service_YouTube_VideoCategory extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $id;
   public $kind;
@@ -9538,6 +9787,9 @@ class Google_Service_YouTube_VideoCategory extends Google_Model
 
 class Google_Service_YouTube_VideoCategoryListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_VideoCategory';
@@ -9644,6 +9896,8 @@ class Google_Service_YouTube_VideoCategoryListResponse extends Google_Collection
 
 class Google_Service_YouTube_VideoCategorySnippet extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $assignable;
   public $channelId;
   public $title;
@@ -9681,6 +9935,8 @@ class Google_Service_YouTube_VideoCategorySnippet extends Google_Model
 
 class Google_Service_YouTube_VideoContentDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $caption;
   protected $contentRatingType = 'Google_Service_YouTube_ContentRating';
   protected $contentRatingDataType = '';
@@ -9776,6 +10032,9 @@ class Google_Service_YouTube_VideoContentDetails extends Google_Model
 
 class Google_Service_YouTube_VideoContentDetailsRegionRestriction extends Google_Collection
 {
+  protected $collection_key = 'blocked';
+  protected $internal_gapi_mappings = array(
+  );
   public $allowed;
   public $blocked;
 
@@ -9802,6 +10061,8 @@ class Google_Service_YouTube_VideoContentDetailsRegionRestriction extends Google
 
 class Google_Service_YouTube_VideoConversionPing extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $context;
   public $conversionUrl;
 
@@ -9828,6 +10089,9 @@ class Google_Service_YouTube_VideoConversionPing extends Google_Model
 
 class Google_Service_YouTube_VideoConversionPings extends Google_Collection
 {
+  protected $collection_key = 'pings';
+  protected $internal_gapi_mappings = array(
+  );
   protected $pingsType = 'Google_Service_YouTube_VideoConversionPing';
   protected $pingsDataType = 'array';
 
@@ -9844,6 +10108,9 @@ class Google_Service_YouTube_VideoConversionPings extends Google_Collection
 
 class Google_Service_YouTube_VideoFileDetails extends Google_Collection
 {
+  protected $collection_key = 'videoStreams';
+  protected $internal_gapi_mappings = array(
+  );
   protected $audioStreamsType = 'Google_Service_YouTube_VideoFileDetailsAudioStream';
   protected $audioStreamsDataType = 'array';
   public $bitrateBps;
@@ -9961,6 +10228,8 @@ class Google_Service_YouTube_VideoFileDetails extends Google_Collection
 
 class Google_Service_YouTube_VideoFileDetailsAudioStream extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $bitrateBps;
   public $channelCount;
   public $codec;
@@ -10009,6 +10278,8 @@ class Google_Service_YouTube_VideoFileDetailsAudioStream extends Google_Model
 
 class Google_Service_YouTube_VideoFileDetailsVideoStream extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $aspectRatio;
   public $bitrateBps;
   public $codec;
@@ -10101,6 +10372,9 @@ class Google_Service_YouTube_VideoFileDetailsVideoStream extends Google_Model
 
 class Google_Service_YouTube_VideoGetRatingResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   protected $itemsType = 'Google_Service_YouTube_VideoRating';
   protected $itemsDataType = 'array';
@@ -10139,6 +10413,9 @@ class Google_Service_YouTube_VideoGetRatingResponse extends Google_Collection
 
 class Google_Service_YouTube_VideoListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $etag;
   public $eventId;
   protected $itemsType = 'Google_Service_YouTube_Video';
@@ -10245,6 +10522,8 @@ class Google_Service_YouTube_VideoListResponse extends Google_Collection
 
 class Google_Service_YouTube_VideoLiveStreamingDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $actualEndTime;
   public $actualStartTime;
   public $concurrentViewers;
@@ -10304,6 +10583,8 @@ class Google_Service_YouTube_VideoLiveStreamingDetails extends Google_Model
 
 class Google_Service_YouTube_VideoMonetizationDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $accessType = 'Google_Service_YouTube_AccessPolicy';
   protected $accessDataType = '';
 
@@ -10320,6 +10601,8 @@ class Google_Service_YouTube_VideoMonetizationDetails extends Google_Model
 
 class Google_Service_YouTube_VideoPlayer extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $embedHtml;
 
   public function setEmbedHtml($embedHtml)
@@ -10335,6 +10618,8 @@ class Google_Service_YouTube_VideoPlayer extends Google_Model
 
 class Google_Service_YouTube_VideoProcessingDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $editorSuggestionsAvailability;
   public $fileDetailsAvailability;
   public $processingFailureReason;
@@ -10428,6 +10713,8 @@ class Google_Service_YouTube_VideoProcessingDetails extends Google_Model
 
 class Google_Service_YouTube_VideoProcessingDetailsProcessingProgress extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $partsProcessed;
   public $partsTotal;
   public $timeLeftMs;
@@ -10465,6 +10752,9 @@ class Google_Service_YouTube_VideoProcessingDetailsProcessingProgress extends Go
 
 class Google_Service_YouTube_VideoProjectDetails extends Google_Collection
 {
+  protected $collection_key = 'tags';
+  protected $internal_gapi_mappings = array(
+  );
   public $tags;
 
   public function setTags($tags)
@@ -10480,6 +10770,8 @@ class Google_Service_YouTube_VideoProjectDetails extends Google_Collection
 
 class Google_Service_YouTube_VideoRating extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $rating;
   public $videoId;
 
@@ -10506,6 +10798,8 @@ class Google_Service_YouTube_VideoRating extends Google_Model
 
 class Google_Service_YouTube_VideoRecordingDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $locationType = 'Google_Service_YouTube_GeoPoint';
   protected $locationDataType = '';
   public $locationDescription;
@@ -10544,6 +10838,9 @@ class Google_Service_YouTube_VideoRecordingDetails extends Google_Model
 
 class Google_Service_YouTube_VideoSnippet extends Google_Collection
 {
+  protected $collection_key = 'tags';
+  protected $internal_gapi_mappings = array(
+  );
   public $categoryId;
   public $channelId;
   public $channelTitle;
@@ -10648,6 +10945,8 @@ class Google_Service_YouTube_VideoSnippet extends Google_Collection
 
 class Google_Service_YouTube_VideoStatistics extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $commentCount;
   public $dislikeCount;
   public $favoriteCount;
@@ -10707,6 +11006,8 @@ class Google_Service_YouTube_VideoStatistics extends Google_Model
 
 class Google_Service_YouTube_VideoStatus extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $embeddable;
   public $failureReason;
   public $license;
@@ -10799,6 +11100,9 @@ class Google_Service_YouTube_VideoStatus extends Google_Model
 
 class Google_Service_YouTube_VideoSuggestions extends Google_Collection
 {
+  protected $collection_key = 'tagSuggestions';
+  protected $internal_gapi_mappings = array(
+  );
   public $editorSuggestions;
   public $processingErrors;
   public $processingHints;
@@ -10859,6 +11163,9 @@ class Google_Service_YouTube_VideoSuggestions extends Google_Collection
 
 class Google_Service_YouTube_VideoSuggestionsTagSuggestion extends Google_Collection
 {
+  protected $collection_key = 'categoryRestricts';
+  protected $internal_gapi_mappings = array(
+  );
   public $categoryRestricts;
   public $tag;
 
@@ -10885,6 +11192,9 @@ class Google_Service_YouTube_VideoSuggestionsTagSuggestion extends Google_Collec
 
 class Google_Service_YouTube_VideoTopicDetails extends Google_Collection
 {
+  protected $collection_key = 'topicIds';
+  protected $internal_gapi_mappings = array(
+  );
   public $relevantTopicIds;
   public $topicIds;
 
@@ -10911,6 +11221,8 @@ class Google_Service_YouTube_VideoTopicDetails extends Google_Collection
 
 class Google_Service_YouTube_WatchSettings extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $backgroundColor;
   public $featuredPlaylistId;
   public $textColor;

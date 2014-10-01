@@ -285,6 +285,9 @@ class Google_Service_YouTubeAnalytics_Reports_Resource extends Google_Service_Re
 
 class Google_Service_YouTubeAnalytics_BatchReportDefinitionList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_YouTubeAnalytics_BatchReportDefinitionTemplate';
   protected $itemsDataType = 'array';
   public $kind;
@@ -312,6 +315,9 @@ class Google_Service_YouTubeAnalytics_BatchReportDefinitionList extends Google_C
 
 class Google_Service_YouTubeAnalytics_BatchReportDefinitionTemplate extends Google_Collection
 {
+  protected $collection_key = 'defaultOutput';
+  protected $internal_gapi_mappings = array(
+  );
   protected $defaultOutputType = 'Google_Service_YouTubeAnalytics_BatchReportDefinitionTemplateDefaultOutput';
   protected $defaultOutputDataType = 'array';
   public $id;
@@ -372,6 +378,8 @@ class Google_Service_YouTubeAnalytics_BatchReportDefinitionTemplate extends Goog
 
 class Google_Service_YouTubeAnalytics_BatchReportDefinitionTemplateDefaultOutput extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $format;
   public $type;
 
@@ -398,6 +406,9 @@ class Google_Service_YouTubeAnalytics_BatchReportDefinitionTemplateDefaultOutput
 
 class Google_Service_YouTubeAnalytics_BatchReportList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_YouTubeAnalytics_BatchReportTemplate';
   protected $itemsDataType = 'array';
   public $kind;
@@ -425,6 +436,10 @@ class Google_Service_YouTubeAnalytics_BatchReportList extends Google_Collection
 
 class Google_Service_YouTubeAnalytics_BatchReportTemplate extends Google_Collection
 {
+  protected $collection_key = 'outputs';
+  protected $internal_gapi_mappings = array(
+        "reportId" => "report_id",
+  );
   public $id;
   protected $outputsType = 'Google_Service_YouTubeAnalytics_BatchReportTemplateOutputs';
   protected $outputsDataType = 'array';
@@ -486,6 +501,8 @@ class Google_Service_YouTubeAnalytics_BatchReportTemplate extends Google_Collect
 
 class Google_Service_YouTubeAnalytics_BatchReportTemplateOutputs extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $downloadUrl;
   public $format;
   public $type;
@@ -523,6 +540,8 @@ class Google_Service_YouTubeAnalytics_BatchReportTemplateOutputs extends Google_
 
 class Google_Service_YouTubeAnalytics_BatchReportTemplateTimeSpan extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $endTime;
   public $startTime;
 
@@ -549,6 +568,9 @@ class Google_Service_YouTubeAnalytics_BatchReportTemplateTimeSpan extends Google
 
 class Google_Service_YouTubeAnalytics_ResultTable extends Google_Collection
 {
+  protected $collection_key = 'rows';
+  protected $internal_gapi_mappings = array(
+  );
   protected $columnHeadersType = 'Google_Service_YouTubeAnalytics_ResultTableColumnHeaders';
   protected $columnHeadersDataType = 'array';
   public $kind;
@@ -587,6 +609,8 @@ class Google_Service_YouTubeAnalytics_ResultTable extends Google_Collection
 
 class Google_Service_YouTubeAnalytics_ResultTableColumnHeaders extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $columnType;
   public $dataType;
   public $name;

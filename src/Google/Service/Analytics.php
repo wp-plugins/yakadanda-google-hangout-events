@@ -3653,6 +3653,8 @@ class Google_Service_Analytics_Provisioning_Resource extends Google_Service_Reso
 
 class Google_Service_Analytics_Account extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $childLinkType = 'Google_Service_Analytics_AccountChildLink';
   protected $childLinkDataType = '';
   public $created;
@@ -3747,6 +3749,8 @@ class Google_Service_Analytics_Account extends Google_Model
 
 class Google_Service_Analytics_AccountChildLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -3773,6 +3777,9 @@ class Google_Service_Analytics_AccountChildLink extends Google_Model
 
 class Google_Service_Analytics_AccountPermissions extends Google_Collection
 {
+  protected $collection_key = 'effective';
+  protected $internal_gapi_mappings = array(
+  );
   public $effective;
 
   public function setEffective($effective)
@@ -3788,6 +3795,8 @@ class Google_Service_Analytics_AccountPermissions extends Google_Collection
 
 class Google_Service_Analytics_AccountRef extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $id;
   public $kind;
@@ -3836,6 +3845,9 @@ class Google_Service_Analytics_AccountRef extends Google_Model
 
 class Google_Service_Analytics_AccountSummaries extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_AccountSummary';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -3929,6 +3941,9 @@ class Google_Service_Analytics_AccountSummaries extends Google_Collection
 
 class Google_Service_Analytics_AccountSummary extends Google_Collection
 {
+  protected $collection_key = 'webProperties';
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   public $kind;
   public $name;
@@ -3978,6 +3993,8 @@ class Google_Service_Analytics_AccountSummary extends Google_Collection
 
 class Google_Service_Analytics_AccountTicket extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $accountType = 'Google_Service_Analytics_Account';
   protected $accountDataType = '';
   public $id;
@@ -4051,6 +4068,9 @@ class Google_Service_Analytics_AccountTicket extends Google_Model
 
 class Google_Service_Analytics_Accounts extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_Account';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -4144,6 +4164,8 @@ class Google_Service_Analytics_Accounts extends Google_Collection
 
 class Google_Service_Analytics_AdWordsAccount extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $autoTaggingEnabled;
   public $customerId;
   public $kind;
@@ -4181,6 +4203,9 @@ class Google_Service_Analytics_AdWordsAccount extends Google_Model
 
 class Google_Service_Analytics_AnalyticsDataimportDeleteUploadDataRequest extends Google_Collection
 {
+  protected $collection_key = 'customDataImportUids';
+  protected $internal_gapi_mappings = array(
+  );
   public $customDataImportUids;
 
   public function setCustomDataImportUids($customDataImportUids)
@@ -4196,6 +4221,8 @@ class Google_Service_Analytics_AnalyticsDataimportDeleteUploadDataRequest extend
 
 class Google_Service_Analytics_Column extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $attributes;
   public $id;
   public $kind;
@@ -4233,11 +4260,15 @@ class Google_Service_Analytics_Column extends Google_Model
 
 class Google_Service_Analytics_ColumnAttributes extends Google_Model
 {
-
+  protected $internal_gapi_mappings = array(
+  );
 }
 
 class Google_Service_Analytics_Columns extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $attributeNames;
   public $etag;
   protected $itemsType = 'Google_Service_Analytics_Column';
@@ -4298,6 +4329,9 @@ class Google_Service_Analytics_Columns extends Google_Collection
 
 class Google_Service_Analytics_CustomDataSource extends Google_Collection
 {
+  protected $collection_key = 'profilesLinked';
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   protected $childLinkType = 'Google_Service_Analytics_CustomDataSourceChildLink';
   protected $childLinkDataType = '';
@@ -4469,6 +4503,8 @@ class Google_Service_Analytics_CustomDataSource extends Google_Collection
 
 class Google_Service_Analytics_CustomDataSourceChildLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -4495,6 +4531,8 @@ class Google_Service_Analytics_CustomDataSourceChildLink extends Google_Model
 
 class Google_Service_Analytics_CustomDataSourceParentLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -4521,6 +4559,9 @@ class Google_Service_Analytics_CustomDataSourceParentLink extends Google_Model
 
 class Google_Service_Analytics_CustomDataSources extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_CustomDataSource';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -4614,6 +4655,9 @@ class Google_Service_Analytics_CustomDataSources extends Google_Collection
 
 class Google_Service_Analytics_DailyUpload extends Google_Collection
 {
+  protected $collection_key = 'recentChanges';
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $appendCount;
   public $createdTime;
@@ -4741,6 +4785,8 @@ class Google_Service_Analytics_DailyUpload extends Google_Collection
 
 class Google_Service_Analytics_DailyUploadAppend extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $appendNumber;
   public $customDataSourceId;
@@ -4822,6 +4868,8 @@ class Google_Service_Analytics_DailyUploadAppend extends Google_Model
 
 class Google_Service_Analytics_DailyUploadParentLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -4848,6 +4896,8 @@ class Google_Service_Analytics_DailyUploadParentLink extends Google_Model
 
 class Google_Service_Analytics_DailyUploadRecentChanges extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $change;
   public $time;
 
@@ -4874,6 +4924,9 @@ class Google_Service_Analytics_DailyUploadRecentChanges extends Google_Model
 
 class Google_Service_Analytics_DailyUploads extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_DailyUpload';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -4967,6 +5020,9 @@ class Google_Service_Analytics_DailyUploads extends Google_Collection
 
 class Google_Service_Analytics_EntityAdWordsLink extends Google_Collection
 {
+  protected $collection_key = 'profileIds';
+  protected $internal_gapi_mappings = array(
+  );
   protected $adWordsAccountsType = 'Google_Service_Analytics_AdWordsAccount';
   protected $adWordsAccountsDataType = 'array';
   protected $entityType = 'Google_Service_Analytics_EntityAdWordsLinkEntity';
@@ -5050,6 +5106,8 @@ class Google_Service_Analytics_EntityAdWordsLink extends Google_Collection
 
 class Google_Service_Analytics_EntityAdWordsLinkEntity extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $webPropertyRefType = 'Google_Service_Analytics_WebPropertyRef';
   protected $webPropertyRefDataType = '';
 
@@ -5066,6 +5124,9 @@ class Google_Service_Analytics_EntityAdWordsLinkEntity extends Google_Model
 
 class Google_Service_Analytics_EntityAdWordsLinks extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_EntityAdWordsLink';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -5148,6 +5209,8 @@ class Google_Service_Analytics_EntityAdWordsLinks extends Google_Collection
 
 class Google_Service_Analytics_EntityUserLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $entityType = 'Google_Service_Analytics_EntityUserLinkEntity';
   protected $entityDataType = '';
   public $id;
@@ -5221,6 +5284,8 @@ class Google_Service_Analytics_EntityUserLink extends Google_Model
 
 class Google_Service_Analytics_EntityUserLinkEntity extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $accountRefType = 'Google_Service_Analytics_AccountRef';
   protected $accountRefDataType = '';
   protected $profileRefType = 'Google_Service_Analytics_ProfileRef';
@@ -5261,6 +5326,9 @@ class Google_Service_Analytics_EntityUserLinkEntity extends Google_Model
 
 class Google_Service_Analytics_EntityUserLinkPermissions extends Google_Collection
 {
+  protected $collection_key = 'local';
+  protected $internal_gapi_mappings = array(
+  );
   public $effective;
   public $local;
 
@@ -5287,6 +5355,9 @@ class Google_Service_Analytics_EntityUserLinkPermissions extends Google_Collecti
 
 class Google_Service_Analytics_EntityUserLinks extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_EntityUserLink';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -5369,6 +5440,9 @@ class Google_Service_Analytics_EntityUserLinks extends Google_Collection
 
 class Google_Service_Analytics_Experiment extends Google_Collection
 {
+  protected $collection_key = 'variations';
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $created;
   public $description;
@@ -5683,6 +5757,8 @@ class Google_Service_Analytics_Experiment extends Google_Collection
 
 class Google_Service_Analytics_ExperimentParentLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -5709,6 +5785,8 @@ class Google_Service_Analytics_ExperimentParentLink extends Google_Model
 
 class Google_Service_Analytics_ExperimentVariations extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $name;
   public $status;
   public $url;
@@ -5768,6 +5846,9 @@ class Google_Service_Analytics_ExperimentVariations extends Google_Model
 
 class Google_Service_Analytics_Experiments extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_Experiment';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -5861,6 +5942,8 @@ class Google_Service_Analytics_Experiments extends Google_Collection
 
 class Google_Service_Analytics_Filter extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   protected $advancedDetailsType = 'Google_Service_Analytics_FilterAdvancedDetails';
   protected $advancedDetailsDataType = '';
@@ -6037,6 +6120,8 @@ class Google_Service_Analytics_Filter extends Google_Model
 
 class Google_Service_Analytics_FilterAdvancedDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $caseSensitive;
   public $extractA;
   public $extractB;
@@ -6151,6 +6236,8 @@ class Google_Service_Analytics_FilterAdvancedDetails extends Google_Model
 
 class Google_Service_Analytics_FilterExpression extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $caseSensitive;
   public $expressionValue;
   public $field;
@@ -6210,6 +6297,8 @@ class Google_Service_Analytics_FilterExpression extends Google_Model
 
 class Google_Service_Analytics_FilterLowercaseDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $field;
 
   public function setField($field)
@@ -6225,6 +6314,8 @@ class Google_Service_Analytics_FilterLowercaseDetails extends Google_Model
 
 class Google_Service_Analytics_FilterParentLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -6251,6 +6342,8 @@ class Google_Service_Analytics_FilterParentLink extends Google_Model
 
 class Google_Service_Analytics_FilterRef extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $href;
   public $id;
@@ -6310,6 +6403,8 @@ class Google_Service_Analytics_FilterRef extends Google_Model
 
 class Google_Service_Analytics_FilterSearchAndReplaceDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $caseSensitive;
   public $field;
   public $replaceString;
@@ -6358,6 +6453,8 @@ class Google_Service_Analytics_FilterSearchAndReplaceDetails extends Google_Mode
 
 class Google_Service_Analytics_FilterUppercaseDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $field;
 
   public function setField($field)
@@ -6373,6 +6470,9 @@ class Google_Service_Analytics_FilterUppercaseDetails extends Google_Model
 
 class Google_Service_Analytics_Filters extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_Filter';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -6466,6 +6566,9 @@ class Google_Service_Analytics_Filters extends Google_Collection
 
 class Google_Service_Analytics_GaData extends Google_Collection
 {
+  protected $collection_key = 'rows';
+  protected $internal_gapi_mappings = array(
+  );
   protected $columnHeadersType = 'Google_Service_Analytics_GaDataColumnHeaders';
   protected $columnHeadersDataType = 'array';
   public $containsSampledData;
@@ -6650,6 +6753,8 @@ class Google_Service_Analytics_GaData extends Google_Collection
 
 class Google_Service_Analytics_GaDataColumnHeaders extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $columnType;
   public $dataType;
   public $name;
@@ -6687,6 +6792,9 @@ class Google_Service_Analytics_GaDataColumnHeaders extends Google_Model
 
 class Google_Service_Analytics_GaDataDataTable extends Google_Collection
 {
+  protected $collection_key = 'rows';
+  protected $internal_gapi_mappings = array(
+  );
   protected $colsType = 'Google_Service_Analytics_GaDataDataTableCols';
   protected $colsDataType = 'array';
   protected $rowsType = 'Google_Service_Analytics_GaDataDataTableRows';
@@ -6715,6 +6823,8 @@ class Google_Service_Analytics_GaDataDataTable extends Google_Collection
 
 class Google_Service_Analytics_GaDataDataTableCols extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   public $label;
   public $type;
@@ -6752,6 +6862,9 @@ class Google_Service_Analytics_GaDataDataTableCols extends Google_Model
 
 class Google_Service_Analytics_GaDataDataTableRows extends Google_Collection
 {
+  protected $collection_key = 'c';
+  protected $internal_gapi_mappings = array(
+  );
   protected $cType = 'Google_Service_Analytics_GaDataDataTableRowsC';
   protected $cDataType = 'array';
 
@@ -6768,6 +6881,8 @@ class Google_Service_Analytics_GaDataDataTableRows extends Google_Collection
 
 class Google_Service_Analytics_GaDataDataTableRowsC extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $v;
 
   public function setV($v)
@@ -6783,6 +6898,8 @@ class Google_Service_Analytics_GaDataDataTableRowsC extends Google_Model
 
 class Google_Service_Analytics_GaDataProfileInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $internalWebPropertyId;
   public $profileId;
@@ -6853,6 +6970,13 @@ class Google_Service_Analytics_GaDataProfileInfo extends Google_Model
 
 class Google_Service_Analytics_GaDataQuery extends Google_Collection
 {
+  protected $collection_key = 'sort';
+  protected $internal_gapi_mappings = array(
+        "endDate" => "end-date",
+        "maxResults" => "max-results",
+        "startDate" => "start-date",
+        "startIndex" => "start-index",
+  );
   public $dimensions;
   public $endDate;
   public $filters;
@@ -6978,11 +7102,14 @@ class Google_Service_Analytics_GaDataQuery extends Google_Collection
 
 class Google_Service_Analytics_GaDataTotalsForAllResults extends Google_Model
 {
-
+  protected $internal_gapi_mappings = array(
+  );
 }
 
 class Google_Service_Analytics_Goal extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $active;
   public $created;
@@ -7190,6 +7317,9 @@ class Google_Service_Analytics_Goal extends Google_Model
 
 class Google_Service_Analytics_GoalEventDetails extends Google_Collection
 {
+  protected $collection_key = 'eventConditions';
+  protected $internal_gapi_mappings = array(
+  );
   protected $eventConditionsType = 'Google_Service_Analytics_GoalEventDetailsEventConditions';
   protected $eventConditionsDataType = 'array';
   public $useEventValue;
@@ -7217,6 +7347,8 @@ class Google_Service_Analytics_GoalEventDetails extends Google_Collection
 
 class Google_Service_Analytics_GoalEventDetailsEventConditions extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $comparisonType;
   public $comparisonValue;
   public $expression;
@@ -7276,6 +7408,8 @@ class Google_Service_Analytics_GoalEventDetailsEventConditions extends Google_Mo
 
 class Google_Service_Analytics_GoalParentLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -7302,6 +7436,9 @@ class Google_Service_Analytics_GoalParentLink extends Google_Model
 
 class Google_Service_Analytics_GoalUrlDestinationDetails extends Google_Collection
 {
+  protected $collection_key = 'steps';
+  protected $internal_gapi_mappings = array(
+  );
   public $caseSensitive;
   public $firstStepRequired;
   public $matchType;
@@ -7362,6 +7499,8 @@ class Google_Service_Analytics_GoalUrlDestinationDetails extends Google_Collecti
 
 class Google_Service_Analytics_GoalUrlDestinationDetailsSteps extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $name;
   public $number;
   public $url;
@@ -7399,6 +7538,8 @@ class Google_Service_Analytics_GoalUrlDestinationDetailsSteps extends Google_Mod
 
 class Google_Service_Analytics_GoalVisitNumPagesDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $comparisonType;
   public $comparisonValue;
 
@@ -7425,6 +7566,8 @@ class Google_Service_Analytics_GoalVisitNumPagesDetails extends Google_Model
 
 class Google_Service_Analytics_GoalVisitTimeOnSiteDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $comparisonType;
   public $comparisonValue;
 
@@ -7451,6 +7594,9 @@ class Google_Service_Analytics_GoalVisitTimeOnSiteDetails extends Google_Model
 
 class Google_Service_Analytics_Goals extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_Goal';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -7544,6 +7690,9 @@ class Google_Service_Analytics_Goals extends Google_Collection
 
 class Google_Service_Analytics_McfData extends Google_Collection
 {
+  protected $collection_key = 'rows';
+  protected $internal_gapi_mappings = array(
+  );
   protected $columnHeadersType = 'Google_Service_Analytics_McfDataColumnHeaders';
   protected $columnHeadersDataType = 'array';
   public $containsSampledData;
@@ -7717,6 +7866,8 @@ class Google_Service_Analytics_McfData extends Google_Collection
 
 class Google_Service_Analytics_McfDataColumnHeaders extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $columnType;
   public $dataType;
   public $name;
@@ -7754,6 +7905,8 @@ class Google_Service_Analytics_McfDataColumnHeaders extends Google_Model
 
 class Google_Service_Analytics_McfDataProfileInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $internalWebPropertyId;
   public $profileId;
@@ -7824,6 +7977,13 @@ class Google_Service_Analytics_McfDataProfileInfo extends Google_Model
 
 class Google_Service_Analytics_McfDataQuery extends Google_Collection
 {
+  protected $collection_key = 'sort';
+  protected $internal_gapi_mappings = array(
+        "endDate" => "end-date",
+        "maxResults" => "max-results",
+        "startDate" => "start-date",
+        "startIndex" => "start-index",
+  );
   public $dimensions;
   public $endDate;
   public $filters;
@@ -7949,6 +8109,9 @@ class Google_Service_Analytics_McfDataQuery extends Google_Collection
 
 class Google_Service_Analytics_McfDataRows extends Google_Collection
 {
+  protected $collection_key = 'conversionPathValue';
+  protected $internal_gapi_mappings = array(
+  );
   protected $conversionPathValueType = 'Google_Service_Analytics_McfDataRowsConversionPathValue';
   protected $conversionPathValueDataType = 'array';
   public $primitiveValue;
@@ -7976,6 +8139,8 @@ class Google_Service_Analytics_McfDataRows extends Google_Collection
 
 class Google_Service_Analytics_McfDataRowsConversionPathValue extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $interactionType;
   public $nodeValue;
 
@@ -8002,11 +8167,14 @@ class Google_Service_Analytics_McfDataRowsConversionPathValue extends Google_Mod
 
 class Google_Service_Analytics_McfDataTotalsForAllResults extends Google_Model
 {
-
+  protected $internal_gapi_mappings = array(
+  );
 }
 
 class Google_Service_Analytics_Profile extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   protected $childLinkType = 'Google_Service_Analytics_ProfileChildLink';
   protected $childLinkDataType = '';
@@ -8267,6 +8435,8 @@ class Google_Service_Analytics_Profile extends Google_Model
 
 class Google_Service_Analytics_ProfileChildLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -8293,6 +8463,8 @@ class Google_Service_Analytics_ProfileChildLink extends Google_Model
 
 class Google_Service_Analytics_ProfileFilterLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $filterRefType = 'Google_Service_Analytics_FilterRef';
   protected $filterRefDataType = '';
   public $id;
@@ -8365,6 +8537,9 @@ class Google_Service_Analytics_ProfileFilterLink extends Google_Model
 
 class Google_Service_Analytics_ProfileFilterLinks extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_ProfileFilterLink';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -8458,6 +8633,8 @@ class Google_Service_Analytics_ProfileFilterLinks extends Google_Collection
 
 class Google_Service_Analytics_ProfileParentLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -8484,6 +8661,9 @@ class Google_Service_Analytics_ProfileParentLink extends Google_Model
 
 class Google_Service_Analytics_ProfilePermissions extends Google_Collection
 {
+  protected $collection_key = 'effective';
+  protected $internal_gapi_mappings = array(
+  );
   public $effective;
 
   public function setEffective($effective)
@@ -8499,6 +8679,8 @@ class Google_Service_Analytics_ProfilePermissions extends Google_Collection
 
 class Google_Service_Analytics_ProfileRef extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $href;
   public $id;
@@ -8580,6 +8762,8 @@ class Google_Service_Analytics_ProfileRef extends Google_Model
 
 class Google_Service_Analytics_ProfileSummary extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   public $kind;
   public $name;
@@ -8628,6 +8812,9 @@ class Google_Service_Analytics_ProfileSummary extends Google_Model
 
 class Google_Service_Analytics_Profiles extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_Profile';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -8721,6 +8908,9 @@ class Google_Service_Analytics_Profiles extends Google_Collection
 
 class Google_Service_Analytics_RealtimeData extends Google_Collection
 {
+  protected $collection_key = 'rows';
+  protected $internal_gapi_mappings = array(
+  );
   protected $columnHeadersType = 'Google_Service_Analytics_RealtimeDataColumnHeaders';
   protected $columnHeadersDataType = 'array';
   public $id;
@@ -8827,6 +9017,8 @@ class Google_Service_Analytics_RealtimeData extends Google_Collection
 
 class Google_Service_Analytics_RealtimeDataColumnHeaders extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $columnType;
   public $dataType;
   public $name;
@@ -8864,6 +9056,8 @@ class Google_Service_Analytics_RealtimeDataColumnHeaders extends Google_Model
 
 class Google_Service_Analytics_RealtimeDataProfileInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $internalWebPropertyId;
   public $profileId;
@@ -8934,6 +9128,10 @@ class Google_Service_Analytics_RealtimeDataProfileInfo extends Google_Model
 
 class Google_Service_Analytics_RealtimeDataQuery extends Google_Collection
 {
+  protected $collection_key = 'sort';
+  protected $internal_gapi_mappings = array(
+        "maxResults" => "max-results",
+  );
   public $dimensions;
   public $filters;
   public $ids;
@@ -9004,11 +9202,14 @@ class Google_Service_Analytics_RealtimeDataQuery extends Google_Collection
 
 class Google_Service_Analytics_RealtimeDataTotalsForAllResults extends Google_Model
 {
-
+  protected $internal_gapi_mappings = array(
+  );
 }
 
 class Google_Service_Analytics_Segment extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $created;
   public $definition;
   public $id;
@@ -9112,6 +9313,9 @@ class Google_Service_Analytics_Segment extends Google_Model
 
 class Google_Service_Analytics_Segments extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_Segment';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -9205,6 +9409,10 @@ class Google_Service_Analytics_Segments extends Google_Collection
 
 class Google_Service_Analytics_UnsampledReport extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+        "endDate" => "end-date",
+        "startDate" => "start-date",
+  );
   public $accountId;
   protected $cloudStorageDownloadDetailsType = 'Google_Service_Analytics_UnsampledReportCloudStorageDownloadDetails';
   protected $cloudStorageDownloadDetailsDataType = '';
@@ -9420,6 +9628,8 @@ class Google_Service_Analytics_UnsampledReport extends Google_Model
 
 class Google_Service_Analytics_UnsampledReportCloudStorageDownloadDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $bucketId;
   public $objectId;
 
@@ -9446,6 +9656,8 @@ class Google_Service_Analytics_UnsampledReportCloudStorageDownloadDetails extend
 
 class Google_Service_Analytics_UnsampledReportDriveDownloadDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $documentId;
 
   public function setDocumentId($documentId)
@@ -9461,6 +9673,9 @@ class Google_Service_Analytics_UnsampledReportDriveDownloadDetails extends Googl
 
 class Google_Service_Analytics_UnsampledReports extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_UnsampledReport';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -9554,6 +9769,9 @@ class Google_Service_Analytics_UnsampledReports extends Google_Collection
 
 class Google_Service_Analytics_Upload extends Google_Collection
 {
+  protected $collection_key = 'errors';
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $customDataSourceId;
   public $errors;
@@ -9624,6 +9842,9 @@ class Google_Service_Analytics_Upload extends Google_Collection
 
 class Google_Service_Analytics_Uploads extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_Upload';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -9706,6 +9927,8 @@ class Google_Service_Analytics_Uploads extends Google_Collection
 
 class Google_Service_Analytics_UserRef extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $email;
   public $id;
   public $kind;
@@ -9743,6 +9966,8 @@ class Google_Service_Analytics_UserRef extends Google_Model
 
 class Google_Service_Analytics_WebPropertyRef extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   public $href;
   public $id;
@@ -9813,6 +10038,9 @@ class Google_Service_Analytics_WebPropertyRef extends Google_Model
 
 class Google_Service_Analytics_WebPropertySummary extends Google_Collection
 {
+  protected $collection_key = 'profiles';
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   public $internalWebPropertyId;
   public $kind;
@@ -9895,6 +10123,9 @@ class Google_Service_Analytics_WebPropertySummary extends Google_Collection
 
 class Google_Service_Analytics_Webproperties extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Analytics_Webproperty';
   protected $itemsDataType = 'array';
   public $itemsPerPage;
@@ -9988,6 +10219,8 @@ class Google_Service_Analytics_Webproperties extends Google_Collection
 
 class Google_Service_Analytics_Webproperty extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $accountId;
   protected $childLinkType = 'Google_Service_Analytics_WebpropertyChildLink';
   protected $childLinkDataType = '';
@@ -10171,6 +10404,8 @@ class Google_Service_Analytics_Webproperty extends Google_Model
 
 class Google_Service_Analytics_WebpropertyChildLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -10197,6 +10432,8 @@ class Google_Service_Analytics_WebpropertyChildLink extends Google_Model
 
 class Google_Service_Analytics_WebpropertyParentLink extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $href;
   public $type;
 
@@ -10223,6 +10460,9 @@ class Google_Service_Analytics_WebpropertyParentLink extends Google_Model
 
 class Google_Service_Analytics_WebpropertyPermissions extends Google_Collection
 {
+  protected $collection_key = 'effective';
+  protected $internal_gapi_mappings = array(
+  );
   public $effective;
 
   public function setEffective($effective)

@@ -3,7 +3,7 @@
 Plugin Name: Yakadanda Google+ Hangout Events
 Plugin URI: http://www.yakadanda.com/plugins/yakadanda-google-hangout-events/
 Description: A countdown function to time of the Google+ Hangout Events.
-Version: 0.2.7
+Version: 0.2.8
 Author: Peter Ricci
 Author URI: http://www.yakadanda.com/
 License: GPL2
@@ -27,7 +27,7 @@ function googleplushangoutevent_deactivate() {
   
 }
 
-if(!defined('GPLUS_HANGOUT_EVENTS_VER')) define('GPLUS_HANGOUT_EVENTS_VER', '0.2.7');
+if(!defined('GPLUS_HANGOUT_EVENTS_VER')) define('GPLUS_HANGOUT_EVENTS_VER', '0.2.8');
 if(!defined('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR')) define('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 if(!defined('GPLUS_HANGOUT_EVENTS_PLUGIN_URL')) define('GPLUS_HANGOUT_EVENTS_PLUGIN_URL', plugins_url(null, __FILE__));
 if(!defined('GPLUS_HANGOUT_EVENTS_THEME_DIR')) define('GPLUS_HANGOUT_EVENTS_THEME_DIR', get_stylesheet_directory());
@@ -56,15 +56,20 @@ function googleplushangoutevent_action_links($links, $file) {
   return $links;
 }
 
-// Register scripts & styles
+// Register javascripts & stylesheets
 add_action('init', 'googleplushangoutevent_register');
 function googleplushangoutevent_register() {
   /* Styles */
+  // Backend
+  // Roboto Condensed font
+  wp_register_style('roboto-condensed', 'http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700', false, GPLUS_HANGOUT_EVENTS_VER, 'all');
+  // Yakadanda GooglePlus Hangout Event style
+  wp_register_style('googleplushangoutevents-admin-style', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/css/admin.css', array('roboto-condensed'), GPLUS_HANGOUT_EVENTS_VER, 'all');
+  
+  // Frontend
   // Google web fonts
   $google_fonts = googleplushangoutevent_google_fonts();
   if ($google_fonts) wp_register_style('googleplushangoutevent-google-fonts', 'http://fonts.googleapis.com/css?family=' . $google_fonts, false, GPLUS_HANGOUT_EVENTS_VER, 'all');
-  // Yakadanda GooglePlus Hangout Event style
-  wp_register_style('googleplushangoutevents-admin-style', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/css/admin.css', false, GPLUS_HANGOUT_EVENTS_VER, 'all');
   if ( file_exists(GPLUS_HANGOUT_EVENTS_THEME_DIR . '/css/google-hangout-events.css' )) {
     wp_register_style('googleplushangoutevents-style', GPLUS_HANGOUT_EVENTS_THEME_URL . '/css/google-hangout-events.css', false, GPLUS_HANGOUT_EVENTS_VER, 'all');
   } else {
@@ -77,42 +82,46 @@ function googleplushangoutevent_register() {
   // Countdown timer jQuery Plugin
   wp_register_script('googleplushangoutevent-countdown', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/js/jquery.jcountdown.min.js', array('jquery'), '1.4.2', true );
   // Google+ Hangout Event script
-  wp_register_script('googleplushangoutevent-script', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/js/script.js', array('jquery', 'googleplushangoutevent-countdown'), GPLUS_HANGOUT_EVENTS_VER, true );
+  wp_register_script('googleplushangoutevent-script', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/js/script.js', array('jquery'), GPLUS_HANGOUT_EVENTS_VER, true );
   
   // ajax
   wp_localize_script('googleplushangoutevent-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ));
 }
 
-// Call stylesheets
-add_action('admin_enqueue_scripts', 'googleplushangoutevent_admin_enqueue_styles');
-function googleplushangoutevent_admin_enqueue_styles() {
-  if (googleplushangoutevent_is_page()) {
-    wp_enqueue_style('farbtastic');
-    wp_enqueue_style('googleplushangoutevents-admin-style');
-  }
-}
-add_action('wp_enqueue_scripts', 'googleplushangoutevent_wp_enqueue_styles');
-function googleplushangoutevent_wp_enqueue_styles() {
-  $google_fonts = googleplushangoutevent_google_fonts();
-  if ($google_fonts) wp_enqueue_style('googleplushangoutevent-google-fonts');
-  wp_enqueue_style('googleplushangoutevents-style');
-}
-
-// Call javascripts
+// backend scripts
 add_action('admin_enqueue_scripts', 'googleplushangoutevent_admin_enqueue_scripts');
 function googleplushangoutevent_admin_enqueue_scripts() {
   if (googleplushangoutevent_is_page()) {
-    wp_enqueue_script('farbtastic');
+    // Call stylesheets
+    wp_enqueue_style('googleplushangoutevents-admin-style');
+    
+    // Call javascripts
+    wp_enqueue_script('iris');
     wp_enqueue_script('jquery-ui-tabs');
     wp_enqueue_script('jquery-ui-dialog');
     wp_enqueue_script('media-upload');
     wp_enqueue_script('googleplushangoutevent-script');
+  } else {
+    // load stylesheets
+    wp_enqueue_style('googleplushangoutevents-admin-menu', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/css/menu.css', array(), GPLUS_HANGOUT_EVENTS_VER ,'all');
   }
 }
+
+// frontend scripts
 add_action('wp_enqueue_scripts', 'googleplushangoutevent_wp_enqueue_scripts');
 function googleplushangoutevent_wp_enqueue_scripts() {
-  wp_enqueue_script('jquery');
+  // Call javascripts
   wp_enqueue_script('googleplushangoutevent-embedded-posts');
+}
+function googleplushangoutevent_wp_enqueue_scripts_load() {
+  // Call stylesheets
+  $google_fonts = googleplushangoutevent_google_fonts();
+  if ($google_fonts) wp_enqueue_style('googleplushangoutevent-google-fonts');
+  wp_enqueue_style('googleplushangoutevents-style');
+  
+  // Call javascripts
+  wp_enqueue_script('googleplushangoutevent-countdown');
+  wp_enqueue_script('googleplushangoutevent-script');
 }
 
 require_once(dirname( __FILE__ ) . '/admin/includes.php');

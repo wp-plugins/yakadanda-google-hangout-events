@@ -604,6 +604,9 @@ class Google_Service_GamesManagement_TurnBasedMatches_Resource extends Google_Se
 
 class Google_Service_GamesManagement_AchievementResetAllResponse extends Google_Collection
 {
+  protected $collection_key = 'results';
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   protected $resultsType = 'Google_Service_GamesManagement_AchievementResetResponse';
   protected $resultsDataType = 'array';
@@ -631,6 +634,8 @@ class Google_Service_GamesManagement_AchievementResetAllResponse extends Google_
 
 class Google_Service_GamesManagement_AchievementResetResponse extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $currentState;
   public $definitionId;
   public $kind;
@@ -679,6 +684,8 @@ class Google_Service_GamesManagement_AchievementResetResponse extends Google_Mod
 
 class Google_Service_GamesManagement_GamesPlayedResource extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $autoMatched;
   public $timeMillis;
 
@@ -705,6 +712,8 @@ class Google_Service_GamesManagement_GamesPlayedResource extends Google_Model
 
 class Google_Service_GamesManagement_GamesPlayerExperienceInfoResource extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $currentExperiencePoints;
   protected $currentLevelType = 'Google_Service_GamesManagement_GamesPlayerLevelResource';
   protected $currentLevelDataType = '';
@@ -755,6 +764,8 @@ class Google_Service_GamesManagement_GamesPlayerExperienceInfoResource extends G
 
 class Google_Service_GamesManagement_GamesPlayerLevelResource extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $level;
   public $maxExperiencePoints;
   public $minExperiencePoints;
@@ -792,6 +803,8 @@ class Google_Service_GamesManagement_GamesPlayerLevelResource extends Google_Mod
 
 class Google_Service_GamesManagement_HiddenPlayer extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $hiddenTimeMillis;
   public $kind;
   protected $playerType = 'Google_Service_GamesManagement_Player';
@@ -830,6 +843,9 @@ class Google_Service_GamesManagement_HiddenPlayer extends Google_Model
 
 class Google_Service_GamesManagement_HiddenPlayerList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_GamesManagement_HiddenPlayer';
   protected $itemsDataType = 'array';
   public $kind;
@@ -868,6 +884,8 @@ class Google_Service_GamesManagement_HiddenPlayerList extends Google_Collection
 
 class Google_Service_GamesManagement_Player extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $avatarImageUrl;
   public $displayName;
   protected $experienceInfoType = 'Google_Service_GamesManagement_GamesPlayerExperienceInfoResource';
@@ -963,6 +981,8 @@ class Google_Service_GamesManagement_Player extends Google_Model
 
 class Google_Service_GamesManagement_PlayerName extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $familyName;
   public $givenName;
 
@@ -989,6 +1009,9 @@ class Google_Service_GamesManagement_PlayerName extends Google_Model
 
 class Google_Service_GamesManagement_PlayerScoreResetResponse extends Google_Collection
 {
+  protected $collection_key = 'resetScoreTimeSpans';
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   public $resetScoreTimeSpans;
 

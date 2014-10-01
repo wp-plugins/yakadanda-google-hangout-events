@@ -157,6 +157,9 @@ class Google_Service_Appsactivity_Activities_Resource extends Google_Service_Res
 
 class Google_Service_Appsactivity_Activity extends Google_Collection
 {
+  protected $collection_key = 'singleEvents';
+  protected $internal_gapi_mappings = array(
+  );
   protected $combinedEventType = 'Google_Service_Appsactivity_Event';
   protected $combinedEventDataType = '';
   protected $singleEventsType = 'Google_Service_Appsactivity_Event';
@@ -185,6 +188,9 @@ class Google_Service_Appsactivity_Activity extends Google_Collection
 
 class Google_Service_Appsactivity_Event extends Google_Collection
 {
+  protected $collection_key = 'permissionChanges';
+  protected $internal_gapi_mappings = array(
+  );
   public $additionalEventTypes;
   public $eventTimeMillis;
   public $fromUserDeletion;
@@ -293,6 +299,9 @@ class Google_Service_Appsactivity_Event extends Google_Collection
 
 class Google_Service_Appsactivity_ListActivitiesResponse extends Google_Collection
 {
+  protected $collection_key = 'activities';
+  protected $internal_gapi_mappings = array(
+  );
   protected $activitiesType = 'Google_Service_Appsactivity_Activity';
   protected $activitiesDataType = 'array';
   public $nextPageToken;
@@ -320,6 +329,9 @@ class Google_Service_Appsactivity_ListActivitiesResponse extends Google_Collecti
 
 class Google_Service_Appsactivity_Move extends Google_Collection
 {
+  protected $collection_key = 'removedParents';
+  protected $internal_gapi_mappings = array(
+  );
   protected $addedParentsType = 'Google_Service_Appsactivity_Parent';
   protected $addedParentsDataType = 'array';
   protected $removedParentsType = 'Google_Service_Appsactivity_Parent';
@@ -348,6 +360,8 @@ class Google_Service_Appsactivity_Move extends Google_Collection
 
 class Google_Service_Appsactivity_Parent extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   public $isRoot;
   public $title;
@@ -385,6 +399,8 @@ class Google_Service_Appsactivity_Parent extends Google_Model
 
 class Google_Service_Appsactivity_Permission extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $name;
   public $permissionId;
   public $role;
@@ -456,6 +472,9 @@ class Google_Service_Appsactivity_Permission extends Google_Model
 
 class Google_Service_Appsactivity_PermissionChange extends Google_Collection
 {
+  protected $collection_key = 'removedPermissions';
+  protected $internal_gapi_mappings = array(
+  );
   protected $addedPermissionsType = 'Google_Service_Appsactivity_Permission';
   protected $addedPermissionsDataType = 'array';
   protected $removedPermissionsType = 'Google_Service_Appsactivity_Permission';
@@ -484,6 +503,8 @@ class Google_Service_Appsactivity_PermissionChange extends Google_Collection
 
 class Google_Service_Appsactivity_Photo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $url;
 
   public function setUrl($url)
@@ -499,6 +520,8 @@ class Google_Service_Appsactivity_Photo extends Google_Model
 
 class Google_Service_Appsactivity_Rename extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $newTitle;
   public $oldTitle;
 
@@ -525,6 +548,8 @@ class Google_Service_Appsactivity_Rename extends Google_Model
 
 class Google_Service_Appsactivity_Target extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   public $mimeType;
   public $name;
@@ -562,6 +587,8 @@ class Google_Service_Appsactivity_Target extends Google_Model
 
 class Google_Service_Appsactivity_User extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $name;
   protected $photoType = 'Google_Service_Appsactivity_Photo';
   protected $photoDataType = '';

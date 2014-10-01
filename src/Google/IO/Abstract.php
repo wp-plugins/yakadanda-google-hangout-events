@@ -271,7 +271,10 @@ abstract class Google_IO_Abstract
       $responseBody = substr($respData, $headerSize);
       $responseHeaders = substr($respData, 0, $headerSize);
     } else {
-      list($responseHeaders, $responseBody) = explode("\r\n\r\n", $respData, 2);
+      $responseSegments = explode("\r\n\r\n", $respData, 2);
+      $responseHeaders = $responseSegments[0];
+      $responseBody = isset($responseSegments[1]) ? $responseSegments[1] :
+                                                    null;
     }
 
     $responseHeaders = $this->getHttpResponseHeaders($responseHeaders);
@@ -300,7 +303,7 @@ abstract class Google_IO_Abstract
       if ($headerLine && strpos($headerLine, ':') !== false) {
         list($header, $value) = explode(': ', $headerLine, 2);
         $header = strtolower($header);
-        if (isset($responseHeaders[$header])) {
+        if (isset($headers[$header])) {
           $headers[$header] .= "\n" . $value;
         } else {
           $headers[$header] = $value;

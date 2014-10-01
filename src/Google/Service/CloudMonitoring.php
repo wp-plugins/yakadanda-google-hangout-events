@@ -378,6 +378,8 @@ class Google_Service_CloudMonitoring_TimeseriesDescriptors_Resource extends Goog
 
 class Google_Service_CloudMonitoring_ListMetricDescriptorsRequest extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
 
   public function setKind($kind)
@@ -393,6 +395,9 @@ class Google_Service_CloudMonitoring_ListMetricDescriptorsRequest extends Google
 
 class Google_Service_CloudMonitoring_ListMetricDescriptorsResponse extends Google_Collection
 {
+  protected $collection_key = 'metrics';
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   protected $metricsType = 'Google_Service_CloudMonitoring_MetricDescriptor';
   protected $metricsDataType = 'array';
@@ -431,6 +436,8 @@ class Google_Service_CloudMonitoring_ListMetricDescriptorsResponse extends Googl
 
 class Google_Service_CloudMonitoring_ListTimeseriesDescriptorsRequest extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
 
   public function setKind($kind)
@@ -446,6 +453,9 @@ class Google_Service_CloudMonitoring_ListTimeseriesDescriptorsRequest extends Go
 
 class Google_Service_CloudMonitoring_ListTimeseriesDescriptorsResponse extends Google_Collection
 {
+  protected $collection_key = 'timeseries';
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   public $nextPageToken;
   public $oldest;
@@ -506,6 +516,8 @@ class Google_Service_CloudMonitoring_ListTimeseriesDescriptorsResponse extends G
 
 class Google_Service_CloudMonitoring_ListTimeseriesRequest extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
 
   public function setKind($kind)
@@ -521,6 +533,9 @@ class Google_Service_CloudMonitoring_ListTimeseriesRequest extends Google_Model
 
 class Google_Service_CloudMonitoring_ListTimeseriesResponse extends Google_Collection
 {
+  protected $collection_key = 'timeseries';
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   public $nextPageToken;
   public $oldest;
@@ -581,6 +596,9 @@ class Google_Service_CloudMonitoring_ListTimeseriesResponse extends Google_Colle
 
 class Google_Service_CloudMonitoring_MetricDescriptor extends Google_Collection
 {
+  protected $collection_key = 'labels';
+  protected $internal_gapi_mappings = array(
+  );
   public $description;
   protected $labelsType = 'Google_Service_CloudMonitoring_MetricDescriptorLabelDescriptor';
   protected $labelsDataType = 'array';
@@ -642,6 +660,8 @@ class Google_Service_CloudMonitoring_MetricDescriptor extends Google_Collection
 
 class Google_Service_CloudMonitoring_MetricDescriptorLabelDescriptor extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $description;
   public $key;
 
@@ -668,6 +688,8 @@ class Google_Service_CloudMonitoring_MetricDescriptorLabelDescriptor extends Goo
 
 class Google_Service_CloudMonitoring_MetricDescriptorTypeDescriptor extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $metricType;
   public $valueType;
 
@@ -694,6 +716,8 @@ class Google_Service_CloudMonitoring_MetricDescriptorTypeDescriptor extends Goog
 
 class Google_Service_CloudMonitoring_Point extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $boolValue;
   protected $distributionValueType = 'Google_Service_CloudMonitoring_PointDistribution';
   protected $distributionValueDataType = '';
@@ -776,6 +800,9 @@ class Google_Service_CloudMonitoring_Point extends Google_Model
 
 class Google_Service_CloudMonitoring_PointDistribution extends Google_Collection
 {
+  protected $collection_key = 'buckets';
+  protected $internal_gapi_mappings = array(
+  );
   protected $bucketsType = 'Google_Service_CloudMonitoring_PointDistributionBucket';
   protected $bucketsDataType = 'array';
   protected $overflowBucketType = 'Google_Service_CloudMonitoring_PointDistributionOverflowBucket';
@@ -816,6 +843,8 @@ class Google_Service_CloudMonitoring_PointDistribution extends Google_Collection
 
 class Google_Service_CloudMonitoring_PointDistributionBucket extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $count;
   public $lowerBound;
   public $upperBound;
@@ -853,6 +882,8 @@ class Google_Service_CloudMonitoring_PointDistributionBucket extends Google_Mode
 
 class Google_Service_CloudMonitoring_PointDistributionOverflowBucket extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $count;
   public $lowerBound;
 
@@ -879,6 +910,8 @@ class Google_Service_CloudMonitoring_PointDistributionOverflowBucket extends Goo
 
 class Google_Service_CloudMonitoring_PointDistributionUnderflowBucket extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $count;
   public $upperBound;
 
@@ -905,6 +938,9 @@ class Google_Service_CloudMonitoring_PointDistributionUnderflowBucket extends Go
 
 class Google_Service_CloudMonitoring_Timeseries extends Google_Collection
 {
+  protected $collection_key = 'points';
+  protected $internal_gapi_mappings = array(
+  );
   protected $pointsType = 'Google_Service_CloudMonitoring_Point';
   protected $pointsDataType = 'array';
   protected $timeseriesDescType = 'Google_Service_CloudMonitoring_TimeseriesDescriptor';
@@ -933,6 +969,8 @@ class Google_Service_CloudMonitoring_Timeseries extends Google_Collection
 
 class Google_Service_CloudMonitoring_TimeseriesDescriptor extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $labels;
   public $metric;
   public $project;
@@ -970,5 +1008,6 @@ class Google_Service_CloudMonitoring_TimeseriesDescriptor extends Google_Model
 
 class Google_Service_CloudMonitoring_TimeseriesDescriptorLabels extends Google_Model
 {
-
+  protected $internal_gapi_mappings = array(
+  );
 }

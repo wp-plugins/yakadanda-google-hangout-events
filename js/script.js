@@ -4,33 +4,27 @@ jQuery(function($){
     
   }
   if ( $('body').find('#google-hangout-event-settings').length === 1 ) {
-    // select themes, sizes, and styles
-    var optionsFirst = new Array("title", "date", "detail", "icon", "countdown", "event_button"),
-    optionsLast = new Array("theme", "size", "style");
-    
-    for ( f in optionsFirst ) {
-      for ( l in optionsLast ) {
-        var the_value = $('#hidden_'+optionsFirst[f]+'_'+optionsLast[l]).val();
-        if ( the_value ) $('#'+optionsFirst[f]+'_'+optionsLast[l]+' option[value="' + the_value + '"]').attr('selected',true);
+    // Iris color picker
+    $('.iris-color-picker').iris({
+      palettes: ['#d2d2d2', '#fefefe', '#444444', '#d64337', '#5f5f5f', '#ffffff', '#3366cc', '#c03c34'],
+      change: function(event, ui) {
+        $(this).css( 'background-color', ui.color.toString());
       }
-    }
-    
-    // Farbtastic Color Picker
-    var f = $.farbtastic('#picker');
-    var p = $('#picker').css('opacity', 0.25);
-    var selected;
-    
-    $('.colorwheel').each(function () { f.linkTo(this); $(this).css('opacity', 0.75); }).focus(function() {
-      if (selected) {
-        $(selected).css('opacity', 0.75).removeClass('colorwell-selected');
+    });
+    $(document).click(function (e) {
+      if (!$(e.target).is(".iris-color-picker, .iris-picker, .iris-picker-inner")) {
+        $('.iris-color-picker').iris('hide');
       }
-      f.linkTo(this);
-      p.css('opacity', 1);
-      $(selected = this).css('opacity', 1).addClass('colorwell-selected');
+    });
+    $('.iris-color-picker').click(function (event) {
+      $('.iris-color-picker').iris('hide');
+      $(this).iris('show');
     });
     
     $('#googleplushangoutevent-help-tab').on('click', function(e) {
-      $('#contextual-help-link').trigger('click');
+      if ($('#screen-meta').is(":hidden")) {
+        $('#contextual-help-link').trigger('click');
+      }
       $('#tab-link-googleplushangoutevent-setup a').trigger('click');
       $("html, body").animate({ scrollTop: $('#wpbody').offset().top }, 500);
       e.preventDefault();

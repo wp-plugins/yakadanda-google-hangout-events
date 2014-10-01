@@ -51,7 +51,7 @@ function googleplushangoutevent_is_page() {
 // Register menu page
 add_action('admin_menu', 'googleplushangoutevent_register_menu_page');
 function googleplushangoutevent_register_menu_page() {
-  add_menu_page('Events', 'Events', 'add_users', 'googleplushangoutevent-all-events', 'googleplushangoutevent_page_all_events', network_home_url('wp-content/plugins/yakadanda-google-hangout-events/img/menu-icon.png'), 918276354);
+  add_menu_page('Events', 'Events', 'add_users', 'googleplushangoutevent-all-events', 'googleplushangoutevent_page_all_events', 'none', 918276354);
   
   $events_page = add_submenu_page('googleplushangoutevent-all-events', 'All Events', 'All Events', 'manage_options', 'googleplushangoutevent-all-events', 'googleplushangoutevent_page_all_events');
   add_action('load-' . $events_page, 'googleplushangoutevent_admin_add_help_tab');
@@ -61,11 +61,18 @@ function googleplushangoutevent_register_menu_page() {
 }
 
 function googleplushangoutevent_page_all_events() {
+  if (!current_user_can('manage_options'))
+    wp_die( __('You do not have sufficient permissions to access this page.') );
+  
+  $message = null;
+  
   // extend event
   if ( isset($_POST['extend_event']) ) {
     $image_src = get_option('googleplushangoutevent_' . $_GET['id']);
-    if ($_POST['image_location'] != $image_src)
+    if ($_POST['image_location'] != $image_src) {
       update_option('googleplushangoutevent_' . $_GET['id'], $_POST['image_location']);
+      $message = array('class' => 'updated', 'msg' => 'Event updated.');
+    }
   }
   
   $event = null;
@@ -118,6 +125,7 @@ function googleplushangoutevent_page_settings() {
       'detail_style' => $_POST['detail_style'],
       'icon_border' => $_POST['icon_border'],
       'icon_background' => $_POST['icon_background'],
+      'icon_hover' => $_POST['icon_hover'],
       'icon_color' => $_POST['icon_color'],
       'icon_theme' => $_POST['icon_theme'],
       'icon_size' => $_POST['icon_size'],
@@ -255,8 +263,8 @@ function googleplushangoutevent_admin_add_help_tab() {
 }
 
 function googleplushangoutevent_section_setup() {
-  $output = '<h1>How to get your Google Api Key, Client ID, and Client Secret</h1>';
-  $output .= '<div id="setup_tabs">';
+  $output = '<div class="google-web-starter-kit">';
+  $output .= '<h1>How to get your Google Api Key, Client ID, and Client Secret</h1>';
   $output .= '<ol>';
   $output .= '<li>At <a href="https://cloud.google.com/console/project" target="_blank">https://cloud.google.com/console/project</a> create new project.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-01.png"/></li>';
   $output .= '<li>Fill New Project modal dialog with your suitable information.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-02.png"/></li>';
@@ -278,9 +286,10 @@ function googleplushangoutevent_section_setup() {
 }
 
 function googleplushangoutevent_section_shortcode() {
-  $output = '<h1>Shortcode</h1>';
+  $output = '<div class="google-web-starter-kit">';
+  $output .= '<h1>Shortcode</h1>';
   $output .= '<p><strong>Examples</strong></p>';
-  $output .= '<ul class="sc_examples">';
+  $output .= '<ul>';
   $output .= '<li><code>[google+events]</code></li>';
   $output .= '<li><code>[google+events type="hangout"]</code></li>';
   $output .= '<li><code>[google+events src="gplus"]</code></li>';
@@ -296,7 +305,7 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<li><code>[google+events countdown="true"]</code></li>';
   $output .= '</ul>';
   $output .= '<p><strong>Attributes</strong></p>';
-  $output .= '<table class="sc_key"><tbody>';
+  $output .= '<table><tbody>';
   $output .= '<tr><td style="vertical-align: top;">type</td><td style="vertical-align: top;">=</td><td><span>all</span>, <span>normal</span>, or <span>hangout</span>, by default type is <span>all</span></td></tr>';
   $output .= '<tr><td style="vertical-align: top;">src</td><td style="vertical-align: top;">=</td><td><span>all</span>, <span>gcal</span> (event from calendar), or <span>gplus</span> (event from google+), by default source is <span>all</span></td></tr>';
   $output .= '<tr><td style="vertical-align: top;">limit</td><td style="vertical-align: top;">=</td><td>number of events to display (maximum is <span>20</span>)</td></tr>';
@@ -309,24 +318,26 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<tr><td style="vertical-align: top;">timezone</td><td style="vertical-align: top;">=</td><td>Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at <a href="http://www.php.net/manual/en/timezones.php" target="_blank">http://www.php.net/manual/en/timezones.php</a> (string)</td></tr>';
   $output .= '<tr><td style="vertical-align: top;">countdown</td><td style="vertical-align: top;">=</td><td><span>true</span>, or <span>false</span>, by default countdown is <span>false</span></td></tr>';
   $output .= '<tbody></table>';
+  $output .= '</div>';
   
   return $output;
 }
 
 function googleplushangoutevent_section_embedded_posts() {
-  $output = '<h1>Adding the embedded posts</h1>';
+  $output = '<div class="google-web-starter-kit">'; 
+  $output .= '<h1>Adding the embedded posts</h1>';
   $output .= '<p>Locate the post that you want to embed on <a href="plus.google.com" target="_blank">Google+</a> and click the <img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/gplus-post-menu-icon.png" title="A downward pointing arrow that indicates the menu" alt="A downward pointing arrow that indicates the menu"/> menu icon and choose Embed post.</p>';
   $output .= '<p><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-embedded-posts-1.png"/></p>';
   $output .= '<p>Copy the tag <code>' . htmlentities('<div class="g-post" data-href="https://plus.google.com/116442957294662581658/posts/9Mu57w1iBFj"></div>') . '</code> to post or page.</p>';
   $output .= '<p><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-embedded-posts-2.png"/></p>';
-  
   $output .= '<p>For more detail you can look at <a href="https://developers.google.com/+/web/embedded-post/" target="_blank">https://developers.google.com/+/web/embedded-post/</a>.</p>';
+  $output .= '</div>';
   
   return $output;
 }
 
 // echo font theme
-function googleplushangoutevent_font_themes( $id, $data = null ) {
+function googleplushangoutevent_font_themes($id, $data) {
   include dirname(__FILE__) . '/google-fonts.php';
   $google_fonts = json_decode( $fonts );
   
@@ -340,65 +351,35 @@ function googleplushangoutevent_font_themes( $id, $data = null ) {
   $the_fonts = array_merge($defaultfonts, $webfonts);
   sort ($the_fonts);
   
-  // set default data
-  if ( ( $id == 'title_theme' ) && ( $data == null ) ) $data = 'Arial';
-  if ( ( $id == 'date_theme' ) && ( $data == null ) ) $data = 'Arial';
-  if ( ( $id == 'detail_theme' ) && ( $data == null ) ) $data = 'Arial';
-  if ( ( $id == 'icon_theme' ) && ( $data == null ) ) $data = 'Arial';
-  if ( ( $id == 'countdown_theme' ) && ( $data == null ) ) $data = 'Arial';
-  if ( ( $id == 'event_button_theme' ) && ( $data == null ) ) $data = 'Arial';
   ?>
-    <input name="hidden_<?php echo $id; ?>" type="hidden" id="hidden_<?php echo $id; ?>" value="<?php echo $data; ?>" />
     <select id="<?php echo $id; ?>" name="<?php echo $id; ?>">
       <?php foreach ($the_fonts as $the_font): ?>
-        <option value="<?php echo $the_font; ?>"><?php echo $the_font; ?>&nbsp;</option>
+        <option value="<?php echo $the_font; ?>"<?php echo ($the_font == $data) ? ' selected' : null; ?>><?php echo $the_font; ?>&nbsp;</option>
       <?php endforeach; ?>
     </select>
   <?php
 }
 
 // echo font size
-function googleplushangoutevent_font_sizes( $id, $data = null ) {
-  // set default data
-  if ( ( $id == 'title_size' ) && ( $data == null ) ) $data = 14;
-  if ( ( $id == 'date_size' ) && ( $data == null ) ) $data = 12;
-  if ( ( $id == 'detail_size' ) && ( $data == null ) ) $data = 12;
-  if ( ( $id == 'icon_size' ) && ( $data == null ) ) $data = 12;
-  if ( ( $id == 'countdown_size' ) && ( $data == null ) ) $data = 11;
-  if ( ( $id == 'event_button_size' ) && ( $data == null ) ) $data = 14;
+function googleplushangoutevent_font_sizes($id, $data) {
+  $sizes = array(8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72)
   ?>
-    <input name="hidden_<?php echo $id; ?>" type="hidden" id="hidden_<?php echo $id; ?>" value="<?php echo $data; ?>" />
     <select id="<?php echo $id; ?>" name="<?php echo $id; ?>">
-      <option value="8">8&nbsp;</option>
-      <option value="9">9&nbsp;</option>
-      <option value="10">10&nbsp;</option>
-      <option value="11">11&nbsp;</option>
-      <option value="12">12&nbsp;</option>
-      <option value="14">14&nbsp;</option>
-      <option value="16">16&nbsp;</option>
-      <option value="18">18&nbsp;</option>
-      <option value="20">20&nbsp;</option>
-      <option value="22">22&nbsp;</option>
-      <option value="24">24&nbsp;</option>
-      <option value="26">26&nbsp;</option>
-      <option value="28">28&nbsp;</option>
-      <option value="36">36&nbsp;</option>
-      <option value="48">48&nbsp;</option>
-      <option value="72">72&nbsp;</option>
+      <?php foreach($sizes as $size): ?>
+        <option value="<?php echo $size; ?>"<?php echo ($size == $data) ? ' selected' : null; ?>><?php echo $size; ?>&nbsp;</option>
+      <?php endforeach; ?>
     </select>
   <?php
 }
 
 // echo font style
-function googleplushangoutevent_font_styles( $id, $data = null ) {
-  // set default data
-  if ( ( $id == 'title_style' ) && ( $data == null ) ) $data = 'bold';
+function googleplushangoutevent_font_styles($id, $data) {
+  $styles = array('normal', 'bold', 'italic');
   ?>
-    <input name="hidden_<?php echo $id; ?>" type="hidden" id="hidden_<?php echo $id; ?>" value="<?php echo $data; ?>" />
     <select id="<?php echo $id; ?>" name="<?php echo $id; ?>">
-      <option value="normal">Normal&nbsp;</option>
-      <option value="bold">Bold&nbsp;</option>
-      <option value="italic">Italic&nbsp;</option>
+      <?php foreach($styles as $style): ?>
+        <option value="<?php echo $style; ?>"<?php echo ($style == $data) ? ' selected' : null; ?>><?php echo ucfirst($style); ?>&nbsp;</option>
+      <?php endforeach; ?>
     </select>
   <?php
 }
@@ -759,37 +740,38 @@ function googleplushangoutevent_get_settings() {
       'api_key' => null,
       'client_id' => null,
       'client_secret' => null,
-      'widget_border' => null,
-      'widget_background' => null,
-      'title_color' => null,
-      'title_theme' => null,
-      'title_size' => null,
-      'title_style' => null,
-      'date_color' => null,
-      'date_theme' => null,
-      'date_size' => null,
-      'date_style' => null,
-      'detail_color' => null,
-      'detail_theme' => null,
-      'detail_size' => null,
-      'detail_style' => null,
-      'icon_border' => null,
-      'icon_background' => null,
-      'icon_color' => null,
-      'icon_theme' => null,
-      'icon_size' => null,
-      'icon_style' => null,
-      'countdown_background' => null,
-      'countdown_color' => null,
-      'countdown_theme' => null,
-      'countdown_size' => null,
-      'countdown_style' => null,
-      'event_button_background' => null,
-      'event_button_hover' => null,
-      'event_button_color' => null,
-      'event_button_theme' => null,
-      'event_button_size' => null,
-      'event_button_style' => null
+      'widget_border' => '#D2D2D2',
+      'widget_background' => '#FEFEFE',
+      'title_color' => '#444444',
+      'title_theme' => 'Arial',
+      'title_size' => 14,
+      'title_style' => 'bold',
+      'date_color' => '#D64337',
+      'date_theme' => 'Arial',
+      'date_size' => 12,
+      'date_style' => 'normal',
+      'detail_color' => '#5F5F5F',
+      'detail_theme' => 'Arial',
+      'detail_size' => 12,
+      'detail_style' => 'normal',
+      'icon_border' => '#D2D2D2',
+      'icon_background' => '#FFFFFF',
+      'icon_hover' => '#D64337',
+      'icon_color' => '#3366CC',
+      'icon_theme' => 'Arial',
+      'icon_size' => 12,
+      'icon_style' => 'normal',
+      'countdown_background' => '#3366CC',
+      'countdown_color' => '#FFFFFF',
+      'countdown_theme' => 'Arial',
+      'countdown_size' => 11,
+      'countdown_style' => 'normal',
+      'event_button_background' => '#D64337',
+      'event_button_hover' => '#C03C34',
+      'event_button_color' => '#FFFFFF',
+      'event_button_theme' => 'Arial',
+      'event_button_size' => 14,
+      'event_button_style' => 'normal'
     );
   $settings = wp_parse_args(get_option('yakadanda_googleplus_hangout_event_options'), $default);
   
@@ -883,4 +865,11 @@ function googleplushangoutevent_extend_event($evenId) {
   }
   
   return $event;
+}
+
+function googleplushangoutevent_bg_cl($hex) {
+  list($r, $g, $b) = sscanf($hex, "#%02x%02x%02x");
+  $output = 'background-color: rgb(' . $r . ',' . $g . ',' . $b . ')';
+  
+  return $output;
 }

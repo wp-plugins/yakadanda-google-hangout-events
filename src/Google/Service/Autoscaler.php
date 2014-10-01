@@ -472,11 +472,14 @@ class Google_Service_Autoscaler_ZoneOperations_Resource extends Google_Service_R
 
 class Google_Service_Autoscaler_Autoscaler extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $autoscalingPolicyType = 'Google_Service_Autoscaler_AutoscalingPolicy';
   protected $autoscalingPolicyDataType = '';
   public $creationTimestamp;
   public $description;
   public $id;
+  public $kind;
   public $name;
   public $selfLink;
   public $target;
@@ -521,6 +524,16 @@ class Google_Service_Autoscaler_Autoscaler extends Google_Model
     return $this->id;
   }
 
+  public function setKind($kind)
+  {
+    $this->kind = $kind;
+  }
+
+  public function getKind()
+  {
+    return $this->kind;
+  }
+
   public function setName($name)
   {
     $this->name = $name;
@@ -554,8 +567,12 @@ class Google_Service_Autoscaler_Autoscaler extends Google_Model
 
 class Google_Service_Autoscaler_AutoscalerListResponse extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Autoscaler_Autoscaler';
   protected $itemsDataType = 'array';
+  public $kind;
   public $nextPageToken;
 
   public function setItems($items)
@@ -566,6 +583,16 @@ class Google_Service_Autoscaler_AutoscalerListResponse extends Google_Collection
   public function getItems()
   {
     return $this->items;
+  }
+
+  public function setKind($kind)
+  {
+    $this->kind = $kind;
+  }
+
+  public function getKind()
+  {
+    return $this->kind;
   }
 
   public function setNextPageToken($nextPageToken)
@@ -579,11 +606,18 @@ class Google_Service_Autoscaler_AutoscalerListResponse extends Google_Collection
   }
 }
 
-class Google_Service_Autoscaler_AutoscalingPolicy extends Google_Model
+class Google_Service_Autoscaler_AutoscalingPolicy extends Google_Collection
 {
+  protected $collection_key = 'customMetricUtilizations';
+  protected $internal_gapi_mappings = array(
+  );
   public $coolDownPeriodSec;
   protected $cpuUtilizationType = 'Google_Service_Autoscaler_AutoscalingPolicyCpuUtilization';
   protected $cpuUtilizationDataType = '';
+  protected $customMetricUtilizationsType = 'Google_Service_Autoscaler_AutoscalingPolicyCustomMetricUtilization';
+  protected $customMetricUtilizationsDataType = 'array';
+  protected $loadBalancingUtilizationType = 'Google_Service_Autoscaler_AutoscalingPolicyLoadBalancingUtilization';
+  protected $loadBalancingUtilizationDataType = '';
   public $maxNumReplicas;
   public $minNumReplicas;
 
@@ -605,6 +639,26 @@ class Google_Service_Autoscaler_AutoscalingPolicy extends Google_Model
   public function getCpuUtilization()
   {
     return $this->cpuUtilization;
+  }
+
+  public function setCustomMetricUtilizations($customMetricUtilizations)
+  {
+    $this->customMetricUtilizations = $customMetricUtilizations;
+  }
+
+  public function getCustomMetricUtilizations()
+  {
+    return $this->customMetricUtilizations;
+  }
+
+  public function setLoadBalancingUtilization(Google_Service_Autoscaler_AutoscalingPolicyLoadBalancingUtilization $loadBalancingUtilization)
+  {
+    $this->loadBalancingUtilization = $loadBalancingUtilization;
+  }
+
+  public function getLoadBalancingUtilization()
+  {
+    return $this->loadBalancingUtilization;
   }
 
   public function setMaxNumReplicas($maxNumReplicas)
@@ -630,6 +684,64 @@ class Google_Service_Autoscaler_AutoscalingPolicy extends Google_Model
 
 class Google_Service_Autoscaler_AutoscalingPolicyCpuUtilization extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
+  public $utilizationTarget;
+
+  public function setUtilizationTarget($utilizationTarget)
+  {
+    $this->utilizationTarget = $utilizationTarget;
+  }
+
+  public function getUtilizationTarget()
+  {
+    return $this->utilizationTarget;
+  }
+}
+
+class Google_Service_Autoscaler_AutoscalingPolicyCustomMetricUtilization extends Google_Model
+{
+  protected $internal_gapi_mappings = array(
+  );
+  public $metric;
+  public $utilizationTarget;
+  public $utilizationTargetType;
+
+  public function setMetric($metric)
+  {
+    $this->metric = $metric;
+  }
+
+  public function getMetric()
+  {
+    return $this->metric;
+  }
+
+  public function setUtilizationTarget($utilizationTarget)
+  {
+    $this->utilizationTarget = $utilizationTarget;
+  }
+
+  public function getUtilizationTarget()
+  {
+    return $this->utilizationTarget;
+  }
+
+  public function setUtilizationTargetType($utilizationTargetType)
+  {
+    $this->utilizationTargetType = $utilizationTargetType;
+  }
+
+  public function getUtilizationTargetType()
+  {
+    return $this->utilizationTargetType;
+  }
+}
+
+class Google_Service_Autoscaler_AutoscalingPolicyLoadBalancingUtilization extends Google_Model
+{
+  protected $internal_gapi_mappings = array(
+  );
   public $utilizationTarget;
 
   public function setUtilizationTarget($utilizationTarget)
@@ -645,6 +757,9 @@ class Google_Service_Autoscaler_AutoscalingPolicyCpuUtilization extends Google_M
 
 class Google_Service_Autoscaler_Operation extends Google_Collection
 {
+  protected $collection_key = 'warnings';
+  protected $internal_gapi_mappings = array(
+  );
   public $clientOperationId;
   public $creationTimestamp;
   public $endTime;
@@ -893,6 +1008,9 @@ class Google_Service_Autoscaler_Operation extends Google_Collection
 
 class Google_Service_Autoscaler_OperationError extends Google_Collection
 {
+  protected $collection_key = 'errors';
+  protected $internal_gapi_mappings = array(
+  );
   protected $errorsType = 'Google_Service_Autoscaler_OperationErrorErrors';
   protected $errorsDataType = 'array';
 
@@ -909,6 +1027,8 @@ class Google_Service_Autoscaler_OperationError extends Google_Collection
 
 class Google_Service_Autoscaler_OperationErrorErrors extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $code;
   public $location;
   public $message;
@@ -946,6 +1066,9 @@ class Google_Service_Autoscaler_OperationErrorErrors extends Google_Model
 
 class Google_Service_Autoscaler_OperationList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   protected $itemsType = 'Google_Service_Autoscaler_Operation';
   protected $itemsDataType = 'array';
@@ -1006,6 +1129,9 @@ class Google_Service_Autoscaler_OperationList extends Google_Collection
 
 class Google_Service_Autoscaler_OperationWarnings extends Google_Collection
 {
+  protected $collection_key = 'data';
+  protected $internal_gapi_mappings = array(
+  );
   public $code;
   protected $dataType = 'Google_Service_Autoscaler_OperationWarningsData';
   protected $dataDataType = 'array';
@@ -1044,6 +1170,8 @@ class Google_Service_Autoscaler_OperationWarnings extends Google_Collection
 
 class Google_Service_Autoscaler_OperationWarningsData extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $key;
   public $value;
 

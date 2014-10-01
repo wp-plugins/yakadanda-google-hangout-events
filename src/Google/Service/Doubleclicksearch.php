@@ -462,6 +462,8 @@ class Google_Service_Doubleclicksearch_SavedColumns_Resource extends Google_Serv
 
 class Google_Service_Doubleclicksearch_Availability extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $advertiserId;
   public $agencyId;
   public $availabilityTimestamp;
@@ -532,6 +534,9 @@ class Google_Service_Doubleclicksearch_Availability extends Google_Model
 
 class Google_Service_Doubleclicksearch_Conversion extends Google_Collection
 {
+  protected $collection_key = 'customMetric';
+  protected $internal_gapi_mappings = array(
+  );
   public $adGroupId;
   public $adId;
   public $advertiserId;
@@ -791,6 +796,9 @@ class Google_Service_Doubleclicksearch_Conversion extends Google_Collection
 
 class Google_Service_Doubleclicksearch_ConversionList extends Google_Collection
 {
+  protected $collection_key = 'conversion';
+  protected $internal_gapi_mappings = array(
+  );
   protected $conversionType = 'Google_Service_Doubleclicksearch_Conversion';
   protected $conversionDataType = 'array';
   public $kind;
@@ -818,6 +826,8 @@ class Google_Service_Doubleclicksearch_ConversionList extends Google_Collection
 
 class Google_Service_Doubleclicksearch_CustomDimension extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $name;
   public $value;
 
@@ -844,6 +854,8 @@ class Google_Service_Doubleclicksearch_CustomDimension extends Google_Model
 
 class Google_Service_Doubleclicksearch_CustomMetric extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $name;
   public $value;
 
@@ -870,6 +882,9 @@ class Google_Service_Doubleclicksearch_CustomMetric extends Google_Model
 
 class Google_Service_Doubleclicksearch_Report extends Google_Collection
 {
+  protected $collection_key = 'rows';
+  protected $internal_gapi_mappings = array(
+  );
   protected $filesType = 'Google_Service_Doubleclicksearch_ReportFiles';
   protected $filesDataType = 'array';
   public $id;
@@ -975,6 +990,8 @@ class Google_Service_Doubleclicksearch_Report extends Google_Collection
 
 class Google_Service_Doubleclicksearch_ReportApiColumnSpec extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $columnName;
   public $customDimensionName;
   public $endDate;
@@ -1067,6 +1084,8 @@ class Google_Service_Doubleclicksearch_ReportApiColumnSpec extends Google_Model
 
 class Google_Service_Doubleclicksearch_ReportFiles extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $byteCount;
   public $url;
 
@@ -1093,6 +1112,9 @@ class Google_Service_Doubleclicksearch_ReportFiles extends Google_Model
 
 class Google_Service_Doubleclicksearch_ReportRequest extends Google_Collection
 {
+  protected $collection_key = 'orderBy';
+  protected $internal_gapi_mappings = array(
+  );
   protected $columnsType = 'Google_Service_Doubleclicksearch_ReportApiColumnSpec';
   protected $columnsDataType = 'array';
   public $downloadFormat;
@@ -1256,6 +1278,9 @@ class Google_Service_Doubleclicksearch_ReportRequest extends Google_Collection
 
 class Google_Service_Doubleclicksearch_ReportRequestFilters extends Google_Collection
 {
+  protected $collection_key = 'values';
+  protected $internal_gapi_mappings = array(
+  );
   protected $columnType = 'Google_Service_Doubleclicksearch_ReportApiColumnSpec';
   protected $columnDataType = '';
   public $operator;
@@ -1294,6 +1319,8 @@ class Google_Service_Doubleclicksearch_ReportRequestFilters extends Google_Colle
 
 class Google_Service_Doubleclicksearch_ReportRequestOrderBy extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $columnType = 'Google_Service_Doubleclicksearch_ReportApiColumnSpec';
   protected $columnDataType = '';
   public $sortOrder;
@@ -1321,6 +1348,8 @@ class Google_Service_Doubleclicksearch_ReportRequestOrderBy extends Google_Model
 
 class Google_Service_Doubleclicksearch_ReportRequestReportScope extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $adGroupId;
   public $adId;
   public $advertiserId;
@@ -1402,6 +1431,8 @@ class Google_Service_Doubleclicksearch_ReportRequestReportScope extends Google_M
 
 class Google_Service_Doubleclicksearch_ReportRequestTimeRange extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $changedAttributesSinceTimestamp;
   public $changedMetricsSinceTimestamp;
   public $endDate;
@@ -1450,11 +1481,14 @@ class Google_Service_Doubleclicksearch_ReportRequestTimeRange extends Google_Mod
 
 class Google_Service_Doubleclicksearch_ReportRow extends Google_Model
 {
-
+  protected $internal_gapi_mappings = array(
+  );
 }
 
 class Google_Service_Doubleclicksearch_SavedColumn extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   public $savedColumnName;
   public $type;
@@ -1492,6 +1526,9 @@ class Google_Service_Doubleclicksearch_SavedColumn extends Google_Model
 
 class Google_Service_Doubleclicksearch_SavedColumnList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Doubleclicksearch_SavedColumn';
   protected $itemsDataType = 'array';
   public $kind;
@@ -1519,6 +1556,9 @@ class Google_Service_Doubleclicksearch_SavedColumnList extends Google_Collection
 
 class Google_Service_Doubleclicksearch_UpdateAvailabilityRequest extends Google_Collection
 {
+  protected $collection_key = 'availabilities';
+  protected $internal_gapi_mappings = array(
+  );
   protected $availabilitiesType = 'Google_Service_Doubleclicksearch_Availability';
   protected $availabilitiesDataType = 'array';
 
@@ -1535,6 +1575,9 @@ class Google_Service_Doubleclicksearch_UpdateAvailabilityRequest extends Google_
 
 class Google_Service_Doubleclicksearch_UpdateAvailabilityResponse extends Google_Collection
 {
+  protected $collection_key = 'availabilities';
+  protected $internal_gapi_mappings = array(
+  );
   protected $availabilitiesType = 'Google_Service_Doubleclicksearch_Availability';
   protected $availabilitiesDataType = 'array';
 

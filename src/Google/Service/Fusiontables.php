@@ -1244,6 +1244,8 @@ class Google_Service_Fusiontables_Template_Resource extends Google_Service_Resou
 
 class Google_Service_Fusiontables_Bucket extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $color;
   public $icon;
   public $max;
@@ -1314,6 +1316,9 @@ class Google_Service_Fusiontables_Bucket extends Google_Model
 
 class Google_Service_Fusiontables_Column extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+        "graphPredicate" => "graph_predicate",
+  );
   protected $baseColumnType = 'Google_Service_Fusiontables_ColumnBaseColumn';
   protected $baseColumnDataType = '';
   public $columnId;
@@ -1396,6 +1401,8 @@ class Google_Service_Fusiontables_Column extends Google_Model
 
 class Google_Service_Fusiontables_ColumnBaseColumn extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $columnId;
   public $tableIndex;
 
@@ -1422,6 +1429,9 @@ class Google_Service_Fusiontables_ColumnBaseColumn extends Google_Model
 
 class Google_Service_Fusiontables_ColumnList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Fusiontables_Column';
   protected $itemsDataType = 'array';
   public $kind;
@@ -1471,6 +1481,9 @@ class Google_Service_Fusiontables_ColumnList extends Google_Collection
 
 class Google_Service_Fusiontables_Geometry extends Google_Collection
 {
+  protected $collection_key = 'geometries';
+  protected $internal_gapi_mappings = array(
+  );
   public $geometries;
   public $geometry;
   public $type;
@@ -1508,6 +1521,8 @@ class Google_Service_Fusiontables_Geometry extends Google_Collection
 
 class Google_Service_Fusiontables_Import extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   public $numRowsReceived;
 
@@ -1534,6 +1549,9 @@ class Google_Service_Fusiontables_Import extends Google_Model
 
 class Google_Service_Fusiontables_Line extends Google_Collection
 {
+  protected $collection_key = 'coordinates';
+  protected $internal_gapi_mappings = array(
+  );
   public $coordinates;
   public $type;
 
@@ -1560,6 +1578,8 @@ class Google_Service_Fusiontables_Line extends Google_Collection
 
 class Google_Service_Fusiontables_LineStyle extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $strokeColor;
   protected $strokeColorStylerType = 'Google_Service_Fusiontables_StyleFunction';
   protected $strokeColorStylerDataType = '';
@@ -1621,6 +1641,9 @@ class Google_Service_Fusiontables_LineStyle extends Google_Model
 
 class Google_Service_Fusiontables_Point extends Google_Collection
 {
+  protected $collection_key = 'coordinates';
+  protected $internal_gapi_mappings = array(
+  );
   public $coordinates;
   public $type;
 
@@ -1647,6 +1670,8 @@ class Google_Service_Fusiontables_Point extends Google_Collection
 
 class Google_Service_Fusiontables_PointStyle extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $iconName;
   protected $iconStylerType = 'Google_Service_Fusiontables_StyleFunction';
   protected $iconStylerDataType = '';
@@ -1674,6 +1699,9 @@ class Google_Service_Fusiontables_PointStyle extends Google_Model
 
 class Google_Service_Fusiontables_Polygon extends Google_Collection
 {
+  protected $collection_key = 'coordinates';
+  protected $internal_gapi_mappings = array(
+  );
   public $coordinates;
   public $type;
 
@@ -1700,6 +1728,8 @@ class Google_Service_Fusiontables_Polygon extends Google_Collection
 
 class Google_Service_Fusiontables_PolygonStyle extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $fillColor;
   protected $fillColorStylerType = 'Google_Service_Fusiontables_StyleFunction';
   protected $fillColorStylerDataType = '';
@@ -1795,6 +1825,9 @@ class Google_Service_Fusiontables_PolygonStyle extends Google_Model
 
 class Google_Service_Fusiontables_Sqlresponse extends Google_Collection
 {
+  protected $collection_key = 'rows';
+  protected $internal_gapi_mappings = array(
+  );
   public $columns;
   public $kind;
   public $rows;
@@ -1832,6 +1865,9 @@ class Google_Service_Fusiontables_Sqlresponse extends Google_Collection
 
 class Google_Service_Fusiontables_StyleFunction extends Google_Collection
 {
+  protected $collection_key = 'buckets';
+  protected $internal_gapi_mappings = array(
+  );
   protected $bucketsType = 'Google_Service_Fusiontables_Bucket';
   protected $bucketsDataType = 'array';
   public $columnName;
@@ -1882,6 +1918,9 @@ class Google_Service_Fusiontables_StyleFunction extends Google_Collection
 
 class Google_Service_Fusiontables_StyleFunctionGradient extends Google_Collection
 {
+  protected $collection_key = 'colors';
+  protected $internal_gapi_mappings = array(
+  );
   protected $colorsType = 'Google_Service_Fusiontables_StyleFunctionGradientColors';
   protected $colorsDataType = 'array';
   public $max;
@@ -1920,6 +1959,8 @@ class Google_Service_Fusiontables_StyleFunctionGradient extends Google_Collectio
 
 class Google_Service_Fusiontables_StyleFunctionGradientColors extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $color;
   public $opacity;
 
@@ -1946,6 +1987,8 @@ class Google_Service_Fusiontables_StyleFunctionGradientColors extends Google_Mod
 
 class Google_Service_Fusiontables_StyleSetting extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   protected $markerOptionsType = 'Google_Service_Fusiontables_PointStyle';
   protected $markerOptionsDataType = '';
@@ -2030,6 +2073,9 @@ class Google_Service_Fusiontables_StyleSetting extends Google_Model
 
 class Google_Service_Fusiontables_StyleSettingList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Fusiontables_StyleSetting';
   protected $itemsDataType = 'array';
   public $kind;
@@ -2079,6 +2125,9 @@ class Google_Service_Fusiontables_StyleSettingList extends Google_Collection
 
 class Google_Service_Fusiontables_Table extends Google_Collection
 {
+  protected $collection_key = 'columns';
+  protected $internal_gapi_mappings = array(
+  );
   public $attribution;
   public $attributionLink;
   public $baseTableIds;
@@ -2194,6 +2243,9 @@ class Google_Service_Fusiontables_Table extends Google_Collection
 
 class Google_Service_Fusiontables_TableList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Fusiontables_Table';
   protected $itemsDataType = 'array';
   public $kind;
@@ -2232,6 +2284,8 @@ class Google_Service_Fusiontables_TableList extends Google_Collection
 
 class Google_Service_Fusiontables_Task extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   public $progress;
   public $started;
@@ -2291,6 +2345,9 @@ class Google_Service_Fusiontables_Task extends Google_Model
 
 class Google_Service_Fusiontables_TaskList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Fusiontables_Task';
   protected $itemsDataType = 'array';
   public $kind;
@@ -2340,6 +2397,9 @@ class Google_Service_Fusiontables_TaskList extends Google_Collection
 
 class Google_Service_Fusiontables_Template extends Google_Collection
 {
+  protected $collection_key = 'automaticColumnNames';
+  protected $internal_gapi_mappings = array(
+  );
   public $automaticColumnNames;
   public $body;
   public $kind;
@@ -2410,6 +2470,9 @@ class Google_Service_Fusiontables_Template extends Google_Collection
 
 class Google_Service_Fusiontables_TemplateList extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   protected $itemsType = 'Google_Service_Fusiontables_Template';
   protected $itemsDataType = 'array';
   public $kind;

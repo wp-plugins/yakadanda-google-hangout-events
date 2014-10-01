@@ -97,6 +97,8 @@ class Google_Service_QPXExpress_Trips_Resource extends Google_Service_Resource
 
 class Google_Service_QPXExpress_AircraftData extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $code;
   public $kind;
   public $name;
@@ -134,6 +136,8 @@ class Google_Service_QPXExpress_AircraftData extends Google_Model
 
 class Google_Service_QPXExpress_AirportData extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $city;
   public $code;
   public $kind;
@@ -182,6 +186,9 @@ class Google_Service_QPXExpress_AirportData extends Google_Model
 
 class Google_Service_QPXExpress_BagDescriptor extends Google_Collection
 {
+  protected $collection_key = 'description';
+  protected $internal_gapi_mappings = array(
+  );
   public $commercialName;
   public $count;
   public $description;
@@ -241,6 +248,8 @@ class Google_Service_QPXExpress_BagDescriptor extends Google_Collection
 
 class Google_Service_QPXExpress_CarrierData extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $code;
   public $kind;
   public $name;
@@ -278,6 +287,8 @@ class Google_Service_QPXExpress_CarrierData extends Google_Model
 
 class Google_Service_QPXExpress_CityData extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $code;
   public $country;
   public $kind;
@@ -326,6 +337,9 @@ class Google_Service_QPXExpress_CityData extends Google_Model
 
 class Google_Service_QPXExpress_Data extends Google_Collection
 {
+  protected $collection_key = 'tax';
+  protected $internal_gapi_mappings = array(
+  );
   protected $aircraftType = 'Google_Service_QPXExpress_AircraftData';
   protected $aircraftDataType = 'array';
   protected $airportType = 'Google_Service_QPXExpress_AirportData';
@@ -401,6 +415,8 @@ class Google_Service_QPXExpress_Data extends Google_Collection
 
 class Google_Service_QPXExpress_FareInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $basisCode;
   public $carrier;
   public $destination;
@@ -482,6 +498,8 @@ class Google_Service_QPXExpress_FareInfo extends Google_Model
 
 class Google_Service_QPXExpress_FlightInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $carrier;
   public $number;
 
@@ -508,6 +526,9 @@ class Google_Service_QPXExpress_FlightInfo extends Google_Model
 
 class Google_Service_QPXExpress_FreeBaggageAllowance extends Google_Collection
 {
+  protected $collection_key = 'bagDescriptor';
+  protected $internal_gapi_mappings = array(
+  );
   protected $bagDescriptorType = 'Google_Service_QPXExpress_BagDescriptor';
   protected $bagDescriptorDataType = 'array';
   public $kilos;
@@ -579,6 +600,8 @@ class Google_Service_QPXExpress_FreeBaggageAllowance extends Google_Collection
 
 class Google_Service_QPXExpress_LegInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $aircraft;
   public $arrivalTime;
   public $changePlane;
@@ -770,6 +793,8 @@ class Google_Service_QPXExpress_LegInfo extends Google_Model
 
 class Google_Service_QPXExpress_PassengerCounts extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $adultCount;
   public $childCount;
   public $infantInLapCount;
@@ -840,6 +865,9 @@ class Google_Service_QPXExpress_PassengerCounts extends Google_Model
 
 class Google_Service_QPXExpress_PricingInfo extends Google_Collection
 {
+  protected $collection_key = 'tax';
+  protected $internal_gapi_mappings = array(
+  );
   public $baseFareTotal;
   protected $fareType = 'Google_Service_QPXExpress_FareInfo';
   protected $fareDataType = 'array';
@@ -991,6 +1019,9 @@ class Google_Service_QPXExpress_PricingInfo extends Google_Collection
 
 class Google_Service_QPXExpress_SegmentInfo extends Google_Collection
 {
+  protected $collection_key = 'leg';
+  protected $internal_gapi_mappings = array(
+  );
   public $bookingCode;
   public $bookingCodeCount;
   public $cabin;
@@ -1118,6 +1149,9 @@ class Google_Service_QPXExpress_SegmentInfo extends Google_Collection
 
 class Google_Service_QPXExpress_SegmentPricing extends Google_Collection
 {
+  protected $collection_key = 'freeBaggageOption';
+  protected $internal_gapi_mappings = array(
+  );
   public $fareId;
   protected $freeBaggageOptionType = 'Google_Service_QPXExpress_FreeBaggageAllowance';
   protected $freeBaggageOptionDataType = 'array';
@@ -1167,6 +1201,9 @@ class Google_Service_QPXExpress_SegmentPricing extends Google_Collection
 
 class Google_Service_QPXExpress_SliceInfo extends Google_Collection
 {
+  protected $collection_key = 'segment';
+  protected $internal_gapi_mappings = array(
+  );
   public $duration;
   public $kind;
   protected $segmentType = 'Google_Service_QPXExpress_SegmentInfo';
@@ -1205,6 +1242,9 @@ class Google_Service_QPXExpress_SliceInfo extends Google_Collection
 
 class Google_Service_QPXExpress_SliceInput extends Google_Collection
 {
+  protected $collection_key = 'prohibitedCarrier';
+  protected $internal_gapi_mappings = array(
+  );
   public $alliance;
   public $date;
   public $destination;
@@ -1331,6 +1371,8 @@ class Google_Service_QPXExpress_SliceInput extends Google_Collection
 
 class Google_Service_QPXExpress_TaxData extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   public $kind;
   public $name;
@@ -1368,6 +1410,8 @@ class Google_Service_QPXExpress_TaxData extends Google_Model
 
 class Google_Service_QPXExpress_TaxInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $chargeType;
   public $code;
   public $country;
@@ -1438,6 +1482,8 @@ class Google_Service_QPXExpress_TaxInfo extends Google_Model
 
 class Google_Service_QPXExpress_TimeOfDayRange extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $earliestTime;
   public $kind;
   public $latestTime;
@@ -1475,6 +1521,9 @@ class Google_Service_QPXExpress_TimeOfDayRange extends Google_Model
 
 class Google_Service_QPXExpress_TripOption extends Google_Collection
 {
+  protected $collection_key = 'slice';
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   public $kind;
   protected $pricingType = 'Google_Service_QPXExpress_PricingInfo';
@@ -1536,6 +1585,9 @@ class Google_Service_QPXExpress_TripOption extends Google_Collection
 
 class Google_Service_QPXExpress_TripOptionsRequest extends Google_Collection
 {
+  protected $collection_key = 'slice';
+  protected $internal_gapi_mappings = array(
+  );
   public $maxPrice;
   protected $passengersType = 'Google_Service_QPXExpress_PassengerCounts';
   protected $passengersDataType = '';
@@ -1608,6 +1660,9 @@ class Google_Service_QPXExpress_TripOptionsRequest extends Google_Collection
 
 class Google_Service_QPXExpress_TripOptionsResponse extends Google_Collection
 {
+  protected $collection_key = 'tripOption';
+  protected $internal_gapi_mappings = array(
+  );
   protected $dataType = 'Google_Service_QPXExpress_Data';
   protected $dataDataType = '';
   public $kind;
@@ -1658,6 +1713,8 @@ class Google_Service_QPXExpress_TripOptionsResponse extends Google_Collection
 
 class Google_Service_QPXExpress_TripsSearchRequest extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $requestType = 'Google_Service_QPXExpress_TripOptionsRequest';
   protected $requestDataType = '';
 
@@ -1674,6 +1731,8 @@ class Google_Service_QPXExpress_TripsSearchRequest extends Google_Model
 
 class Google_Service_QPXExpress_TripsSearchResponse extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   protected $tripsType = 'Google_Service_QPXExpress_TripOptionsResponse';
   protected $tripsDataType = '';

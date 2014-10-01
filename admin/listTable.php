@@ -34,9 +34,9 @@ class googleplushangoutevent_List_Table extends WP_List_Table {
   function column_title($item) {
     //Build row actions
     $actions = array(
-      'extend' => sprintf('<a href="?page=%s&action=%s&id=%s">Extend</a>', $_REQUEST['page'], 'extend', $item['id']),
-      'delete' => sprintf('<a href="?page=%s&action=%s&id=%s">Delete</a>', $_REQUEST['page'], 'delete', $item['id']),
-      'view' => sprintf('<a href="%s">View</a>', $item['htmlLink'])
+      'extend' => sprintf('<a href="?page=%s&action=%s&id=%s" class="cta--secondary">Extend</a>', $_REQUEST['page'], 'extend', $item['id']),
+      'delete' => sprintf('<a href="?page=%s&action=%s&id=%s" class="cta--secondary">Delete</a>', $_REQUEST['page'], 'delete', $item['id']),
+      'view' => sprintf('<a href="%s" class="cta--secondary">View</a>', $item['htmlLink'])
     );
 
     $title = '<a href="?page=' . $_REQUEST['page'] . '&action=extend&id=' . $item['id'] . '">' . $item['summary'] . '</a>';

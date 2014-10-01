@@ -30,9 +30,8 @@ function googleplushangoutevent_shortcode( $atts ) {
     'src' => 'all'
   ), $atts ) );
   
-  // Call javascripts
-  wp_enqueue_script('googleplushangoutevent-countdown');
-  wp_enqueue_script('googleplushangoutevent-script');
+  // Enqueue scripts
+  googleplushangoutevent_wp_enqueue_scripts_load();
   
   if ($limit > 20) $limit = 20;
   

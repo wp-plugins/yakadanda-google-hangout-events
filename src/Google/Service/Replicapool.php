@@ -543,6 +543,8 @@ class Google_Service_Replicapool_Replicas_Resource extends Google_Service_Resour
 
 class Google_Service_Replicapool_AccessConfig extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $name;
   public $natIp;
   public $type;
@@ -580,6 +582,9 @@ class Google_Service_Replicapool_AccessConfig extends Google_Model
 
 class Google_Service_Replicapool_Action extends Google_Collection
 {
+  protected $collection_key = 'envVariables';
+  protected $internal_gapi_mappings = array(
+  );
   public $commands;
   protected $envVariablesType = 'Google_Service_Replicapool_EnvVariable';
   protected $envVariablesDataType = 'array';
@@ -618,6 +623,8 @@ class Google_Service_Replicapool_Action extends Google_Collection
 
 class Google_Service_Replicapool_DiskAttachment extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $deviceName;
   public $index;
 
@@ -644,6 +651,8 @@ class Google_Service_Replicapool_DiskAttachment extends Google_Model
 
 class Google_Service_Replicapool_EnvVariable extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $hidden;
   public $name;
   public $value;
@@ -681,6 +690,8 @@ class Google_Service_Replicapool_EnvVariable extends Google_Model
 
 class Google_Service_Replicapool_ExistingDisk extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $attachmentType = 'Google_Service_Replicapool_DiskAttachment';
   protected $attachmentDataType = '';
   public $source;
@@ -708,6 +719,8 @@ class Google_Service_Replicapool_ExistingDisk extends Google_Model
 
 class Google_Service_Replicapool_HealthCheck extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $checkIntervalSec;
   public $description;
   public $healthyThreshold;
@@ -811,6 +824,8 @@ class Google_Service_Replicapool_HealthCheck extends Google_Model
 
 class Google_Service_Replicapool_Label extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $key;
   public $value;
 
@@ -837,6 +852,9 @@ class Google_Service_Replicapool_Label extends Google_Model
 
 class Google_Service_Replicapool_Metadata extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $fingerPrint;
   protected $itemsType = 'Google_Service_Replicapool_MetadataItem';
   protected $itemsDataType = 'array';
@@ -864,6 +882,8 @@ class Google_Service_Replicapool_Metadata extends Google_Collection
 
 class Google_Service_Replicapool_MetadataItem extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $key;
   public $value;
 
@@ -890,6 +910,9 @@ class Google_Service_Replicapool_MetadataItem extends Google_Model
 
 class Google_Service_Replicapool_NetworkInterface extends Google_Collection
 {
+  protected $collection_key = 'accessConfigs';
+  protected $internal_gapi_mappings = array(
+  );
   protected $accessConfigsType = 'Google_Service_Replicapool_AccessConfig';
   protected $accessConfigsDataType = 'array';
   public $network;
@@ -928,6 +951,8 @@ class Google_Service_Replicapool_NetworkInterface extends Google_Collection
 
 class Google_Service_Replicapool_NewDisk extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $attachmentType = 'Google_Service_Replicapool_DiskAttachment';
   protected $attachmentDataType = '';
   public $autoDelete;
@@ -978,7 +1003,10 @@ class Google_Service_Replicapool_NewDisk extends Google_Model
 
 class Google_Service_Replicapool_NewDiskInitializeParams extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $diskSizeGb;
+  public $diskType;
   public $sourceImage;
 
   public function setDiskSizeGb($diskSizeGb)
@@ -989,6 +1017,16 @@ class Google_Service_Replicapool_NewDiskInitializeParams extends Google_Model
   public function getDiskSizeGb()
   {
     return $this->diskSizeGb;
+  }
+
+  public function setDiskType($diskType)
+  {
+    $this->diskType = $diskType;
+  }
+
+  public function getDiskType()
+  {
+    return $this->diskType;
   }
 
   public function setSourceImage($sourceImage)
@@ -1004,6 +1042,9 @@ class Google_Service_Replicapool_NewDiskInitializeParams extends Google_Model
 
 class Google_Service_Replicapool_Pool extends Google_Collection
 {
+  protected $collection_key = 'targetPools';
+  protected $internal_gapi_mappings = array(
+  );
   public $autoRestart;
   public $baseInstanceName;
   public $currentNumReplicas;
@@ -1176,6 +1217,9 @@ class Google_Service_Replicapool_Pool extends Google_Collection
 
 class Google_Service_Replicapool_PoolsDeleteRequest extends Google_Collection
 {
+  protected $collection_key = 'abandonInstances';
+  protected $internal_gapi_mappings = array(
+  );
   public $abandonInstances;
 
   public function setAbandonInstances($abandonInstances)
@@ -1191,6 +1235,9 @@ class Google_Service_Replicapool_PoolsDeleteRequest extends Google_Collection
 
 class Google_Service_Replicapool_PoolsListResponse extends Google_Collection
 {
+  protected $collection_key = 'resources';
+  protected $internal_gapi_mappings = array(
+  );
   public $nextPageToken;
   protected $resourcesType = 'Google_Service_Replicapool_Pool';
   protected $resourcesDataType = 'array';
@@ -1218,6 +1265,8 @@ class Google_Service_Replicapool_PoolsListResponse extends Google_Collection
 
 class Google_Service_Replicapool_Replica extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $name;
   public $selfLink;
   protected $statusType = 'Google_Service_Replicapool_ReplicaStatus';
@@ -1256,6 +1305,8 @@ class Google_Service_Replicapool_Replica extends Google_Model
 
 class Google_Service_Replicapool_ReplicaStatus extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $details;
   public $state;
   public $templateVersion;
@@ -1315,6 +1366,8 @@ class Google_Service_Replicapool_ReplicaStatus extends Google_Model
 
 class Google_Service_Replicapool_ReplicasDeleteRequest extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $abandonInstance;
 
   public function setAbandonInstance($abandonInstance)
@@ -1330,6 +1383,9 @@ class Google_Service_Replicapool_ReplicasDeleteRequest extends Google_Model
 
 class Google_Service_Replicapool_ReplicasListResponse extends Google_Collection
 {
+  protected $collection_key = 'resources';
+  protected $internal_gapi_mappings = array(
+  );
   public $nextPageToken;
   protected $resourcesType = 'Google_Service_Replicapool_Replica';
   protected $resourcesDataType = 'array';
@@ -1357,6 +1413,9 @@ class Google_Service_Replicapool_ReplicasListResponse extends Google_Collection
 
 class Google_Service_Replicapool_ServiceAccount extends Google_Collection
 {
+  protected $collection_key = 'scopes';
+  protected $internal_gapi_mappings = array(
+  );
   public $email;
   public $scopes;
 
@@ -1383,6 +1442,9 @@ class Google_Service_Replicapool_ServiceAccount extends Google_Collection
 
 class Google_Service_Replicapool_Tag extends Google_Collection
 {
+  protected $collection_key = 'items';
+  protected $internal_gapi_mappings = array(
+  );
   public $fingerPrint;
   public $items;
 
@@ -1409,6 +1471,9 @@ class Google_Service_Replicapool_Tag extends Google_Collection
 
 class Google_Service_Replicapool_Template extends Google_Collection
 {
+  protected $collection_key = 'healthChecks';
+  protected $internal_gapi_mappings = array(
+  );
   protected $actionType = 'Google_Service_Replicapool_Action';
   protected $actionDataType = '';
   protected $healthChecksType = 'Google_Service_Replicapool_HealthCheck';
@@ -1460,6 +1525,9 @@ class Google_Service_Replicapool_Template extends Google_Collection
 
 class Google_Service_Replicapool_VmParams extends Google_Collection
 {
+  protected $collection_key = 'serviceAccounts';
+  protected $internal_gapi_mappings = array(
+  );
   public $baseInstanceName;
   public $canIpForward;
   public $description;

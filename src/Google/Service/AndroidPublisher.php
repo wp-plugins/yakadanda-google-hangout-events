@@ -121,6 +121,21 @@ class Google_Service_AndroidPublisher extends Google_Service
                   'required' => true,
                 ),
               ),
+            ),'validate' => array(
+              'path' => '{packageName}/edits/{editId}:validate',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'packageName' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'editId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),
           )
         )
@@ -1044,9 +1059,69 @@ class Google_Service_AndroidPublisher extends Google_Service
                   'required' => true,
                 ),
               ),
+            ),'defer' => array(
+              'path' => '{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}:defer',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'packageName' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'subscriptionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'token' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'get' => array(
               'path' => '{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}',
               'httpMethod' => 'GET',
+              'parameters' => array(
+                'packageName' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'subscriptionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'token' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'refund' => array(
+              'path' => '{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}:refund',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'packageName' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'subscriptionId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'token' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'revoke' => array(
+              'path' => '{packageName}/purchases/subscriptions/{subscriptionId}/tokens/{token}:revoke',
+              'httpMethod' => 'POST',
               'parameters' => array(
                 'packageName' => array(
                   'location' => 'path',
@@ -1148,6 +1223,23 @@ class Google_Service_AndroidPublisher_Edits_Resource extends Google_Service_Reso
     $params = array('packageName' => $packageName, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('insert', array($params), "Google_Service_AndroidPublisher_AppEdit");
+  }
+  /**
+   * Checks that the edit can be successfully committed. The edit's changes are
+   * not applied to the live app. (edits.validate)
+   *
+   * @param string $packageName
+   * Unique identifier for the Android app that is being updated; for example, "com.spiffygame".
+   * @param string $editId
+   * Unique identifier for this edit.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_AndroidPublisher_AppEdit
+   */
+  public function validate($packageName, $editId, $optParams = array())
+  {
+    $params = array('packageName' => $packageName, 'editId' => $editId);
+    $params = array_merge($params, $optParams);
+    return $this->call('validate', array($params), "Google_Service_AndroidPublisher_AppEdit");
   }
 }
 
@@ -2093,6 +2185,27 @@ class Google_Service_AndroidPublisher_PurchasesSubscriptions_Resource extends Go
     return $this->call('cancel', array($params));
   }
   /**
+   * Defers a user's subscription purchase until a specified future expiration
+   * time. (subscriptions.defer)
+   *
+   * @param string $packageName
+   * The package name of the application for which this subscription was purchased (for example,
+    * 'com.some.thing').
+   * @param string $subscriptionId
+   * The purchased subscription ID (for example, 'monthly001').
+   * @param string $token
+   * The token provided to the user's device when the subscription was purchased.
+   * @param Google_SubscriptionPurchasesDeferRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_AndroidPublisher_SubscriptionPurchasesDeferResponse
+   */
+  public function defer($packageName, $subscriptionId, $token, Google_Service_AndroidPublisher_SubscriptionPurchasesDeferRequest $postBody, $optParams = array())
+  {
+    $params = array('packageName' => $packageName, 'subscriptionId' => $subscriptionId, 'token' => $token, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('defer', array($params), "Google_Service_AndroidPublisher_SubscriptionPurchasesDeferResponse");
+  }
+  /**
    * Checks whether a user's subscription purchase is valid and returns its expiry
    * time. (subscriptions.get)
    *
@@ -2112,6 +2225,46 @@ class Google_Service_AndroidPublisher_PurchasesSubscriptions_Resource extends Go
     $params = array_merge($params, $optParams);
     return $this->call('get', array($params), "Google_Service_AndroidPublisher_SubscriptionPurchase");
   }
+  /**
+   * Refunds a user's subscription purchase, but the subscription remains valid
+   * until its expiration time and it will continue to recur.
+   * (subscriptions.refund)
+   *
+   * @param string $packageName
+   * The package name of the application for which this subscription was purchased (for example,
+    * 'com.some.thing').
+   * @param string $subscriptionId
+   * The purchased subscription ID (for example, 'monthly001').
+   * @param string $token
+   * The token provided to the user's device when the subscription was purchased.
+   * @param array $optParams Optional parameters.
+   */
+  public function refund($packageName, $subscriptionId, $token, $optParams = array())
+  {
+    $params = array('packageName' => $packageName, 'subscriptionId' => $subscriptionId, 'token' => $token);
+    $params = array_merge($params, $optParams);
+    return $this->call('refund', array($params));
+  }
+  /**
+   * Refunds and immediately revokes a user's subscription purchase. Access to the
+   * subscription will be terminated immediately and it will stop recurring.
+   * (subscriptions.revoke)
+   *
+   * @param string $packageName
+   * The package name of the application for which this subscription was purchased (for example,
+    * 'com.some.thing').
+   * @param string $subscriptionId
+   * The purchased subscription ID (for example, 'monthly001').
+   * @param string $token
+   * The token provided to the user's device when the subscription was purchased.
+   * @param array $optParams Optional parameters.
+   */
+  public function revoke($packageName, $subscriptionId, $token, $optParams = array())
+  {
+    $params = array('packageName' => $packageName, 'subscriptionId' => $subscriptionId, 'token' => $token);
+    $params = array_merge($params, $optParams);
+    return $this->call('revoke', array($params));
+  }
 }
 
 
@@ -2119,6 +2272,8 @@ class Google_Service_AndroidPublisher_PurchasesSubscriptions_Resource extends Go
 
 class Google_Service_AndroidPublisher_Apk extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $binaryType = 'Google_Service_AndroidPublisher_ApkBinary';
   protected $binaryDataType = '';
   public $versionCode;
@@ -2146,6 +2301,8 @@ class Google_Service_AndroidPublisher_Apk extends Google_Model
 
 class Google_Service_AndroidPublisher_ApkBinary extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $sha1;
 
   public function setSha1($sha1)
@@ -2161,6 +2318,8 @@ class Google_Service_AndroidPublisher_ApkBinary extends Google_Model
 
 class Google_Service_AndroidPublisher_ApkListing extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $language;
   public $recentChanges;
 
@@ -2187,6 +2346,9 @@ class Google_Service_AndroidPublisher_ApkListing extends Google_Model
 
 class Google_Service_AndroidPublisher_ApkListingsListResponse extends Google_Collection
 {
+  protected $collection_key = 'listings';
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   protected $listingsType = 'Google_Service_AndroidPublisher_ApkListing';
   protected $listingsDataType = 'array';
@@ -2214,6 +2376,9 @@ class Google_Service_AndroidPublisher_ApkListingsListResponse extends Google_Col
 
 class Google_Service_AndroidPublisher_ApksListResponse extends Google_Collection
 {
+  protected $collection_key = 'apks';
+  protected $internal_gapi_mappings = array(
+  );
   protected $apksType = 'Google_Service_AndroidPublisher_Apk';
   protected $apksDataType = 'array';
   public $kind;
@@ -2241,6 +2406,8 @@ class Google_Service_AndroidPublisher_ApksListResponse extends Google_Collection
 
 class Google_Service_AndroidPublisher_AppDetails extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $contactEmail;
   public $contactPhone;
   public $contactWebsite;
@@ -2289,6 +2456,8 @@ class Google_Service_AndroidPublisher_AppDetails extends Google_Model
 
 class Google_Service_AndroidPublisher_AppEdit extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $expiryTimeSeconds;
   public $id;
 
@@ -2315,6 +2484,8 @@ class Google_Service_AndroidPublisher_AppEdit extends Google_Model
 
 class Google_Service_AndroidPublisher_ExpansionFile extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $fileSize;
   public $referencesVersion;
 
@@ -2341,6 +2512,8 @@ class Google_Service_AndroidPublisher_ExpansionFile extends Google_Model
 
 class Google_Service_AndroidPublisher_ExpansionFilesUploadResponse extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $expansionFileType = 'Google_Service_AndroidPublisher_ExpansionFile';
   protected $expansionFileDataType = '';
 
@@ -2357,6 +2530,8 @@ class Google_Service_AndroidPublisher_ExpansionFilesUploadResponse extends Googl
 
 class Google_Service_AndroidPublisher_Image extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $id;
   public $sha1;
   public $url;
@@ -2394,6 +2569,9 @@ class Google_Service_AndroidPublisher_Image extends Google_Model
 
 class Google_Service_AndroidPublisher_ImagesDeleteAllResponse extends Google_Collection
 {
+  protected $collection_key = 'deleted';
+  protected $internal_gapi_mappings = array(
+  );
   protected $deletedType = 'Google_Service_AndroidPublisher_Image';
   protected $deletedDataType = 'array';
 
@@ -2410,6 +2588,9 @@ class Google_Service_AndroidPublisher_ImagesDeleteAllResponse extends Google_Col
 
 class Google_Service_AndroidPublisher_ImagesListResponse extends Google_Collection
 {
+  protected $collection_key = 'images';
+  protected $internal_gapi_mappings = array(
+  );
   protected $imagesType = 'Google_Service_AndroidPublisher_Image';
   protected $imagesDataType = 'array';
 
@@ -2426,6 +2607,8 @@ class Google_Service_AndroidPublisher_ImagesListResponse extends Google_Collecti
 
 class Google_Service_AndroidPublisher_ImagesUploadResponse extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $imageType = 'Google_Service_AndroidPublisher_Image';
   protected $imageDataType = '';
 
@@ -2442,6 +2625,8 @@ class Google_Service_AndroidPublisher_ImagesUploadResponse extends Google_Model
 
 class Google_Service_AndroidPublisher_InAppProduct extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $defaultLanguage;
   protected $defaultPriceType = 'Google_Service_AndroidPublisher_Price';
   protected $defaultPriceDataType = '';
@@ -2451,6 +2636,8 @@ class Google_Service_AndroidPublisher_InAppProduct extends Google_Model
   protected $pricesType = 'Google_Service_AndroidPublisher_Price';
   protected $pricesDataType = 'map';
   public $purchaseType;
+  protected $seasonType = 'Google_Service_AndroidPublisher_Season';
+  protected $seasonDataType = '';
   public $sku;
   public $status;
   public $subscriptionPeriod;
@@ -2516,6 +2703,16 @@ class Google_Service_AndroidPublisher_InAppProduct extends Google_Model
     return $this->purchaseType;
   }
 
+  public function setSeason(Google_Service_AndroidPublisher_Season $season)
+  {
+    $this->season = $season;
+  }
+
+  public function getSeason()
+  {
+    return $this->season;
+  }
+
   public function setSku($sku)
   {
     $this->sku = $sku;
@@ -2559,6 +2756,8 @@ class Google_Service_AndroidPublisher_InAppProduct extends Google_Model
 
 class Google_Service_AndroidPublisher_InAppProductListing extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $description;
   public $title;
 
@@ -2585,16 +2784,21 @@ class Google_Service_AndroidPublisher_InAppProductListing extends Google_Model
 
 class Google_Service_AndroidPublisher_InAppProductListings extends Google_Model
 {
-
+  protected $internal_gapi_mappings = array(
+  );
 }
 
 class Google_Service_AndroidPublisher_InAppProductPrices extends Google_Model
 {
-
+  protected $internal_gapi_mappings = array(
+  );
 }
 
 class Google_Service_AndroidPublisher_InappproductsBatchRequest extends Google_Collection
 {
+  protected $collection_key = 'entrys';
+  protected $internal_gapi_mappings = array(
+  );
   protected $entrysType = 'Google_Service_AndroidPublisher_InappproductsBatchRequestEntry';
   protected $entrysDataType = 'array';
 
@@ -2611,6 +2815,8 @@ class Google_Service_AndroidPublisher_InappproductsBatchRequest extends Google_C
 
 class Google_Service_AndroidPublisher_InappproductsBatchRequestEntry extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $batchId;
   protected $inappproductsinsertrequestType = 'Google_Service_AndroidPublisher_InappproductsInsertRequest';
   protected $inappproductsinsertrequestDataType = '';
@@ -2661,6 +2867,9 @@ class Google_Service_AndroidPublisher_InappproductsBatchRequestEntry extends Goo
 
 class Google_Service_AndroidPublisher_InappproductsBatchResponse extends Google_Collection
 {
+  protected $collection_key = 'entrys';
+  protected $internal_gapi_mappings = array(
+  );
   protected $entrysType = 'Google_Service_AndroidPublisher_InappproductsBatchResponseEntry';
   protected $entrysDataType = 'array';
   public $kind;
@@ -2688,6 +2897,8 @@ class Google_Service_AndroidPublisher_InappproductsBatchResponse extends Google_
 
 class Google_Service_AndroidPublisher_InappproductsBatchResponseEntry extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $batchId;
   protected $inappproductsinsertresponseType = 'Google_Service_AndroidPublisher_InappproductsInsertResponse';
   protected $inappproductsinsertresponseDataType = '';
@@ -2727,6 +2938,8 @@ class Google_Service_AndroidPublisher_InappproductsBatchResponseEntry extends Go
 
 class Google_Service_AndroidPublisher_InappproductsInsertRequest extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $inappproductType = 'Google_Service_AndroidPublisher_InAppProduct';
   protected $inappproductDataType = '';
 
@@ -2743,6 +2956,8 @@ class Google_Service_AndroidPublisher_InappproductsInsertRequest extends Google_
 
 class Google_Service_AndroidPublisher_InappproductsInsertResponse extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $inappproductType = 'Google_Service_AndroidPublisher_InAppProduct';
   protected $inappproductDataType = '';
 
@@ -2759,6 +2974,9 @@ class Google_Service_AndroidPublisher_InappproductsInsertResponse extends Google
 
 class Google_Service_AndroidPublisher_InappproductsListResponse extends Google_Collection
 {
+  protected $collection_key = 'inappproduct';
+  protected $internal_gapi_mappings = array(
+  );
   protected $inappproductType = 'Google_Service_AndroidPublisher_InAppProduct';
   protected $inappproductDataType = 'array';
   public $kind;
@@ -2810,6 +3028,8 @@ class Google_Service_AndroidPublisher_InappproductsListResponse extends Google_C
 
 class Google_Service_AndroidPublisher_InappproductsUpdateRequest extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $inappproductType = 'Google_Service_AndroidPublisher_InAppProduct';
   protected $inappproductDataType = '';
 
@@ -2826,6 +3046,8 @@ class Google_Service_AndroidPublisher_InappproductsUpdateRequest extends Google_
 
 class Google_Service_AndroidPublisher_InappproductsUpdateResponse extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   protected $inappproductType = 'Google_Service_AndroidPublisher_InAppProduct';
   protected $inappproductDataType = '';
 
@@ -2842,6 +3064,8 @@ class Google_Service_AndroidPublisher_InappproductsUpdateResponse extends Google
 
 class Google_Service_AndroidPublisher_Listing extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $fullDescription;
   public $language;
   public $shortDescription;
@@ -2901,6 +3125,9 @@ class Google_Service_AndroidPublisher_Listing extends Google_Model
 
 class Google_Service_AndroidPublisher_ListingsListResponse extends Google_Collection
 {
+  protected $collection_key = 'listings';
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   protected $listingsType = 'Google_Service_AndroidPublisher_Listing';
   protected $listingsDataType = 'array';
@@ -2926,8 +3153,38 @@ class Google_Service_AndroidPublisher_ListingsListResponse extends Google_Collec
   }
 }
 
+class Google_Service_AndroidPublisher_MonthDay extends Google_Model
+{
+  protected $internal_gapi_mappings = array(
+  );
+  public $day;
+  public $month;
+
+  public function setDay($day)
+  {
+    $this->day = $day;
+  }
+
+  public function getDay()
+  {
+    return $this->day;
+  }
+
+  public function setMonth($month)
+  {
+    $this->month = $month;
+  }
+
+  public function getMonth()
+  {
+    return $this->month;
+  }
+}
+
 class Google_Service_AndroidPublisher_PageInfo extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $resultPerPage;
   public $startIndex;
   public $totalResults;
@@ -2965,6 +3222,8 @@ class Google_Service_AndroidPublisher_PageInfo extends Google_Model
 
 class Google_Service_AndroidPublisher_Price extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $currency;
   public $priceMicros;
 
@@ -2991,6 +3250,8 @@ class Google_Service_AndroidPublisher_Price extends Google_Model
 
 class Google_Service_AndroidPublisher_ProductPurchase extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $consumptionState;
   public $developerPayload;
   public $kind;
@@ -3048,8 +3309,68 @@ class Google_Service_AndroidPublisher_ProductPurchase extends Google_Model
   }
 }
 
+class Google_Service_AndroidPublisher_Season extends Google_Model
+{
+  protected $internal_gapi_mappings = array(
+  );
+  protected $endType = 'Google_Service_AndroidPublisher_MonthDay';
+  protected $endDataType = '';
+  protected $startType = 'Google_Service_AndroidPublisher_MonthDay';
+  protected $startDataType = '';
+
+  public function setEnd(Google_Service_AndroidPublisher_MonthDay $end)
+  {
+    $this->end = $end;
+  }
+
+  public function getEnd()
+  {
+    return $this->end;
+  }
+
+  public function setStart(Google_Service_AndroidPublisher_MonthDay $start)
+  {
+    $this->start = $start;
+  }
+
+  public function getStart()
+  {
+    return $this->start;
+  }
+}
+
+class Google_Service_AndroidPublisher_SubscriptionDeferralInfo extends Google_Model
+{
+  protected $internal_gapi_mappings = array(
+  );
+  public $desiredExpiryTimeMillis;
+  public $expectedExpiryTimeMillis;
+
+  public function setDesiredExpiryTimeMillis($desiredExpiryTimeMillis)
+  {
+    $this->desiredExpiryTimeMillis = $desiredExpiryTimeMillis;
+  }
+
+  public function getDesiredExpiryTimeMillis()
+  {
+    return $this->desiredExpiryTimeMillis;
+  }
+
+  public function setExpectedExpiryTimeMillis($expectedExpiryTimeMillis)
+  {
+    $this->expectedExpiryTimeMillis = $expectedExpiryTimeMillis;
+  }
+
+  public function getExpectedExpiryTimeMillis()
+  {
+    return $this->expectedExpiryTimeMillis;
+  }
+}
+
 class Google_Service_AndroidPublisher_SubscriptionPurchase extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $autoRenewing;
   public $expiryTimeMillis;
   public $kind;
@@ -3096,8 +3417,46 @@ class Google_Service_AndroidPublisher_SubscriptionPurchase extends Google_Model
   }
 }
 
+class Google_Service_AndroidPublisher_SubscriptionPurchasesDeferRequest extends Google_Model
+{
+  protected $internal_gapi_mappings = array(
+  );
+  protected $deferralInfoType = 'Google_Service_AndroidPublisher_SubscriptionDeferralInfo';
+  protected $deferralInfoDataType = '';
+
+  public function setDeferralInfo(Google_Service_AndroidPublisher_SubscriptionDeferralInfo $deferralInfo)
+  {
+    $this->deferralInfo = $deferralInfo;
+  }
+
+  public function getDeferralInfo()
+  {
+    return $this->deferralInfo;
+  }
+}
+
+class Google_Service_AndroidPublisher_SubscriptionPurchasesDeferResponse extends Google_Model
+{
+  protected $internal_gapi_mappings = array(
+  );
+  public $newExpiryTimeMillis;
+
+  public function setNewExpiryTimeMillis($newExpiryTimeMillis)
+  {
+    $this->newExpiryTimeMillis = $newExpiryTimeMillis;
+  }
+
+  public function getNewExpiryTimeMillis()
+  {
+    return $this->newExpiryTimeMillis;
+  }
+}
+
 class Google_Service_AndroidPublisher_Testers extends Google_Collection
 {
+  protected $collection_key = 'googlePlusCommunities';
+  protected $internal_gapi_mappings = array(
+  );
   public $googleGroups;
   public $googlePlusCommunities;
 
@@ -3124,6 +3483,8 @@ class Google_Service_AndroidPublisher_Testers extends Google_Collection
 
 class Google_Service_AndroidPublisher_TokenPagination extends Google_Model
 {
+  protected $internal_gapi_mappings = array(
+  );
   public $nextPageToken;
   public $previousPageToken;
 
@@ -3150,6 +3511,9 @@ class Google_Service_AndroidPublisher_TokenPagination extends Google_Model
 
 class Google_Service_AndroidPublisher_Track extends Google_Collection
 {
+  protected $collection_key = 'versionCodes';
+  protected $internal_gapi_mappings = array(
+  );
   public $track;
   public $userFraction;
   public $versionCodes;
@@ -3187,6 +3551,9 @@ class Google_Service_AndroidPublisher_Track extends Google_Collection
 
 class Google_Service_AndroidPublisher_TracksListResponse extends Google_Collection
 {
+  protected $collection_key = 'tracks';
+  protected $internal_gapi_mappings = array(
+  );
   public $kind;
   protected $tracksType = 'Google_Service_AndroidPublisher_Track';
   protected $tracksDataType = 'array';
