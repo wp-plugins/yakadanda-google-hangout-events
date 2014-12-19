@@ -3,7 +3,7 @@ Contributors: Yakadanda.com
 Donate link: http://www.yakadanda.com/
 Tags: Calendar, Event, Google, Googleplus, Hangout, Plus, Yakadanda
 Requires at least: 3.8
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: 0.2.8
 License: GPLv2 or later
 
