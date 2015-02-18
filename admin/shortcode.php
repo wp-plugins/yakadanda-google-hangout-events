@@ -36,9 +36,22 @@ function googleplushangoutevent_shortcode( $atts ) {
   if ($limit > 20) $limit = 20;
   
   if ($id) {
-    $events = googleplushangoutevent_response( null, $id, null, $timezone );
+    $transient_name = md5('special_query_id_' . $id . $timezone);
+    if (false === ( $special_query_id = get_transient($transient_name) )) {
+      $events = googleplushangoutevent_response( null, $id, null, $timezone );
+      
+      set_transient($transient_name, $events, 60 * 15);
+    }
+    $events = get_transient($transient_name);
   } else {
-    $events = googleplushangoutevent_response( $past, null, $search, $timezone );
+    $transient_name = md5('special_query_event_' . $past . $search . $timezone);
+    if (false === ( $special_query_event = get_transient($transient_name) )) {
+      $events = googleplushangoutevent_response( $past, null, $search, $timezone );
+      
+      set_transient($transient_name, $events, 60 * 15);
+    }
+    $events = get_transient($transient_name);
+
     // Sorting events
     if ( $past ) uasort( $events , 'googleplushangoutevent_sort_events_desc' );
     else uasort( $events , 'googleplushangoutevent_sort_events_asc' );

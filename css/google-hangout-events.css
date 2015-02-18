@@ -114,22 +114,18 @@ Default Stylesheet
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  border: 1px solid #d2d2d2;
   line-height: 1.3em;
   margin-bottom: 20px;
   padding: 10px;
   /* main red button */
 
 }
-.widget .ghe-vessel a,
-.widget .ghe-vessel a:hover {
-  text-decoration: none;
-}
 .widget .ghe-vessel .ghe-title {
   margin-bottom: 10px;
 }
-.widget .ghe-vessel .ghe-title a:hover {
-  color: #3366cc;
+.widget .ghe-vessel a,
+.widget .ghe-vessel a:hover {
+  text-decoration: none;
 }
 .widget .ghe-vessel .ghe-time {
   margin: 0 0 10px;
@@ -142,17 +138,9 @@ Default Stylesheet
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background: #ffffff;
-  border: 1px solid #d2d2d2;
   display: inline;
   padding: 4px 8px;
   margin: 0 5px;
-}
-.widget .ghe-vessel ul.ghe-icons li a {
-  color: #3366cc;
-}
-.widget .ghe-vessel ul.ghe-icons li a:hover {
-  color: #d64337;
 }
 .widget .ghe-vessel .ghe-countdown {
   -webkit-border-radius: 3px;
@@ -169,19 +157,8 @@ Default Stylesheet
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  background: #d64337;
   cursor: pointer;
   margin: 0px auto 0;
   padding: 5px;
   text-align: center;
-}
-.widget .ghe-vessel .ghe-button a {
-  color: #fff;
-}
-.widget .ghe-vessel .ghe-button a:hover {
-  color: #fff;
-}
-.widget .ghe-vessel .ghe-button:hover {
-  color: #fff;
-  background: #c03c34;
 }

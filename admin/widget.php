@@ -19,8 +19,15 @@ class googlePlusEvent extends WP_Widget {
     googleplushangoutevent_wp_enqueue_scripts_load();
   
     $instance['timezone'] = isset($instance['timezone']) ? $instance['timezone'] : null;
-    
-    $events = googleplushangoutevent_response(null, null, null, $instance['timezone']);
+
+    $transient_name = md5('special_query_event_widget_' . $instance['timezone']);
+    if (false === ( $special_query_event_widget = get_transient($transient_name) )) {
+      $events = googleplushangoutevent_response(null, null, null, $instance['timezone']);
+
+      set_transient($transient_name, $events, 60 * 15);
+    }
+    $events = get_transient($transient_name);
+
     // sorting
     uasort( $events , 'googleplushangoutevent_sort_events_asc' );
     
@@ -209,8 +216,15 @@ class googlePlusHangout extends WP_Widget {
     wp_enqueue_script('googleplushangoutevent-script');
     
     $instance['timezone'] = isset($instance['timezone']) ? $instance['timezone'] : null;
-    
-    $events = googleplushangoutevent_response(null, null, null, $instance['timezone']);
+
+    $transient_name = md5('special_query_hangout_widget_' . $instance['timezone']);
+    if (false === ( $special_query_hangout_widget = get_transient($transient_name) )) {
+      $events = googleplushangoutevent_response(null, null, null, $instance['timezone']);
+
+      set_transient($transient_name, $events, 60 * 15);
+    }
+    $events = get_transient($transient_name);
+
     // sorting
     uasort( $events , 'googleplushangoutevent_sort_events_asc' );
     

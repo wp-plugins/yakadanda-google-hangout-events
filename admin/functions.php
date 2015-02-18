@@ -1,8 +1,6 @@
 <?php
 function googleplushangoutevent_google_lib() {
-  set_include_path( dirname( __FILE__ ) . '/../src/' . PATH_SEPARATOR . get_include_path());
-  require_once('Google/Client.php');
-  require_once('Google/Service/Calendar.php');
+  require_once realpath(dirname(__FILE__) . '/../autoload.php');
 }
 
 function googleplushangoutevent_callback($buffer) {
@@ -428,7 +426,7 @@ function googleplushangoutevent_google_fonts() {
   return $output;
 }
 
-if (get_option( 'yakadanda_googleplus_hangout_event_ignore_notice' ) != GPLUS_HANGOUT_EVENTS_VER) add_action('admin_notices', 'googleplushangoutevent_admin_notice');
+if (version_compare(get_option('yakadanda_googleplus_hangout_event_ignore_notice'), GPLUS_HANGOUT_EVENTS_VER, '<')) add_action('admin_notices', 'googleplushangoutevent_admin_notice');
 function googleplushangoutevent_admin_notice() {
   $url = basename($_SERVER['PHP_SELF']) . "?" . $_SERVER['QUERY_STRING'];
   
