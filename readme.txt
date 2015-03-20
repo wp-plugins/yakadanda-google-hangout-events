@@ -13,6 +13,9 @@ Generate linked Google+ Hangout Event notifications in a widget from a Google Ca
 
 This plugin will generate linked Google+ Hangout Event notifications in a widget from a Google Calendar with a nifty Countdown Clock to each event. Fully customizable with fonts and colors.
 
+= New Version 0.3.0 =
+Improve cache feature and several updates.
+
 = Features =
 * Display Regular Google+ Events in Posts or Pages via Widgets
 * Display Google+ Hangouts Events in Posts or Pages via Widgets
