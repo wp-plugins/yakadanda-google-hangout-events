@@ -1,6 +1,6 @@
 <?php
 function googleplushangoutevent_google_lib() {
-  require_once realpath(dirname(__FILE__) . '/../autoload.php');
+  require_once realpath(dirname(__FILE__) . '/../src/Google/autoload.php');
 }
 
 function googleplushangoutevent_callback($buffer) {
@@ -266,16 +266,18 @@ function googleplushangoutevent_section_setup() {
   $output .= '<ol>';
   $output .= '<li>At <a href="https://cloud.google.com/console/project" target="_blank">https://cloud.google.com/console/project</a> create new project.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-01.png"/></li>';
   $output .= '<li>Fill New Project modal dialog with your suitable information.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-02.png"/></li>';
-  $output .= '<li>On <u>Overview</u> submenu of your project, go to the <u>APIs</u> submenu under <u>APIS & AUTH</u> menu.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-03.png"/></li>';
+  $output .= '<li>On <u>Overview</u> submenu of your project, go to the <u>APIs</u> submenu under <u>APIS & auth</u> menu.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-03.png"/></li>';
   $output .= '<li>Turn on Calendar API.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-04.png"/></li>';
-  $output .= '<li>On <u>Credentials</u> submenu, create new Client ID.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-05.png"/></li>';
+  $output .= '<li>On <u>Credentials</u> submenu, create new Client ID.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-05.png"/><br/>';
+  $output .= 'Asking to configure consent screen. Leave APPLICATION TYPE with Web application.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-06.png"/><br/>';
+  $output .= 'Just fill with your suitable information, and then click Save button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-07.png"/></li>';
   $output .= '<li>Setup Create Client ID form.<br/>a. Leave APPLICATION TYPE with <span>Web application</span>.<br/>';
   $output .= 'b. Fill AUTHORIZED JAVASCRIPT ORIGINS with <code>' . home_url() . '</code><br/>';
   $output .= 'c. And AUTHORIZED REDIRECT URI with <code>' . admin_url('admin.php?page=googleplushangoutevent-settings') . '</code><br/>';
-  $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-06.png"/></li>';
-  $output .= '<li>Still on <u>Credentials</u> submenu, create new Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-07.png"/></li>';
-  $output .= '<li>Click Server key button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-08.png"/></li>';
-  $output .= '<li>Leave the textarea blank to make any IPs allowed, and then click Create button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-09.png"/></li>';
+  $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-08.png"/></li>';
+  $output .= '<li>Still on <u>Credentials</u> submenu, create new Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-09.png"/></li>';
+  $output .= '<li>Click Server key button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-10.png"/></li>';
+  $output .= '<li>Leave the textarea blank to make any IPs allowed, and then click Create button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-11.png"/></li>';
   $output .= '<li>Well done, now you have CLIENT ID, and CLIENT SECRET below <strong>Client ID for web application</strong> and API KEY below <strong>Key for server applications</strong>.</li>';
   $output .= '</ol>';
   $output .= '</div>';
@@ -452,7 +454,7 @@ function googleplushangoutevent_logout_callback() {
   googleplushangoutevent_revoke_token(get_option('yakadanda_googleplus_hangout_event_access_token'));
   update_option( 'yakadanda_googleplus_hangout_event_access_token', null );
   
-  $message = maybe_serialize(array('cookie' => 1, 'class' => 'updated', 'msg' => 'Disconnect.'));
+  $message = maybe_serialize(array('cookie' => 1, 'class' => 'updated', 'msg' => 'Disconnected.'));
   setcookie('googleplushangoutevent_message', $message, time()+1, '/');  
   
   die();

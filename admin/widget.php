@@ -17,20 +17,25 @@ class googlePlusEvent extends WP_Widget {
   public function widget( $args, $instance ) {
     // Enqueue scripts
     googleplushangoutevent_wp_enqueue_scripts_load();
-  
+
+    $token = get_option('yakadanda_googleplus_hangout_event_access_token');
+
     $instance['timezone'] = isset($instance['timezone']) ? $instance['timezone'] : null;
 
-    $transient_name = md5('special_query_event_widget_' . $instance['timezone']);
-    if (false === ( $special_query_event_widget = get_transient($transient_name) )) {
+    $transient_name = md5('special_query_event_widget_' . $instance['timezone'] . $token);
+    if ( (false === ( $special_query_event_widget = get_transient($transient_name) )) && $token ) {
       $events = googleplushangoutevent_response(null, null, null, $instance['timezone']);
 
       set_transient($transient_name, $events, 60 * 15);
     }
+    if (!$token) {
+      delete_transient($transient_name);
+    }
     $events = get_transient($transient_name);
 
     // sorting
-    uasort( $events , 'googleplushangoutevent_sort_events_asc' );
-    
+    if ($events) { uasort( $events , 'googleplushangoutevent_sort_events_asc' ); }
+
     $data = get_option('yakadanda_googleplus_hangout_event_options');
     
     $i = 0;
@@ -96,7 +101,7 @@ class googlePlusEvent extends WP_Widget {
               </ul>
               
               <?php if ($is_countdown): ?>
-                <div id="<?php echo uniqid(); ?>" class="ghe-countdown" time="<?php echo $time; ?>"><?php echo $time; ?></div>
+                <div id="<?php echo uniqid(); ?>" class="ghe-countdown fix" data-cdate="<?php echo $time; ?>"><?php echo $time; ?></div>
               <?php endif; ?>
               
               <div class="ghe-button"><a itemprop="url" href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
@@ -106,8 +111,10 @@ class googlePlusEvent extends WP_Widget {
             <?php $i++; if ( $i == $display ) break; ?>
             
           <?php endif; endforeach; ?>
-        <?php endif; if ($i == 0): ?>
-          <div class="ghe-vessel"><p><?php googleplushangoutevent_widget_message($events, 'normal'); ?></p></div>
+        <?php endif; ?>
+
+        <?php if ($i == 0): ?>
+          <div class="ghe-vessel"><p><?php echo googleplushangoutevent_get_widget_message($events, 'normal'); ?></p></div>
         <?php endif; ?>
       </div>
       
@@ -211,23 +218,27 @@ class googlePlusHangout extends WP_Widget {
   
   // Front-end display of widget.
   public function widget( $args, $instance ) {
-    // Call javascripts
-    wp_enqueue_script('googleplushangoutevent-countdown');
-    wp_enqueue_script('googleplushangoutevent-script');
+    // Enqueue scripts
+    googleplushangoutevent_wp_enqueue_scripts_load();
+
+    $token = get_option('yakadanda_googleplus_hangout_event_access_token');
     
     $instance['timezone'] = isset($instance['timezone']) ? $instance['timezone'] : null;
 
-    $transient_name = md5('special_query_hangout_widget_' . $instance['timezone']);
-    if (false === ( $special_query_hangout_widget = get_transient($transient_name) )) {
+    $transient_name = md5('special_query_hangout_widget_' . $instance['timezone'] . $token);
+    if ( (false === ( $special_query_hangout_widget = get_transient($transient_name) )) && $token ) {
       $events = googleplushangoutevent_response(null, null, null, $instance['timezone']);
 
       set_transient($transient_name, $events, 60 * 15);
     }
+    if (!$token) {
+      delete_transient($transient_name);
+    }
     $events = get_transient($transient_name);
 
     // sorting
-    uasort( $events , 'googleplushangoutevent_sort_events_asc' );
-    
+    if ($events) { uasort( $events , 'googleplushangoutevent_sort_events_asc' ); }
+
     $data = get_option('yakadanda_googleplus_hangout_event_options');
     
     $i = 0;
@@ -295,7 +306,7 @@ class googlePlusHangout extends WP_Widget {
               </ul>
               
               <?php if ($is_countdown): ?>
-                <div id="<?php echo uniqid(); ?>" class="ghe-countdown" time="<?php echo $time; ?>"><?php echo $time; ?></div>
+                <div id="<?php echo uniqid(); ?>" class="ghe-countdown fix" data-cdate="<?php echo $time; ?>"><?php echo $time; ?></div>
               <?php endif; ?>
               
               <div class="ghe-button"><a itemprop="url" href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
@@ -305,8 +316,10 @@ class googlePlusHangout extends WP_Widget {
             <?php $i++; if ( $i == $display ) break; ?>
             
           <?php endif; endforeach; ?>
-        <?php endif; if ($i == 0): ?>
-          <div class="ghe-vessel"><p><?php googleplushangoutevent_widget_message($events, 'hangout'); ?></p></div>
+        <?php endif; ?>
+
+        <?php if ($i == 0): ?>
+          <div class="ghe-vessel"><p><?php echo googleplushangoutevent_get_widget_message($events, 'hangout'); ?></p></div>
         <?php endif; ?>
       </div>
       
@@ -523,23 +536,23 @@ function googleplushangoutevent_start_time( $time, $timezone ) {
   return $output;
 }
 
-function googleplushangoutevent_widget_message($events, $type) {
+function googleplushangoutevent_get_widget_message($events, $type) {
   $message = 'Not Connected.';
+
   $token = get_option('yakadanda_googleplus_hangout_event_access_token');
-  
-  $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
-  
   if ($token) {
     if ($type == 'normal') $message = 'No event yet.';
     else $message = 'No hangout event yet.';
     
     // Error 403 message
+    $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
     if ($http_status) {
       $message = isset($events['error']['message']) ? $events['error']['message'] : null;
       $message = $http_status . ' ' . $message . '.';
     }
   }
-  echo $message;
+
+  return $message;
 }
 
 function googleplushangoutevent_onair($datetime1, $datetime2) {

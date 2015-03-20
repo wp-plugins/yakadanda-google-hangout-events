@@ -1,7 +1,7 @@
 <div id="google-hangout-event-settings" class="wrap">
   <div id="icon-edit" class="icon32 icon32-posts-quote"><br></div><h2>Settings</h2>
   <?php if ($message): ?>
-    <div class="<?php echo $message['class']; ?>">
+    <div id="googleplushangoutevent-msg" class="<?php echo $message['class']; ?>">
       <p><?php echo $message['msg']; ?></p>
     </div>
   <?php if (isset($message['cookie'])) setcookie('googleplushangoutevent_message', null, time()-1, '/'); endif; ?>

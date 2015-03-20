@@ -82,6 +82,13 @@ jQuery(function($){
         }
       }
     });
+    
+    // toggle message
+    if ($('body').find('#googleplushangoutevent-msg').length === 1) {
+      setTimeout(function () {
+        $('#googleplushangoutevent-msg').toggle('slow');
+      }, 2000);
+    }
   }
 
   var formfield;
@@ -119,16 +126,16 @@ jQuery(function($){
   // shortcode
   if ( $('body').find('.yghe-event').length >= 1 ) {
     $(".yghe-shortcode-countdown").each(function() {
-      if (typeof $(this).attr('time') !== "undefined") {  
-        googleplushangoutevent_makeCountDown( $(this).attr('id'), $(this).attr('time') );
+      if (typeof $(this).data('cdate') !== "undefined") {
+        googleplushangoutevent_makeCountDown( $(this).attr('id'), $(this).data('cdate') );
       }
     });
   }
   // widget
   if ( ( $('body').find('#ghe-event-widget').length === 1 ) || ( $('body').find('#ghe-hangout-widget').length === 1 ) ) {
     $(".ghe-countdown").each(function() {
-      if (typeof $(this).attr('time') !== "undefined") {  
-        googleplushangoutevent_makeCountDown( $(this).attr('id'), $(this).attr('time') );
+      if (typeof $(this).data('cdate') !== "undefined") {  
+        googleplushangoutevent_makeCountDown( $(this).attr('id'), $(this).data('cdate') );
       }
     });
   }
@@ -141,69 +148,38 @@ function googleplushangoutevent_makeCountDown(selector, startTime) {
     var todayTime = new Date(),
       beginTime = new Date(startTime),
       diff = new Date(beginTime-todayTime),
-      diffMinutes = diff/1000/60;
-      diffHours = diff/1000/60/60;
-      diffDays = diff/1000/60/60/24;
+      diffMinutes = diff/1000/60,
+      diffHours = diff/1000/60/60,
+      diffDays = diff/1000/60/60/24,
       diffMonths = diff/2628000000,
-      diffYears = diffMonths/12;
-    
-    minutes = hours = days = months = years = '';
-    if (diffMinutes >=1) {
-      text = 'Minute';
-      if (diffHours >=2 ) { text = 'Minutes'; }
-      minutes = '%i<span>&nbsp;'+text+'</span><em>|</em>';
-    }
-    if (diffHours >=1) {
-      text = 'Hour';
-      if (diffHours >=2 ) { text = 'Hours'; }
-      hours = '%h<span>&nbsp;'+text+'</span><em>|</em>';
-    }
-    if (diffDays >=1) {
-      text = 'Day';
-      if (diffDays >=2 ) { text = 'Days'; }
-      days = '%d<span>&nbsp;'+text+'</span><em>|</em>';
+      diffYears = diffMonths/12,
+      countDownTemplate = '';
+
+    if (diffYears >= 1) {
+      countDownTemplate += '%y';
     }
     if (diffMonths >= 1) {
-      text = 'Month';
-      if (diffMonths >=2 ) { text = 'Months'; }
-      months = '%m<span>&nbsp;'+text+'</span><em>|</em>';
+      countDownTemplate += '%m';
     }
-    if (diffYears >= 1) {
-      text = 'Year';
-      if (diffYears >=2 ) { text = 'Years'; }
-      years = '%y<span>&nbsp;'+text+'</span><em>|</em>';
+    if (diffDays >=1) {
+      countDownTemplate += '%d';
+    }
+    if (diffHours >=1) {
+      countDownTemplate += '%h';
+    }
+    if (diffMinutes >=1) {
+      countDownTemplate += '%i';
     }
     
     $("#"+selector).countdown({
-      htmlTemplate: years + months + days + hours + minutes + "%s<span>&nbsp;Seconds</span>",
       date: startTime,
+      template: countDownTemplate + '%s',
       yearsAndMonths: true,
-      /*servertime: function() { 
-        var time = null; 
-        $.ajax({url: 'get_time.php', 
-          async: false, 
-          dataType: 'text', 
-          success: function( data, status, xhr ) {  
-            time = data; 
-          }, 
-          error: function(xhr, status, err) { 
-            time = new Date(); 
-            time = time.getTime();
-          }
-        });
-        return time; 
-      },*/
-      hoursOnly: false,
+      timeSeparator: '|',
+      leadingZero: false,
       onComplete: function( event ) {
         $(this).html("Completed");
-      },
-      onPause: function( event, timer ) {
-        $(this).html("Pause");
-      },
-      onResume: function( event ) {
-        $(this).html("Resumed");
-      },
-      leadingZero: true
+      }
     });
   });
 }

@@ -32,34 +32,44 @@ function googleplushangoutevent_shortcode( $atts ) {
   
   // Enqueue scripts
   googleplushangoutevent_wp_enqueue_scripts_load();
-  
+
+  $token = get_option('yakadanda_googleplus_hangout_event_access_token');
+
   if ($limit > 20) $limit = 20;
   
   if ($id) {
-    $transient_name = md5('special_query_id_' . $id . $timezone);
-    if (false === ( $special_query_id = get_transient($transient_name) )) {
+    $transient_name = md5('special_query_id_' . $id . $timezone . $token);
+    if ( (false === ( $special_query_id = get_transient($transient_name) )) && $token ) {
       $events = googleplushangoutevent_response( null, $id, null, $timezone );
       
       set_transient($transient_name, $events, 60 * 15);
     }
+    if (!$token) {
+      delete_transient($transient_name);
+    }
     $events = get_transient($transient_name);
   } else {
-    $transient_name = md5('special_query_event_' . $past . $search . $timezone);
-    if (false === ( $special_query_event = get_transient($transient_name) )) {
+    $transient_name = md5('special_query_event_' . $past . $search . $timezone . $token);
+    if ( (false === ( $special_query_event = get_transient($transient_name) )) && $token ) {
       $events = googleplushangoutevent_response( $past, null, $search, $timezone );
       
       set_transient($transient_name, $events, 60 * 15);
     }
+    if (!$token) {
+      delete_transient($transient_name);
+    }
     $events = get_transient($transient_name);
 
     // Sorting events
-    if ( $past ) uasort( $events , 'googleplushangoutevent_sort_events_desc' );
-    else uasort( $events , 'googleplushangoutevent_sort_events_asc' );
+    if ($past && $events) {
+      uasort( $events , 'googleplushangoutevent_sort_events_desc' );
+    } elseif ($events) {
+      uasort( $events , 'googleplushangoutevent_sort_events_asc' );
+    }
   }
   
   $data = get_option('yakadanda_googleplus_hangout_event_options');
-  $token = get_option('yakadanda_googleplus_hangout_event_access_token');
-  
+
   $output = null;
   $i = 0;
   $filter = $src_filter = true;
@@ -123,7 +133,7 @@ function googleplushangoutevent_shortcode( $atts ) {
         
         if ($countdown == 'true') {
           $time = googleplushangoutevent_start_time($start_event, $used_timezone);
-          $output .= '<div id="' . uniqid() . '" class="yghe-shortcode-countdown" time="' . $time . '">' . $time . '</div>';
+          $output .= '<div id="' . uniqid() . '" class="yghe-shortcode-countdown fix" data-cdate="' . $time . '">' . $time . '</div>';
         }
         
         $output .= '</div>';
@@ -198,8 +208,8 @@ function googleplushangoutevent_shortcode( $atts ) {
           }
           
           if ( $countdown == 'true' ) {
-            $time = googleplushangoutevent_start_time( $start_event, $used_timezone );
-            $output .= '<div id="' . uniqid() . '" class="yghe-shortcode-countdown" time="' . $time . '">' . $time . '</div>';
+            $time = googleplushangoutevent_start_time($start_event, $used_timezone);
+            $output .= '<div id="' . uniqid() . '" class="yghe-shortcode-countdown fix" data-cdate="' . $time . '">' . $time . '</div>';
           }
           
           $output .= '</div>';

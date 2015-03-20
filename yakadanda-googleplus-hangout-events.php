@@ -3,7 +3,7 @@
 Plugin Name: Yakadanda Google+ Hangout Events
 Plugin URI: http://www.yakadanda.com/plugins/yakadanda-google-hangout-events/
 Description: A countdown function to time of the Google+ Hangout Events.
-Version: 0.2.9
+Version: 0.3.0
 Author: Peter Ricci
 Author URI: http://www.yakadanda.com/
 License: GPL2
@@ -27,7 +27,7 @@ function googleplushangoutevent_deactivate() {
   
 }
 
-if(!defined('GPLUS_HANGOUT_EVENTS_VER')) define('GPLUS_HANGOUT_EVENTS_VER', '0.2.9');
+if(!defined('GPLUS_HANGOUT_EVENTS_VER')) define('GPLUS_HANGOUT_EVENTS_VER', '0.3.0');
 if(!defined('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR')) define('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 if(!defined('GPLUS_HANGOUT_EVENTS_PLUGIN_URL')) define('GPLUS_HANGOUT_EVENTS_PLUGIN_URL', plugins_url(null, __FILE__));
 if(!defined('GPLUS_HANGOUT_EVENTS_THEME_DIR')) define('GPLUS_HANGOUT_EVENTS_THEME_DIR', get_stylesheet_directory());
@@ -80,7 +80,7 @@ function googleplushangoutevent_register() {
   // Google+ Embedded Posts
   wp_register_script('googleplushangoutevent-embedded-posts', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/js/googleplus-embedded-posts.js', array('jquery'), GPLUS_HANGOUT_EVENTS_VER, true );
   // Countdown timer jQuery Plugin
-  wp_register_script('googleplushangoutevent-countdown', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/js/jquery.jcountdown.min.js', array('jquery'), '1.4.2', true );
+  wp_register_script('googleplushangoutevent-countdown', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/js/jquery.jcountdown.min.js', array('jquery'), '1.5.2', true );
   // Google+ Hangout Event script
   wp_register_script('googleplushangoutevent-script', GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/js/script.js', array('jquery'), GPLUS_HANGOUT_EVENTS_VER, true );
   
