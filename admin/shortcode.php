@@ -221,10 +221,10 @@ function googleplushangoutevent_shortcode( $atts ) {
   }
   
   if ( ($output == null) && !$http_status ) {
-    $message = 'No event and hangout event yet.';
-    if ($type == 'normal') $message = 'No event yet.';
-    elseif ($type == 'hangout') $message = 'No hangout event yet.';
-    $output = ($token) ? $message : 'Not Connected.';
+    $message = __('No event and hangout event yet.', 'yakadanda-google-hangout-events');
+    if ($type == 'normal') $message = __('No event yet.', 'yakadanda-google-hangout-events');
+    elseif ($type == 'hangout') $message = __('No hangout event yet.', 'yakadanda-google-hangout-events');
+    $output = ($token) ? $message : __('Not Connected.', 'yakadanda-google-hangout-events');
   }
   
   // Error 403 message
@@ -303,10 +303,15 @@ function googleplushangoutevent_ago($datetime1, $datetime2) {
     $info = '&nbsp;(updated)';
   }
   
-  $m = time()-$i; $o='just now';
-  $t = array('year'=>31556926,'month'=>2629744,'week'=>604800, 'day'=>86400,'hour'=>3600,'minute'=>60,'second'=>1);
-  foreach($t as $u=>$s){
-    if ($s<=$m) {$v=floor($m/$s); $o="$v $u".($v==1?'':'s').' ago'; break;}
+  $m = time() - $i;
+  $o = 'just now';
+  $t = array('year' => 31556926, 'month' => 2629744, 'week' => 604800, 'day' => 86400, 'hour' => 3600, 'minute' => 60, 'second' => 1);
+  foreach ($t as $u => $s) {
+    if ($s <= $m) {
+      $v = floor($m/$s);
+      $o = "$v $u" . ($v == 1 ? '' : 's') . ' ago';
+      break;
+    }
   }
   
   $o = $o . $info;

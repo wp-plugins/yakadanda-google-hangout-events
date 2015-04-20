@@ -4,7 +4,7 @@ class googleplushangoutevent_List_Table extends WP_List_Table {
   function __construct() {
     global $status, $page;
 
-    //Set parent defaults
+    // Set parent defaults
     parent::__construct(array(
       'singular' => 'event',
       'plural' => 'events',
@@ -27,21 +27,21 @@ class googleplushangoutevent_List_Table extends WP_List_Table {
       case 'date':
         return $this->get_date($item['created'], $item['updated']);
       default:
-        return print_r($item, true); //Show the whole array for troubleshooting purposes
+        return print_r($item, true); // Show the whole array for troubleshooting purposes
     }
   }
 
   function column_title($item) {
-    //Build row actions
+    // Build row actions
     $actions = array(
-      'extend' => sprintf('<a href="?page=%s&action=%s&id=%s" class="cta--secondary">Extend</a>', $_REQUEST['page'], 'extend', $item['id']),
-      'delete' => sprintf('<a href="?page=%s&action=%s&id=%s" class="cta--secondary">Delete</a>', $_REQUEST['page'], 'delete', $item['id']),
-      'view' => sprintf('<a href="%s" class="cta--secondary">View</a>', $item['htmlLink'])
+      'extend' => sprintf(__('<a href="?page=%s&action=%s&id=%s" class="cta--secondary">Extend</a>', 'yakadanda-google-hangout-events'), $_REQUEST['page'], 'extend', $item['id']),
+      'delete' => sprintf(__('<a href="?page=%s&action=%s&id=%s" class="cta--secondary">Delete</a>', 'yakadanda-google-hangout-events'), $_REQUEST['page'], 'delete', $item['id']),
+      'view' => sprintf(__('<a href="%s" class="cta--secondary">View</a>', 'yakadanda-google-hangout-events'), $item['htmlLink'])
     );
 
     $title = '<a href="?page=' . $_REQUEST['page'] . '&action=extend&id=' . $item['id'] . '">' . $item['summary'] . '</a>';
     if ( $item['visibility'] ) $title = $title . ' - <span class="post-state">Private</span>';
-    //Return the title contents
+    // Return the title contents
     return sprintf('<strong>%1$s</strong>%2$s',
       /* $1%s */ $title,
       /* $2%s */ $this->row_actions($actions)
@@ -58,12 +58,12 @@ class googleplushangoutevent_List_Table extends WP_List_Table {
 
   function get_columns() {
     $columns = array(
-      'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
-      'title' => 'Title',
-      'author' => 'Author',
-      'time' => 'Time',
-      'location' => 'Location',
-      'date' => 'Date'
+      'cb' => '<input type="checkbox" />', // Render a checkbox instead of text
+      'title' => __('Title', 'yakadanda-google-hangout-events'),
+      'author' => __('Author', 'yakadanda-google-hangout-events'),
+      'time' => __('Time', 'yakadanda-google-hangout-events'),
+      'location' => __('Location', 'yakadanda-google-hangout-events'),
+      'date' => __('Date', 'yakadanda-google-hangout-events')
     );
     
     return $columns;
@@ -71,7 +71,7 @@ class googleplushangoutevent_List_Table extends WP_List_Table {
 
   function get_sortable_columns() {
     $sortable_columns = array(
-      'title' => array('summary', false), //true means it's already sorted
+      'title' => array('summary', false), // true means it's already sorted
       'location' => array('location', false),
       'date' => array('created', false)
     );
@@ -88,7 +88,7 @@ class googleplushangoutevent_List_Table extends WP_List_Table {
   }
 
   function process_bulk_action() {
-    //Detect when a bulk action is being triggered...
+    // Detect when a bulk action is being triggered...
     if ('delete' === $this->current_action()) {
       if (isset($_GET['events']) && is_array($_GET['events'])) {
         foreach ($_GET['events'] as $eventId) {
@@ -114,10 +114,10 @@ class googleplushangoutevent_List_Table extends WP_List_Table {
     $data = googleplushangoutevent_response_admin();
   
     function usort_reorder($a, $b) {
-      $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'updated'; //If no sort, default to title
-      $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
-      $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
-      return ($order === 'desc') ? $result : -$result; //Send final sort direction to usort
+      $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'updated'; // If no sort, default to title
+      $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; // If no order, default to asc
+      $result = strcmp($a[$orderby], $b[$orderby]); // Determine sort order
+      return ($order === 'desc') ? $result : -$result; // Send final sort direction to usort
     }
 
     usort($data, 'usort_reorder');
@@ -131,9 +131,9 @@ class googleplushangoutevent_List_Table extends WP_List_Table {
     $this->items = $data;
 
     $this->set_pagination_args(array(
-      'total_items' => $total_items, //WE have to calculate the total number of items
-      'per_page' => $per_page, //WE have to determine how many items to show on a page
-      'total_pages' => ceil($total_items / $per_page)   //WE have to calculate the total number of pages
+      'total_items' => $total_items, // WE have to calculate the total number of items
+      'per_page' => $per_page, // WE have to determine how many items to show on a page
+      'total_pages' => ceil($total_items / $per_page)   // WE have to calculate the total number of pages
     ));
   }
   

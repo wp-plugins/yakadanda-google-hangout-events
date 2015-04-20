@@ -49,27 +49,28 @@ function googleplushangoutevent_is_page() {
 // Register menu page
 add_action('admin_menu', 'googleplushangoutevent_register_menu_page');
 function googleplushangoutevent_register_menu_page() {
-  add_menu_page('Events', 'Events', 'add_users', 'googleplushangoutevent-all-events', 'googleplushangoutevent_page_all_events', 'none', 918276354);
+  add_menu_page(__('All Events', 'yakadanda-google-hangout-events'), __('Events', 'yakadanda-google-hangout-events'), 'add_users', 'googleplushangoutevent-all-events', 'googleplushangoutevent_page_all_events', 'none', 918276354);
   
-  $events_page = add_submenu_page('googleplushangoutevent-all-events', 'All Events', 'All Events', 'manage_options', 'googleplushangoutevent-all-events', 'googleplushangoutevent_page_all_events');
+  $events_page = add_submenu_page('googleplushangoutevent-all-events', __('All Events', 'yakadanda-google-hangout-events'), __('All Events', 'yakadanda-google-hangout-events'), 'manage_options', 'googleplushangoutevent-all-events', 'googleplushangoutevent_page_all_events');
   add_action('load-' . $events_page, 'googleplushangoutevent_admin_add_help_tab');
   
-  $settings_page = add_submenu_page('googleplushangoutevent-all-events', 'Settings', 'Settings', 'manage_options', 'googleplushangoutevent-settings', 'googleplushangoutevent_page_settings');
+  $settings_page = add_submenu_page('googleplushangoutevent-all-events', __('Settings', 'yakadanda-google-hangout-events'), __('Settings', 'yakadanda-google-hangout-events'), 'manage_options', 'googleplushangoutevent-settings', 'googleplushangoutevent_page_settings');
   add_action('load-' . $settings_page, 'googleplushangoutevent_admin_add_help_tab');
 }
 
 function googleplushangoutevent_page_all_events() {
-  if (!current_user_can('manage_options'))
-    wp_die( __('You do not have sufficient permissions to access this page.') );
-  
+  if (!current_user_can('manage_options')) {
+    wp_die(__('You do not have sufficient permissions to access this page.', 'yakadanda-google-hangout-events'));
+  }
+
   $message = null;
-  
+
   // extend event
   if ( isset($_POST['extend_event']) ) {
     $image_src = get_option('googleplushangoutevent_' . $_GET['id']);
     if ($_POST['image_location'] != $image_src) {
       update_option('googleplushangoutevent_' . $_GET['id'], $_POST['image_location']);
-      $message = array('class' => 'updated', 'msg' => 'Event updated.');
+      $message = array('class' => 'updated', 'msg' => __('Event updated.', 'yakadanda-google-hangout-events') );
     }
   }
   
@@ -81,22 +82,23 @@ function googleplushangoutevent_page_all_events() {
     $image_src = get_option('googleplushangoutevent_' . $event['id']);
   }
   
-  $title = 'Extend Event';
+  $title = __('Extend Event', 'yakadanda-google-hangout-events');
   if ( !isset($_GET['action']) || ($_GET['action'] != 'extend') ) {
     $listTable = new googleplushangoutevent_List_Table();
     $listTable->prepare_items();
-    $title = 'All Events';
+    $title = __('All Events', 'yakadanda-google-hangout-events');
   }
   
   include('page-events.php');
 }
 
 function googleplushangoutevent_page_settings() {
-  if (!current_user_can('manage_options'))
-    wp_die( __('You do not have sufficient permissions to access this page.') );
-  
+  if (!current_user_can('manage_options')) {
+    wp_die(__('You do not have sufficient permissions to access this page.', 'yakadanda-google-hangout-events'));
+  }
+
   $message = null;
-  
+
   /* postData */
   if ( isset($_POST['update_settings']) ) {
     $data = googleplushangoutevent_get_settings();
@@ -142,7 +144,7 @@ function googleplushangoutevent_page_settings() {
     );
     
     update_option('yakadanda_googleplus_hangout_event_options', $value);
-    $message = array('class' => 'updated', 'msg' => 'Settings updated.');
+    $message = array('class' => 'updated', 'msg' => __('Settings updated.', 'yakadanda-google-hangout-events'));
     
     $granted = false;
     if ( ($data['calendar_id'] != $_POST['calendar_id']) || ($data['api_key'] != $_POST['api_key']) || ($data['client_id'] != $_POST['client_id']) || ($data['client_secret'] != $_POST['client_secret']) ) $granted = true;
@@ -211,15 +213,15 @@ function googleplushangoutevent_page_settings() {
     $calendar_list = googleplushangoutevent_calendar_list($service);
     $calendar_ids = array();
     
-    foreach ( $calendar_list as $calendar) $calendar_ids[] = $calendar['id'];
+    foreach ( $calendar_list as $calendar) { $calendar_ids[] = $calendar['id']; }
     
     $is_calendar_id = in_array($data['calendar_id'], $calendar_ids);
     
     if ($is_calendar_id) {
       update_option( $option, $client->getAccessToken() );
-      $message = maybe_serialize(array('cookie' => 1, 'class' => 'updated', 'msg' => 'Connection to Google API succeeded.'));
+      $message = maybe_serialize(array('cookie' => 1, 'class' => 'updated', 'msg' => __('Connection to Google API succeeded.', 'yakadanda-google-hangout-events')));
     } else {
-      $message = maybe_serialize(array('cookie' => 1, 'class' => 'error', 'msg' => 'Please login as ' . $data['calendar_id']));
+      $message = maybe_serialize(array('cookie' => 1, 'class' => 'error', 'msg' => sprintf(__('Please login as %s.', 'yakadanda-google-hangout-events'), $data['calendar_id'])));
     }
     
     setcookie('googleplushangoutevent_message', $message, time()+1, '/');
@@ -231,7 +233,7 @@ function googleplushangoutevent_page_settings() {
   $data = googleplushangoutevent_get_settings();
   
   // message
-  if (isset($_COOKIE['googleplushangoutevent_message'])) $message = maybe_unserialize(stripslashes($_COOKIE['googleplushangoutevent_message']));
+  if (isset($_COOKIE['googleplushangoutevent_message'])) { $message = maybe_unserialize(stripslashes($_COOKIE['googleplushangoutevent_message'])); }
   
   include('page-settings.php');
 }
@@ -241,19 +243,19 @@ function googleplushangoutevent_admin_add_help_tab() {
   
   $screen->add_help_tab(array(
       'id' => 'googleplushangoutevent-setup',
-      'title' => __('Setup'),
+      'title' => __('Setup', 'yakadanda-google-hangout-events'),
       'content' => googleplushangoutevent_section_setup()
   ));
   
   $screen->add_help_tab(array(
       'id' => 'googleplushangoutevent-embedded-posts',
-      'title' => __('Embedded Posts'),
+      'title' => __('Embedded Posts', 'yakadanda-google-hangout-events'),
       'content' => googleplushangoutevent_section_embedded_posts()
   ));
   
   $screen->add_help_tab(array(
       'id' => 'googleplushangoutevent-shortcode',
-      'title' => __('Shortcode'),
+      'title' => __('Shortcode', 'yakadanda-google-hangout-events'),
       'content' => googleplushangoutevent_section_shortcode()
   ));
   
@@ -262,33 +264,62 @@ function googleplushangoutevent_admin_add_help_tab() {
 
 function googleplushangoutevent_section_setup() {
   $output = '<div class="google-web-starter-kit">';
-  $output .= '<h1>How to get your Google Api Key, Client ID, and Client Secret</h1>';
+  $output .= sprintf(__('<h1>How to get your Google Api Key, Client ID, and Client Secret</h1>', 'yakadanda-google-hangout-events'));
   $output .= '<ol>';
-  $output .= '<li>At <a href="https://cloud.google.com/console/project" target="_blank">https://cloud.google.com/console/project</a> create new project.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-01.png"/></li>';
-  $output .= '<li>Fill New Project modal dialog with your suitable information.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-02.png"/></li>';
-  $output .= '<li>On <u>Overview</u> submenu of your project, go to the <u>APIs</u> submenu under <u>APIS & auth</u> menu.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-03.png"/></li>';
-  $output .= '<li>Turn on Calendar API.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-04.png"/></li>';
-  $output .= '<li>On <u>Credentials</u> submenu, create new Client ID.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-05.png"/><br/>';
-  $output .= 'Asking to configure consent screen. Leave APPLICATION TYPE with Web application.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-06.png"/><br/>';
-  $output .= 'Just fill with your suitable information, and then click Save button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-07.png"/></li>';
-  $output .= '<li>Setup Create Client ID form.<br/>a. Leave APPLICATION TYPE with <span>Web application</span>.<br/>';
-  $output .= 'b. Fill AUTHORIZED JAVASCRIPT ORIGINS with <code>' . home_url() . '</code><br/>';
-  $output .= 'c. And AUTHORIZED REDIRECT URI with <code>' . admin_url('admin.php?page=googleplushangoutevent-settings') . '</code><br/>';
+
+  $href = 'https://cloud.google.com/console/project';
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-01.png';
+  $output .= sprintf(__('<li>At <a href="%s" target="_blank">https://cloud.google.com/console/project</a> create new project.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $href, $src);
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-02.png';
+  $output .= sprintf(__('<li>Fill New Project modal dialog with your suitable information.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-03.png';
+  $output .= sprintf(__('<li>On <u>Overview</u> submenu of your project, go to the <u>APIs</u> submenu under <u>APIS & auth</u> menu.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-04.png';
+  $output .= sprintf(__('<li>Turn on Calendar API.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-05.png';
+  $output .= sprintf(__('<li>On <u>Credentials</u> submenu, create new Client ID.<br/><img src="%s"/><br/>', 'yakadanda-google-hangout-events'), $src);
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-06.png';
+  $output .= sprintf(__('Asking to configure consent screen. Leave APPLICATION TYPE with Web application.<br/><img src="%s"/><br/>', 'yakadanda-google-hangout-events'), $src);
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-07.png';
+  $output .= sprintf(__('Just fill with your suitable information, and then click Save button.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+
+  $output .= sprintf(__('<li>Setup Create Client ID form.<br/>a. Leave APPLICATION TYPE with <span>Web application</span>.<br/>', 'yakadanda-google-hangout-events'));
+
+  $url = home_url();
+  $output .= sprintf(__('b. Fill AUTHORIZED JAVASCRIPT ORIGINS with <code>%s</code><br/>', 'yakadanda-google-hangout-events'), $url);
+
+  $url = admin_url('admin.php?page=googleplushangoutevent-settings');
+  $output .= sprintf(__('c. And AUTHORIZED REDIRECT URI with <code>%s</code><br/>', 'yakadanda-google-hangout-events'), $url);
+
   $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-08.png"/></li>';
-  $output .= '<li>Still on <u>Credentials</u> submenu, create new Key.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-09.png"/></li>';
-  $output .= '<li>Click Server key button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-10.png"/></li>';
-  $output .= '<li>Leave the textarea blank to make any IPs allowed, and then click Create button.<br/><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-11.png"/></li>';
-  $output .= '<li>Well done, now you have CLIENT ID, and CLIENT SECRET below <strong>Client ID for web application</strong> and API KEY below <strong>Key for server applications</strong>.</li>';
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-09.png';
+  $output .= sprintf(__('<li>Still on <u>Credentials</u> submenu, create new Key.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-10.png';
+  $output .= sprintf(__('<li>Click Server key button.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-11.png';
+  $output .= sprintf(__('<li>Leave the textarea blank to make any IPs allowed, and then click Create button.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+
+  $output .= sprintf(__('<li>Well done, now you have CLIENT ID, and CLIENT SECRET below <strong>Client ID for web application</strong> and API KEY below <strong>Key for server applications</strong>.</li>', 'yakadanda-google-hangout-events'));
+
   $output .= '</ol>';
   $output .= '</div>';
-  
+
   return $output;
 }
 
 function googleplushangoutevent_section_shortcode() {
   $output = '<div class="google-web-starter-kit">';
   $output .= '<h1>Shortcode</h1>';
-  $output .= '<p><strong>Examples</strong></p>';
+  $output .= '<p><strong>' . __('Examples', 'yakadanda-google-hangout-events') . '</strong></p>';
   $output .= '<ul>';
   $output .= '<li><code>[google+events]</code></li>';
   $output .= '<li><code>[google+events type="hangout"]</code></li>';
@@ -304,33 +335,51 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<li><code>[google+events timezone="America/Los_Angeles"]</code></li>';
   $output .= '<li><code>[google+events countdown="true"]</code></li>';
   $output .= '</ul>';
-  $output .= '<p><strong>Attributes</strong></p>';
+  $output .= '<p><strong>' . __('Attributes', 'yakadanda-google-hangout-events') . '</strong></p>';
   $output .= '<table><tbody>';
-  $output .= '<tr><td style="vertical-align: top;">type</td><td style="vertical-align: top;">=</td><td><span>all</span>, <span>normal</span>, or <span>hangout</span>, by default type is <span>all</span></td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">src</td><td style="vertical-align: top;">=</td><td><span>all</span>, <span>gcal</span> (event from calendar), or <span>gplus</span> (event from google+), by default source is <span>all</span></td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">limit</td><td style="vertical-align: top;">=</td><td>number of events to display (maximum is <span>20</span>)</td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">past</td><td style="vertical-align: top;">=</td><td>number of months to display past events in <span>X</span> months ago, by default past is false</td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">author</td><td style="vertical-align: top;">=</td><td><span>self</span>, <span>other</span>, or <span>all</span>, by default author is <span>all</span></td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">id</td><td style="vertical-align: top;">=</td><td>Event identifier (string). Single Event Example: <a href="https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so" target="_blank">https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u></a> To create a single event you would place in shortcode <code>[google+events id="snlc77gi4v519jom5gb28217so"]</code></td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">filter_out</td><td style="vertical-align: top;">=</td><td>Filter out certain events by event identifiers, seperated by comma</td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">search</td><td style="vertical-align: top;">=</td><td>Text search terms (string) to display events that match these terms in any field, except for extended properties</td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">attendees</td><td style="vertical-align: top;">=</td><td>Events can have attendees, the value can be <span>show</span>, <span>show_all</span>, or <span>hide</span>, the default value for attendees attribute is <span>hide</span></td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">timezone</td><td style="vertical-align: top;">=</td><td>Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at <a href="http://www.php.net/manual/en/timezones.php" target="_blank">http://www.php.net/manual/en/timezones.php</a> (string)</td></tr>';
-  $output .= '<tr><td style="vertical-align: top;">countdown</td><td style="vertical-align: top;">=</td><td><span>true</span>, or <span>false</span>, by default countdown is <span>false</span></td></tr>';
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">type</td><td style="vertical-align: top;">=</td><td><span>all</span>, <span>normal</span>, or <span>hangout</span>, by default type is <span>all</span></td></tr>', 'yakadanda-google-hangout-events'));
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">src</td><td style="vertical-align: top;">=</td><td><span>all</span>, <span>gcal</span> (event from calendar), or <span>gplus</span> (event from google+), by default source is <span>all</span></td></tr>', 'yakadanda-google-hangout-events'));
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">limit</td><td style="vertical-align: top;">=</td><td>number of events to display (maximum is <span>20</span>)</td></tr>', 'yakadanda-google-hangout-events'));
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">past</td><td style="vertical-align: top;">=</td><td>number of months to display past events in <span>X</span> months ago, by default past is false</td></tr>', 'yakadanda-google-hangout-events'));
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">author</td><td style="vertical-align: top;">=</td><td><span>self</span>, <span>other</span>, or <span>all</span>, by default author is <span>all</span></td></tr>', 'yakadanda-google-hangout-events'));
+
+  $url = 'https://plus.google.com/u/0/events/csnlc77gi4v519jom5gb28217so';
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">id</td><td style="vertical-align: top;">=</td><td>Event identifier (string). Single Event Example: <a href="%s" target="_blank">https://plus.google.com/u/0/events/c<u>snlc77gi4v519jom5gb28217so</u></a> To create a single event you would place in shortcode <code>[google+events id="snlc77gi4v519jom5gb28217so"]</code></td></tr>', 'yakadanda-google-hangout-events'), $url);
+
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">filter_out</td><td style="vertical-align: top;">=</td><td>Filter out certain events by event identifiers, seperated by comma</td></tr>', 'yakadanda-google-hangout-events'));
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">search</td><td style="vertical-align: top;">=</td><td>Text search terms (string) to display events that match these terms in any field, except for extended properties</td></tr>', 'yakadanda-google-hangout-events'));
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">attendees</td><td style="vertical-align: top;">=</td><td>Events can have attendees, the value can be <span>show</span>, <span>show_all</span>, or <span>hide</span>, the default value for attendees attribute is <span>hide</span></td></tr>', 'yakadanda-google-hangout-events'));
+
+  $url = 'http://www.php.net/manual/en/timezones.php';
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">timezone</td><td style="vertical-align: top;">=</td><td>Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at <a href="%s" target="_blank">http://www.php.net/manual/en/timezones.php</a> (string)</td></tr>', 'yakadanda-google-hangout-events'), $url);
+
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">countdown</td><td style="vertical-align: top;">=</td><td><span>true</span>, or <span>false</span>, by default countdown is <span>false</span></td></tr>', 'yakadanda-google-hangout-events'));
+
   $output .= '<tbody></table>';
   $output .= '</div>';
-  
+
   return $output;
 }
 
 function googleplushangoutevent_section_embedded_posts() {
-  $output = '<div class="google-web-starter-kit">'; 
-  $output .= '<h1>Adding the embedded posts</h1>';
-  $output .= '<p>Locate the post that you want to embed on <a href="plus.google.com" target="_blank">Google+</a> and click the <img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/gplus-post-menu-icon.png" title="A downward pointing arrow that indicates the menu" alt="A downward pointing arrow that indicates the menu"/> menu icon and choose Embed post.</p>';
+  $output = '<div class="google-web-starter-kit">';
+
+  $output .= sprintf(__('<h1>Adding the embedded posts</h1>', 'yakadanda-google-hangout-events'));
+
+  $href = 'plus.google.com';
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/gplus-post-menu-icon.png';
+  $output .= sprintf(__('<p>Locate the post that you want to embed on <a href="%s" target="_blank">Google+</a> and click the <img src="%s" title="A downward pointing arrow that indicates the menu" alt="A downward pointing arrow that indicates the menu"/> menu icon and choose Embed post.</p>', 'yakadanda-google-hangout-events'), $href, $src);
+
   $output .= '<p><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-embedded-posts-1.png"/></p>';
-  $output .= '<p>Copy the tag <code>' . htmlentities('<div class="g-post" data-href="https://plus.google.com/116442957294662581658/posts/9Mu57w1iBFj"></div>') . '</code> to post or page.</p>';
+
+  $embed_code = htmlentities('<div class="g-post" data-href="https://plus.google.com/116442957294662581658/posts/9Mu57w1iBFj"></div>');
+  $output .= sprintf(__('<p>Copy the tag <code>%s</code> to post or page.</p>', 'yakadanda-google-hangout-events'), $embed_code);
+
   $output .= '<p><img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-embedded-posts-2.png"/></p>';
-  $output .= '<p>For more detail you can look at <a href="https://developers.google.com/+/web/embedded-post/" target="_blank">https://developers.google.com/+/web/embedded-post/</a>.</p>';
+
+  $href = 'https://developers.google.com/+/web/embedded-post/';
+  $output .= sprintf(__('<p>For more detail you can look at <a href="%s" target="_blank">https://developers.google.com/+/web/embedded-post/</a>.</p>', 'yakadanda-google-hangout-events'), $href);
+  
   $output .= '</div>';
   
   return $output;
@@ -435,8 +484,12 @@ function googleplushangoutevent_admin_notice() {
   if ( ($url == 'admin.php?page=googleplushangoutevent-settings') ) {
     ?>
       <div class="updated googleplushangoutevent-notice">
-        <p><a id="googleplushangoutevent-dismiss" href="#">Close</a></p>
-        <p>Since 0.2.6, Authorized redirect URI changed to <code><?php echo admin_url('admin.php?page=googleplushangoutevent-settings'); ?></code>. You can change your Authorized redirect URI at <a href="https://code.google.com/apis/console" target="_blank">Google APIs Console</a> or <a href="https://cloud.google.com/console" target="_blank">Google Cloud Console</a>. Ignore this notice if this the first time you're using this plugin. Thank you.</p>
+        <p><a id="googleplushangoutevent-dismiss" href="#"><?php _e('Close', 'yakadanda-google-hangout-events'); ?></a></p>
+        <?php
+          $authorized_redirect_uri = admin_url('admin.php?page=googleplushangoutevent-settings');
+          $url = 'https://cloud.google.com/console';
+          echo sprintf(__('<p>Since 0.2.6, Authorized redirect URI changed to <code>%s</code>. You can change your Authorized redirect URI at <a href="%s" target="_blank">Google Cloud Console</a>. Ignore this notice if this the first time you\'re using this plugin. Thank you.</p>', 'yakadanda-google-hangout-events'), $authorized_redirect_uri, $url);
+        ?>
       </div>
     <?php
   }
@@ -493,7 +546,7 @@ function googleplushangoutevent_restore_settings_callback() {
   
   $action = update_option('yakadanda_googleplus_hangout_event_options', null);
   if ($action) {
-    $message = maybe_serialize(array('cookie' => 1, 'class' => 'updated', 'msg' => 'Settings restored to default settings.'));
+    $message = maybe_serialize(array('cookie' => 1, 'class' => 'updated', 'msg' => __('Settings restored to default settings.', 'yakadanda-google-hangout-events')));
     setcookie('googleplushangoutevent_message', $message, time()+1, '/');
   }
   echo admin_url('admin.php?page=googleplushangoutevent-settings');
@@ -858,9 +911,11 @@ function googleplushangoutevent_extend_event($evenId) {
       
       $calendar = $service->calendars->get('primary');
       
-      $event = array_merge( (array) $event, array( 'timeZoneCalendar' => $calendar['timeZone'] ) );
+      $event = array_merge( (array)$event, array('timeZoneCalendar' => $calendar['timeZone']) );
       
-      if ( $timezonelocation ) $event = array_merge( (array) $event, array( 'timeZoneLocation' => $timezonelocation ) );
+      if ($timezonelocation) {
+        $event = array_merge( (array)$event, array('timeZoneLocation' => $timezonelocation) );
+      }
     }
   }
   
@@ -870,6 +925,6 @@ function googleplushangoutevent_extend_event($evenId) {
 function googleplushangoutevent_bg_cl($hex) {
   list($r, $g, $b) = sscanf($hex, "#%02x%02x%02x");
   $output = 'background-color: rgb(' . $r . ',' . $g . ',' . $b . ')';
-  
+
   return $output;
 }

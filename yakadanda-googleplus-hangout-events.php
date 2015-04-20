@@ -1,13 +1,15 @@
 <?php
-/*
-Plugin Name: Yakadanda Google+ Hangout Events
-Plugin URI: http://www.yakadanda.com/plugins/yakadanda-google-hangout-events/
-Description: A countdown function to time of the Google+ Hangout Events.
-Version: 0.3.0
-Author: Peter Ricci
-Author URI: http://www.yakadanda.com/
-License: GPL2
-*/
+/**
+ * Plugin Name: Yakadanda Google+ Hangout Events
+ * Plugin URI: http://www.yakadanda.com/plugins/yakadanda-google-hangout-events/
+ * Description: A countdown function to time of the Google+ Hangout Events.
+ * Version: 0.3.1
+ * Author: Peter Ricci
+ * Author URI: http://www.yakadanda.com/
+ * Text Domain: yakadanda-google-hangout-events
+ * Domain Path: /languages/
+ * License: GPL2
+ */
 
 /* Put setup procedures to be run when the plugin is activated in the following function */
 register_activation_hook(__FILE__, 'googleplushangoutevent_activate');
@@ -24,14 +26,20 @@ function googleplushangoutevent_activate() {
 register_deactivation_hook( __FILE__, 'googleplushangoutevent_deactivate');
 function googleplushangoutevent_deactivate() {
 	// You might want to delete any options or tables that your component created.
-  
+
 }
 
-if(!defined('GPLUS_HANGOUT_EVENTS_VER')) define('GPLUS_HANGOUT_EVENTS_VER', '0.3.0');
+if(!defined('GPLUS_HANGOUT_EVENTS_VER')) define('GPLUS_HANGOUT_EVENTS_VER', '0.3.1');
 if(!defined('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR')) define('GPLUS_HANGOUT_EVENTS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 if(!defined('GPLUS_HANGOUT_EVENTS_PLUGIN_URL')) define('GPLUS_HANGOUT_EVENTS_PLUGIN_URL', plugins_url(null, __FILE__));
 if(!defined('GPLUS_HANGOUT_EVENTS_THEME_DIR')) define('GPLUS_HANGOUT_EVENTS_THEME_DIR', get_stylesheet_directory());
 if(!defined('GPLUS_HANGOUT_EVENTS_THEME_URL')) define('GPLUS_HANGOUT_EVENTS_THEME_URL', get_stylesheet_directory_uri());
+
+// Load plugin textdomain
+add_action( 'plugins_loaded', 'googleplushangoutevent_load_textdomain' );
+function googleplushangoutevent_load_textdomain() {
+  load_plugin_textdomain('yakadanda-google-hangout-events', false, dirname( plugin_basename( __FILE__ ) ) . '/languages');
+}
 
 // Store plugin version
 if (!get_option('yakadanda_googleplus_hangout_event_version')) add_option('yakadanda_googleplus_hangout_event_version', GPLUS_HANGOUT_EVENTS_VER);

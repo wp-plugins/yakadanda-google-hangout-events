@@ -9,7 +9,7 @@ class googlePlusEvent extends WP_Widget {
     parent::__construct(
       'googleplus_events', // Base ID
       'Google+ Event', // Name
-      array('description' => __('A countdown function to time of the Google+ Event', 'text_domain'),) // Args
+      array('description' => __('A countdown function to time of the Google+ Event', 'yakadanda-google-hangout-events'),) // Args
     );
   }
   
@@ -97,14 +97,14 @@ class googlePlusEvent extends WP_Widget {
               <div itemprop="description" class="ghe-detail"><?php echo isset($event['description']) ? nl2br( $event['description'] ) : null; ?></div>
               
               <ul class="ghe-icons">
-                <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Event</a></li>
+                <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank"><?php _e('Event', 'yakadanda-google-hangout-events'); ?></a></li>
               </ul>
               
               <?php if ($is_countdown): ?>
                 <div id="<?php echo uniqid(); ?>" class="ghe-countdown fix" data-cdate="<?php echo $time; ?>"><?php echo $time; ?></div>
               <?php endif; ?>
               
-              <div class="ghe-button"><a itemprop="url" href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
+              <div class="ghe-button"><a itemprop="url" href="<?php echo $event['htmlLink'] ?>" target="_blank"><?php _e('View Event on Google+', 'yakadanda-google-hangout-events'); ?></a></div>
             </div>
             
             <?php if ( ($countdown == 'first') && ($i==0) ) $is_countdown = false; ?>
@@ -145,28 +145,28 @@ class googlePlusEvent extends WP_Widget {
     $timezone = isset( $instance[ 'timezone' ] ) ? $instance[ 'timezone' ] : null;
     ?>
       <p>
-        <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo isset($title) ? esc_attr( $title ): null; ?>" />
+        <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'yakadanda-google-hangout-events'); ?></label>
+        <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo isset($title) ? esc_attr($title): null; ?>" />
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
-        <select id="<?php echo $this->get_field_id( 'author' ); ?>" name="<?php echo $this->get_field_name( 'author' ); ?>">
-          <option value="all" <?php echo ($author == 'all') ? 'selected="selected"': null; ?>>All&nbsp;</option>
-          <option value="self" <?php echo ($author == 'self') ? 'selected="selected"': null; ?>>Self&nbsp;</option>
-          <option value="other" <?php echo ($author == 'other') ? 'selected="selected"': null; ?>>Other&nbsp;</option>
+        <label for="<?php echo $this->get_field_id('author'); ?>"><?php _e('Author:', 'yakadanda-google-hangout-events'); ?></label><br/>
+        <select id="<?php echo $this->get_field_id('author'); ?>" name="<?php echo $this->get_field_name('author'); ?>">
+          <option value="all" <?php echo ($author == 'all') ? 'selected="selected"': null; ?>><?php _e('All', 'yakadanda-google-hangout-events'); ?>&nbsp;</option>
+          <option value="self" <?php echo ($author == 'self') ? 'selected="selected"': null; ?>><?php _e('Self', 'yakadanda-google-hangout-events'); ?>&nbsp;</option>
+          <option value="other" <?php echo ($author == 'other') ? 'selected="selected"': null; ?>><?php _e('Other', 'yakadanda-google-hangout-events'); ?>&nbsp;</option>
         </select>
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id( 'src' ); ?>"><?php _e( 'Source:' ); ?></label><br/>
-        <select id="<?php echo $this->get_field_id( 'src' ); ?>" name="<?php echo $this->get_field_name( 'src' ); ?>">
-          <option value="all" <?php echo ($src == 'all') ? 'selected="selected"': null; ?>>All&nbsp;</option>
-          <option value="gcal" <?php echo ($src == 'gcal') ? 'selected="selected"': null; ?>>Google Calendar&nbsp;</option>
+        <label for="<?php echo $this->get_field_id('src'); ?>"><?php _e('Source:', 'yakadanda-google-hangout-events'); ?></label><br/>
+        <select id="<?php echo $this->get_field_id('src'); ?>" name="<?php echo $this->get_field_name( 'src' ); ?>">
+          <option value="all" <?php echo ($src == 'all') ? 'selected="selected"': null; ?>><?php _e('All', 'yakadanda-google-hangout-events'); ?>&nbsp;</option>
+          <option value="gcal" <?php echo ($src == 'gcal') ? 'selected="selected"': null; ?>><?php _e('Google Calendar', 'yakadanda-google-hangout-events'); ?>&nbsp;</option>
           <option value="gplus" <?php echo ($src == 'gplus') ? 'selected="selected"': null; ?>>Google+&nbsp;</option>
         </select>
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Display:' ); ?></label><br/>
-        <select id="<?php echo $this->get_field_id( 'display' ); ?>" name="<?php echo $this->get_field_name( 'display' ); ?>">
+        <label for="<?php echo $this->get_field_id('display'); ?>"><?php _e('Display:', 'yakadanda-google-hangout-events'); ?></label><br/>
+        <select id="<?php echo $this->get_field_id('display'); ?>" name="<?php echo $this->get_field_name('display'); ?>">
           <option value="1" <?php echo ($display == 1) ? 'selected="selected"': null; ?>>1&nbsp;</option>
           <option value="2" <?php echo ($display == 2) ? 'selected="selected"': null; ?>>2&nbsp;</option>
           <option value="3" <?php echo ($display == 3) ? 'selected="selected"': null; ?>>3&nbsp;</option>
@@ -175,25 +175,25 @@ class googlePlusEvent extends WP_Widget {
         </select>
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id( 'countdown' ); ?>"><?php _e( 'Countdown:' ); ?></label><br/>
+        <label for="<?php echo $this->get_field_id('countdown'); ?>"><?php _e('Countdown:', 'yakadanda-google-hangout-events'); ?></label><br/>
         <label title="Display countdown clock on first only">
-          <input type="radio" value="first" name="<?php echo $this->get_field_name( 'countdown' ); ?>" <?php echo ( ($countdown == 'first') || empty($countdown) ) ? 'checked="checked"' : null; ?>>
-          <span>Display countdown clock on first only</span>
+          <input type="radio" value="first" name="<?php echo $this->get_field_name('countdown'); ?>" <?php echo ( ($countdown == 'first') || empty($countdown) ) ? 'checked="checked"' : null; ?>>
+          <span><?php _e('First only', 'yakadanda-google-hangout-events'); ?></span>
         </label>
         <br/>
         <label title="Display countdown clock on all">
-          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'countdown' ); ?>" <?php echo ($countdown == 'all') ? 'checked="checked"' : null; ?>>
-          <span>Display countdown clock on all</span>
+          <input type="radio" value="all" name="<?php echo $this->get_field_name('countdown'); ?>" <?php echo ($countdown == 'all') ? 'checked="checked"' : null; ?>>
+          <span><?php _e('All', 'yakadanda-google-hangout-events'); ?></span>
         </label>
         <br/>
         <label title="Display countdown clock on none">
-          <input type="radio" value="none" name="<?php echo $this->get_field_name( 'countdown' ); ?>" <?php echo ($countdown == 'none') ? 'checked="checked"' : null; ?>>
-          <span>Display countdown clock on none</span>
+          <input type="radio" value="none" name="<?php echo $this->get_field_name('countdown'); ?>" <?php echo ($countdown == 'none') ? 'checked="checked"' : null; ?>>
+          <span><?php _e('None', 'yakadanda-google-hangout-events'); ?></span>
         </label>
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id( 'timezone' ); ?>"><?php _e( 'Timezone:' ); ?></label><br/>
-        <select id="<?php echo $this->get_field_id( 'timezone' ); ?>" name="<?php echo $this->get_field_name( 'timezone' ); ?>" style="width: 100%">
+        <label for="<?php echo $this->get_field_id('timezone'); ?>"><?php _e('Timezone:', 'yakadanda-google-hangout-events'); ?></label><br/>
+        <select id="<?php echo $this->get_field_id('timezone'); ?>" name="<?php echo $this->get_field_name('timezone'); ?>" style="width: 100%">
           <?php googleplushangoutevent_timezone_options($timezone); ?>
         </select>
       </p>
@@ -212,7 +212,7 @@ class googlePlusHangout extends WP_Widget {
     parent::__construct(
       'googleplus_hangout_events', // Base ID
       'Google+ Hangout', // Name
-      array('description' => __('A countdown function to time of the Google+ Hangout', 'text_domain'),) // Args
+      array('description' => __('A countdown function to time of the Google+ Hangout', 'yakadanda-google-hangout-events'),) // Args
     );
   }
   
@@ -298,10 +298,10 @@ class googlePlusHangout extends WP_Widget {
               <div itemprop="description" class="ghe-detail"><?php echo nl2br( $event['description'] ); ?></div>
               
               <ul class="ghe-icons">
-                <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Event</a></li>
-                <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank">Hangout</a></li>
+                <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank"><?php _e('Event', 'yakadanda-google-hangout-events'); ?></a></li>
+                <li><a href="<?php echo $event['htmlLink'] ?>" target="_blank"><?php _e('Hangout', 'yakadanda-google-hangout-events'); ?></a></li>
                 <?php if ($onair): ?>
-                  <li><a href="<?php echo $event['hangoutLink'] ?>" target="_blank">On Air</a></li>
+                  <li><a href="<?php echo $event['hangoutLink'] ?>" target="_blank"><?php _e('On Air', 'yakadanda-google-hangout-events'); ?></a></li>
                 <?php endif; ?>
               </ul>
               
@@ -309,7 +309,7 @@ class googlePlusHangout extends WP_Widget {
                 <div id="<?php echo uniqid(); ?>" class="ghe-countdown fix" data-cdate="<?php echo $time; ?>"><?php echo $time; ?></div>
               <?php endif; ?>
               
-              <div class="ghe-button"><a itemprop="url" href="<?php echo $event['htmlLink'] ?>" target="_blank">View Event on Google+</a></div>
+              <div class="ghe-button"><a itemprop="url" href="<?php echo $event['htmlLink'] ?>" target="_blank"><?php _e('View Event on Google+', 'yakadanda-google-hangout-events'); ?></a></div>
             </div>
             
             <?php if ( ($countdown == 'first') && ($i==0) ) $is_countdown = false; ?>
@@ -348,20 +348,20 @@ class googlePlusHangout extends WP_Widget {
     $timezone = isset( $instance[ 'timezone' ] ) ? $instance[ 'timezone' ] : null;
     ?>
       <p>
-        <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-        <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo isset($title) ? esc_attr( $title ) : null; ?>" />
+        <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'yakadanda-google-hangout-events'); ?></label>
+        <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo isset($title) ? esc_attr( $title ) : null; ?>" />
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id( 'author' ); ?>"><?php _e( 'Author:' ); ?></label><br/>
-        <select id="<?php echo $this->get_field_id( 'author' ); ?>" name="<?php echo $this->get_field_name( 'author' ); ?>">
-          <option value="all" <?php echo ($author == 'all') ? 'selected="selected"': null; ?>>All&nbsp;</option>
-          <option value="self" <?php echo ($author == 'self') ? 'selected="selected"': null; ?>>Self&nbsp;</option>
-          <option value="other" <?php echo ($author == 'other') ? 'selected="selected"': null; ?>>Other&nbsp;</option>
+        <label for="<?php echo $this->get_field_id('author'); ?>"><?php _e('Author:', 'yakadanda-google-hangout-events'); ?></label><br/>
+        <select id="<?php echo $this->get_field_id('author'); ?>" name="<?php echo $this->get_field_name('author'); ?>">
+          <option value="all" <?php echo ($author == 'all') ? 'selected="selected"': null; ?>><?php _e('All', 'yakadanda-google-hangout-events'); ?>&nbsp;</option>
+          <option value="self" <?php echo ($author == 'self') ? 'selected="selected"': null; ?>><?php _e('Self', 'yakadanda-google-hangout-events'); ?>&nbsp;</option>
+          <option value="other" <?php echo ($author == 'other') ? 'selected="selected"': null; ?>><?php _e('Other', 'yakadanda-google-hangout-events'); ?>&nbsp;</option>
         </select>
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Display:' ); ?></label><br/>
-        <select id="<?php echo $this->get_field_id( 'display' ); ?>" name="<?php echo $this->get_field_name( 'display' ); ?>">
+        <label for="<?php echo $this->get_field_id('display'); ?>"><?php _e('Display:', 'yakadanda-google-hangout-events'); ?></label><br/>
+        <select id="<?php echo $this->get_field_id('display'); ?>" name="<?php echo $this->get_field_name('display'); ?>">
           <option value="1" <?php echo ($display == 1) ? 'selected="selected"': null; ?>>1&nbsp;</option>
           <option value="2" <?php echo ($display == 2) ? 'selected="selected"': null; ?>>2&nbsp;</option>
           <option value="3" <?php echo ($display == 3) ? 'selected="selected"': null; ?>>3&nbsp;</option>
@@ -370,25 +370,25 @@ class googlePlusHangout extends WP_Widget {
         </select>
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id( 'countdown' ); ?>"><?php _e( 'Countdown:' ); ?></label><br/>
+        <label for="<?php echo $this->get_field_id('countdown'); ?>"><?php _e('Countdown:', 'yakadanda-google-hangout-events'); ?></label><br/>
         <label title="Display countdown clock on first only">
-          <input type="radio" value="first" name="<?php echo $this->get_field_name( 'countdown' ); ?>" <?php echo ( ($countdown == 'first') || empty($countdown) ) ? 'checked="checked"' : null; ?>>
-          <span>Display countdown clock on first only</span>
+          <input type="radio" value="first" name="<?php echo $this->get_field_name('countdown'); ?>" <?php echo ( ($countdown == 'first') || empty($countdown) ) ? 'checked="checked"' : null; ?>>
+          <span><?php _e('First only', 'yakadanda-google-hangout-events'); ?></span>
         </label>
         <br/>
         <label title="Display countdown clock on all">
-          <input type="radio" value="all" name="<?php echo $this->get_field_name( 'countdown' ); ?>" <?php echo ($countdown == 'all') ? 'checked="checked"' : null; ?>>
-          <span>Display countdown clock on all</span>
+          <input type="radio" value="all" name="<?php echo $this->get_field_name('countdown'); ?>" <?php echo ($countdown == 'all') ? 'checked="checked"' : null; ?>>
+          <span><?php _e('All', 'yakadanda-google-hangout-events'); ?></span>
         </label>
         <br/>
         <label title="Display countdown clock on none">
-          <input type="radio" value="none" name="<?php echo $this->get_field_name( 'countdown' ); ?>" <?php echo ($countdown == 'none') ? 'checked="checked"' : null; ?>>
-          <span>Display countdown clock on none</span>
+          <input type="radio" value="none" name="<?php echo $this->get_field_name('countdown'); ?>" <?php echo ($countdown == 'none') ? 'checked="checked"' : null; ?>>
+          <span><?php _e('None', 'yakadanda-google-hangout-events'); ?></span>
         </label>
       </p>
       <p>
-        <label for="<?php echo $this->get_field_id( 'timezone' ); ?>"><?php _e( 'Timezone:' ); ?></label><br/>
-        <select id="<?php echo $this->get_field_id( 'timezone' ); ?>" name="<?php echo $this->get_field_name( 'timezone' ); ?>" style="width: 100%">
+        <label for="<?php echo $this->get_field_id('timezone'); ?>"><?php _e('Timezone:', 'yakadanda-google-hangout-events'); ?></label><br/>
+        <select id="<?php echo $this->get_field_id('timezone'); ?>" name="<?php echo $this->get_field_name('timezone'); ?>" style="width: 100%">
           <?php googleplushangoutevent_timezone_options($timezone); ?>
         </select>
       </p>
@@ -537,12 +537,12 @@ function googleplushangoutevent_start_time( $time, $timezone ) {
 }
 
 function googleplushangoutevent_get_widget_message($events, $type) {
-  $message = 'Not Connected.';
+  $message = __('Not Connected.', 'yakadanda-google-hangout-events');
 
   $token = get_option('yakadanda_googleplus_hangout_event_access_token');
   if ($token) {
     if ($type == 'normal') $message = 'No event yet.';
-    else $message = 'No hangout event yet.';
+    else $message = __('No hangout event yet.', 'yakadanda-google-hangout-events');
     
     // Error 403 message
     $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
@@ -710,7 +710,7 @@ function googleplushangoutevent_timezone_options($timezone_setting=null) {
   );
   asort($timezones);
   
-  ?><option value="" <?php echo ($timezone_setting == null) ? 'selected="selected"': null; ?>>Location/Calendar timezone (default)&nbsp;</option><?php
+  ?><option value="" <?php echo ($timezone_setting == null) ? 'selected="selected"': null; ?>><?php _e('Location/Calendar timezone (default)', 'yakadanda-google-hangout-events'); ?>&nbsp;</option><?php
   
   foreach ( $timezones as $timezone ) {
     ?><option value="<?php echo $timezone; ?>" <?php echo ($timezone_setting == $timezone) ? 'selected="selected"': null; ?>><?php echo $timezone; ?></option><?php
