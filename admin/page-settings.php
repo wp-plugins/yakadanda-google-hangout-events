@@ -14,7 +14,7 @@
           <li><a href="#preference-tabs-2"><?php _e('Widget', 'yakadanda-google-hangout-events'); ?></a></li>
         </ul>
         <div id="preference-tabs-1">
-          <p><?php $url = 'https://cloud.google.com/console'; echo sprintf(__('Get your api key, client id, and client secret at <a href="%s" target="_blank" class="cta">Google Cloud Console</a>. For more details see <a id="googleplushangoutevent-help-tab" href="#">Setup section</a> on Help tab above.', 'yakadanda-google-hangout-events'), $url); ?></p>
+          <p><?php $url = 'https://console.developers.google.com/project'; echo sprintf(__('Get your api key, client id, and client secret at <a href="%s" target="_blank" class="cta">Google Developers Console</a>. For more details see <a id="googleplushangoutevent-help-tab" href="#">Setup section</a> on Help tab above.', 'yakadanda-google-hangout-events'), $url); ?></p>
           <table class="form-table">
             <tr valign="top">
               <th scope="row"><label for="calendar_id"><?php _e('Calendar ID', 'yakadanda-google-hangout-events'); ?></label></th>

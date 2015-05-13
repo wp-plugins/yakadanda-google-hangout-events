@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Yakadanda Google+ Hangout Events package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Yakadanda Google+ Hangout Events 0.3.1\n"
+"Project-Id-Version: Yakadanda Google+ Hangout Events 0.3.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/yakadanda-google-"
 "hangout-events\n"
-"POT-Creation-Date: 2015-04-10 09:30:09+00:00\n"
+"POT-Creation-Date: 2015-05-12 10:16:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -41,123 +41,133 @@ msgstr ""
 msgid "Settings updated."
 msgstr ""
 
-#: admin/functions.php:222
+#: admin/functions.php:154
+msgid "Calendar identifier not correct or can't empty."
+msgstr ""
+
+#: admin/functions.php:227
 msgid "Connection to Google API succeeded."
 msgstr ""
 
-#: admin/functions.php:224
+#: admin/functions.php:229
 msgid "Please login as %s."
 msgstr ""
 
-#: admin/functions.php:246 admin/page-settings.php:13
+#: admin/functions.php:251 admin/page-settings.php:13
 msgid "Setup"
 msgstr ""
 
-#: admin/functions.php:252
+#: admin/functions.php:257
 msgid "Embedded Posts"
 msgstr ""
 
-#: admin/functions.php:258
+#: admin/functions.php:263
 msgid "Shortcode"
 msgstr ""
 
-#: admin/functions.php:267
-msgid "<h1>How to get your Google Api Key, Client ID, and Client Secret</h1>"
-msgstr ""
-
 #: admin/functions.php:272
-msgid ""
-"<li>At <a href=\"%s\" target=\"_blank\">https://cloud.google.com/console/"
-"project</a> create new project.<br/><img src=\"%s\"/></li>"
+msgid "<h1>How to get your Api Key, Client ID, and Client Secret</h1>"
 msgstr ""
 
-#: admin/functions.php:275
+#: admin/functions.php:277
+msgid ""
+"<li>At <a href=\"%s\" target=\"_blank\">https://console.developers.google."
+"com/project</a> create new project.<br/><img src=\"%s\"/></li>"
+msgstr ""
+
+#: admin/functions.php:280
 msgid ""
 "<li>Fill New Project modal dialog with your suitable information.<br/><img "
 "src=\"%s\"/></li>"
 msgstr ""
 
-#: admin/functions.php:278
+#: admin/functions.php:283
 msgid ""
-"<li>On <u>Overview</u> submenu of your project, go to the <u>APIs</u> "
-"submenu under <u>APIS & auth</u> menu.<br/><img src=\"%s\"/></li>"
+"<li>On <u>Overview</u>, go to the <u>APIs</u> submenu under <u>APIs & auth</"
+"u> menu, or click <u>Enable an API</u> button.<br/><img src=\"%s\"/></li>"
 msgstr ""
 
-#: admin/functions.php:281
-msgid "<li>Turn on Calendar API.<br/><img src=\"%s\"/></li>"
+#: admin/functions.php:286
+msgid ""
+"<li>Find Calendar API using search textbox, or click Calendar API link on "
+"<strong>Google Apps APIs</strong> group.<br/><img src=\"%s\"/><br/>"
 msgstr ""
 
-#: admin/functions.php:284
+#: admin/functions.php:289
+msgid "Turn on Calendar API.<br/><img src=\"%s\"/></li>"
+msgstr ""
+
+#: admin/functions.php:292
 msgid ""
 "<li>On <u>Credentials</u> submenu, create new Client ID.<br/><img src=\"%s\"/"
 "><br/>"
 msgstr ""
 
-#: admin/functions.php:287
+#: admin/functions.php:295
 msgid ""
-"Asking to configure consent screen. Leave APPLICATION TYPE with Web "
+"Asking to configure consent screen. Leave Application type with Web "
 "application.<br/><img src=\"%s\"/><br/>"
 msgstr ""
 
-#: admin/functions.php:290
+#: admin/functions.php:298
 msgid ""
 "Just fill with your suitable information, and then click Save button.<br/"
 "><img src=\"%s\"/></li>"
 msgstr ""
 
-#: admin/functions.php:292
+#: admin/functions.php:300
 msgid ""
-"<li>Setup Create Client ID form.<br/>a. Leave APPLICATION TYPE with "
+"<li>Setup Create Client ID form.<br/>a. Leave Application type with "
 "<span>Web application</span>.<br/>"
 msgstr ""
 
-#: admin/functions.php:295
-msgid "b. Fill AUTHORIZED JAVASCRIPT ORIGINS with <code>%s</code><br/>"
-msgstr ""
-
-#: admin/functions.php:298
-msgid "c. And AUTHORIZED REDIRECT URI with <code>%s</code><br/>"
-msgstr ""
-
 #: admin/functions.php:303
-msgid ""
-"<li>Still on <u>Credentials</u> submenu, create new Key.<br/><img src=\"%s\"/"
-"></li>"
+msgid "b. Fill Authorized JavaScript origins with <code>%s</code><br/>"
 msgstr ""
 
 #: admin/functions.php:306
-msgid "<li>Click Server key button.<br/><img src=\"%s\"/></li>"
-msgstr ""
-
-#: admin/functions.php:309
-msgid ""
-"<li>Leave the textarea blank to make any IPs allowed, and then click Create "
-"button.<br/><img src=\"%s\"/></li>"
+msgid "c. And Authorized redirect URIs with <code>%s</code><br/>"
 msgstr ""
 
 #: admin/functions.php:311
 msgid ""
-"<li>Well done, now you have CLIENT ID, and CLIENT SECRET below "
-"<strong>Client ID for web application</strong> and API KEY below <strong>Key "
+"<li>Still on <u>Credentials</u> submenu, create new Key.<br/><img src=\"%s\"/"
+"><br/>"
+msgstr ""
+
+#: admin/functions.php:314
+msgid "Choose Server key button.<br/><img src=\"%s\"/><br/>"
+msgstr ""
+
+#: admin/functions.php:317
+msgid ""
+"Leave the textarea blank to make any IPs allowed, and then click Create "
+"button.<br/><img src=\"%s\"/></li>"
+msgstr ""
+
+#: admin/functions.php:319
+msgid ""
+"<li>Well done, now you have Client ID, and Client secret below "
+"<strong>Client ID for web application</strong> and API key below <strong>Key "
 "for server applications</strong>.</li>"
 msgstr ""
 
-#: admin/functions.php:322
+#: admin/functions.php:330
 msgid "Examples"
 msgstr ""
 
-#: admin/functions.php:338
+#: admin/functions.php:346
 msgid "Attributes"
 msgstr ""
 
-#: admin/functions.php:340
+#: admin/functions.php:348
 msgid ""
 "<tr><td style=\"vertical-align: top;\">type</td><td style=\"vertical-align: "
 "top;\">=</td><td><span>all</span>, <span>normal</span>, or <span>hangout</"
 "span>, by default type is <span>all</span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:341
+#: admin/functions.php:349
 msgid ""
 "<tr><td style=\"vertical-align: top;\">src</td><td style=\"vertical-align: "
 "top;\">=</td><td><span>all</span>, <span>gcal</span> (event from calendar), "
@@ -165,28 +175,28 @@ msgid ""
 "span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:342
+#: admin/functions.php:350
 msgid ""
 "<tr><td style=\"vertical-align: top;\">limit</td><td style=\"vertical-align: "
 "top;\">=</td><td>number of events to display (maximum is <span>20</span>)</"
 "td></tr>"
 msgstr ""
 
-#: admin/functions.php:343
+#: admin/functions.php:351
 msgid ""
 "<tr><td style=\"vertical-align: top;\">past</td><td style=\"vertical-align: "
 "top;\">=</td><td>number of months to display past events in <span>X</span> "
 "months ago, by default past is false</td></tr>"
 msgstr ""
 
-#: admin/functions.php:344
+#: admin/functions.php:352
 msgid ""
 "<tr><td style=\"vertical-align: top;\">author</td><td style=\"vertical-"
 "align: top;\">=</td><td><span>self</span>, <span>other</span>, or <span>all</"
 "span>, by default author is <span>all</span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:347
+#: admin/functions.php:355
 msgid ""
 "<tr><td style=\"vertical-align: top;\">id</td><td style=\"vertical-align: "
 "top;\">=</td><td>Event identifier (string). Single Event Example: <a href="
@@ -196,21 +206,21 @@ msgid ""
 "code></td></tr>"
 msgstr ""
 
-#: admin/functions.php:349
+#: admin/functions.php:357
 msgid ""
 "<tr><td style=\"vertical-align: top;\">filter_out</td><td style=\"vertical-"
 "align: top;\">=</td><td>Filter out certain events by event identifiers, "
 "seperated by comma</td></tr>"
 msgstr ""
 
-#: admin/functions.php:350
+#: admin/functions.php:358
 msgid ""
 "<tr><td style=\"vertical-align: top;\">search</td><td style=\"vertical-"
 "align: top;\">=</td><td>Text search terms (string) to display events that "
 "match these terms in any field, except for extended properties</td></tr>"
 msgstr ""
 
-#: admin/functions.php:351
+#: admin/functions.php:359
 msgid ""
 "<tr><td style=\"vertical-align: top;\">attendees</td><td style=\"vertical-"
 "align: top;\">=</td><td>Events can have attendees, the value can be "
@@ -218,7 +228,7 @@ msgid ""
 "value for attendees attribute is <span>hide</span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:354
+#: admin/functions.php:362
 msgid ""
 "<tr><td style=\"vertical-align: top;\">timezone</td><td style=\"vertical-"
 "align: top;\">=</td><td>Time zone used in the response, optional. Default is "
@@ -228,18 +238,18 @@ msgid ""
 "php</a> (string)</td></tr>"
 msgstr ""
 
-#: admin/functions.php:356
+#: admin/functions.php:364
 msgid ""
 "<tr><td style=\"vertical-align: top;\">countdown</td><td style=\"vertical-"
 "align: top;\">=</td><td><span>true</span>, or <span>false</span>, by default "
 "countdown is <span>false</span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:367
+#: admin/functions.php:375
 msgid "<h1>Adding the embedded posts</h1>"
 msgstr ""
 
-#: admin/functions.php:371
+#: admin/functions.php:379
 msgid ""
 "<p>Locate the post that you want to embed on <a href=\"%s\" target=\"_blank"
 "\">Google+</a> and click the <img src=\"%s\" title=\"A downward pointing "
@@ -247,21 +257,21 @@ msgid ""
 "indicates the menu\"/> menu icon and choose Embed post.</p>"
 msgstr ""
 
-#: admin/functions.php:376
+#: admin/functions.php:384
 msgid "<p>Copy the tag <code>%s</code> to post or page.</p>"
 msgstr ""
 
-#: admin/functions.php:381
+#: admin/functions.php:389
 msgid ""
 "<p>For more detail you can look at <a href=\"%s\" target=\"_blank\">https://"
 "developers.google.com/+/web/embedded-post/</a>.</p>"
 msgstr ""
 
-#: admin/functions.php:487
+#: admin/functions.php:495
 msgid "Close"
 msgstr ""
 
-#: admin/functions.php:491
+#: admin/functions.php:499
 msgid ""
 "<p>Since 0.2.6, Authorized redirect URI changed to <code>%s</code>. You can "
 "change your Authorized redirect URI at <a href=\"%s\" target=\"_blank"
@@ -269,7 +279,7 @@ msgid ""
 "you're using this plugin. Thank you.</p>"
 msgstr ""
 
-#: admin/functions.php:549
+#: admin/functions.php:557
 msgid "Settings restored to default settings."
 msgstr ""
 
@@ -333,6 +343,13 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: admin/page-events.php:57
+msgid ""
+"Note: If the event or hangout appear in the backend but not in the frontend, "
+"it is because the cache feature. Event or hangout cache in the frontend is "
+"always renewed every 15 minutes."
+msgstr ""
+
 #: admin/page-settings.php:14
 msgid "Widget"
 msgstr ""
@@ -340,9 +357,9 @@ msgstr ""
 #: admin/page-settings.php:17
 msgid ""
 "Get your api key, client id, and client secret at <a href=\"%s\" target="
-"\"_blank\" class=\"cta\">Google Cloud Console</a>. For more details see <a "
-"id=\"googleplushangoutevent-help-tab\" href=\"#\">Setup section</a> on Help "
-"tab above."
+"\"_blank\" class=\"cta\">Google Developers Console</a>. For more details see "
+"<a id=\"googleplushangoutevent-help-tab\" href=\"#\">Setup section</a> on "
+"Help tab above."
 msgstr ""
 
 #: admin/page-settings.php:20

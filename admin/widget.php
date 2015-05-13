@@ -26,7 +26,7 @@ class googlePlusEvent extends WP_Widget {
     if ( (false === ( $special_query_event_widget = get_transient($transient_name) )) && $token ) {
       $events = googleplushangoutevent_response(null, null, null, $instance['timezone']);
 
-      set_transient($transient_name, $events, 60 * 15);
+      if ( !empty($events) ) { set_transient($transient_name, $events, 60 * 15); }
     }
     if (!$token) {
       delete_transient($transient_name);
@@ -229,7 +229,7 @@ class googlePlusHangout extends WP_Widget {
     if ( (false === ( $special_query_hangout_widget = get_transient($transient_name) )) && $token ) {
       $events = googleplushangoutevent_response(null, null, null, $instance['timezone']);
 
-      set_transient($transient_name, $events, 60 * 15);
+      if ( !empty($events) ) { set_transient($transient_name, $events, 60 * 15); }
     }
     if (!$token) {
       delete_transient($transient_name);

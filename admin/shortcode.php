@@ -42,7 +42,7 @@ function googleplushangoutevent_shortcode( $atts ) {
     if ( (false === ( $special_query_id = get_transient($transient_name) )) && $token ) {
       $events = googleplushangoutevent_response( null, $id, null, $timezone );
       
-      set_transient($transient_name, $events, 60 * 15);
+      if ( !empty($events) ) { set_transient($transient_name, $events, 60 * 15); }
     }
     if (!$token) {
       delete_transient($transient_name);
@@ -52,8 +52,8 @@ function googleplushangoutevent_shortcode( $atts ) {
     $transient_name = md5('special_query_event_' . $past . $search . $timezone . $token);
     if ( (false === ( $special_query_event = get_transient($transient_name) )) && $token ) {
       $events = googleplushangoutevent_response( $past, null, $search, $timezone );
-      
-      set_transient($transient_name, $events, 60 * 15);
+
+      if ( !empty($events) ) { set_transient($transient_name, $events, 60 * 15); }
     }
     if (!$token) {
       delete_transient($transient_name);

@@ -54,6 +54,7 @@
     <div class="google-web-starter-kit google-table">
       <form id="events-filter" method="get">
         <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+        <p><?php _e('Note: If the event or hangout appear in the backend but not in the frontend, it is because the cache feature. Event or hangout cache in the frontend is always renewed every 15 minutes.', 'yakadanda-google-hangout-events'); ?></p>
         <?php $listTable->display() ?>
       </form>
     </div>

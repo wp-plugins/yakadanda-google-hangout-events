@@ -145,11 +145,16 @@ function googleplushangoutevent_page_settings() {
     
     update_option('yakadanda_googleplus_hangout_event_options', $value);
     $message = array('class' => 'updated', 'msg' => __('Settings updated.', 'yakadanda-google-hangout-events'));
-    
+
     $granted = false;
     if ( ($data['calendar_id'] != $_POST['calendar_id']) || ($data['api_key'] != $_POST['api_key']) || ($data['client_id'] != $_POST['client_id']) || ($data['client_secret'] != $_POST['client_secret']) ) $granted = true;
     if ( empty($token) && $data['calendar_id'] && $data['api_key'] && $data['client_id'] && $data['client_secret'] ) $granted = true;
-    
+
+    if (!is_email($_POST['calendar_id'])) {
+      $message = array('class' => 'error', 'msg' => __('Calendar identifier not correct or can\'t empty.', 'yakadanda-google-hangout-events'));
+      $granted = false;  
+    }
+
     if ($granted) {
       // load google library
       googleplushangoutevent_google_lib();
@@ -264,51 +269,54 @@ function googleplushangoutevent_admin_add_help_tab() {
 
 function googleplushangoutevent_section_setup() {
   $output = '<div class="google-web-starter-kit">';
-  $output .= sprintf(__('<h1>How to get your Google Api Key, Client ID, and Client Secret</h1>', 'yakadanda-google-hangout-events'));
+  $output .= sprintf(__('<h1>How to get your Api Key, Client ID, and Client Secret</h1>', 'yakadanda-google-hangout-events'));
   $output .= '<ol>';
 
-  $href = 'https://cloud.google.com/console/project';
+  $href = 'https://console.developers.google.com/project';
   $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-01.png';
-  $output .= sprintf(__('<li>At <a href="%s" target="_blank">https://cloud.google.com/console/project</a> create new project.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $href, $src);
+  $output .= sprintf(__('<li>At <a href="%s" target="_blank">https://console.developers.google.com/project</a> create new project.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $href, $src);
 
   $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-02.png';
   $output .= sprintf(__('<li>Fill New Project modal dialog with your suitable information.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
 
   $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-03.png';
-  $output .= sprintf(__('<li>On <u>Overview</u> submenu of your project, go to the <u>APIs</u> submenu under <u>APIS & auth</u> menu.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+  $output .= sprintf(__('<li>On <u>Overview</u>, go to the <u>APIs</u> submenu under <u>APIs & auth</u> menu, or click <u>Enable an API</u> button.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
 
   $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-04.png';
-  $output .= sprintf(__('<li>Turn on Calendar API.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+  $output .= sprintf(__('<li>Find Calendar API using search textbox, or click Calendar API link on <strong>Google Apps APIs</strong> group.<br/><img src="%s"/><br/>', 'yakadanda-google-hangout-events'), $src);
 
   $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-05.png';
-  $output .= sprintf(__('<li>On <u>Credentials</u> submenu, create new Client ID.<br/><img src="%s"/><br/>', 'yakadanda-google-hangout-events'), $src);
+  $output .= sprintf(__('Turn on Calendar API.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
 
   $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-06.png';
-  $output .= sprintf(__('Asking to configure consent screen. Leave APPLICATION TYPE with Web application.<br/><img src="%s"/><br/>', 'yakadanda-google-hangout-events'), $src);
+  $output .= sprintf(__('<li>On <u>Credentials</u> submenu, create new Client ID.<br/><img src="%s"/><br/>', 'yakadanda-google-hangout-events'), $src);
 
   $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-07.png';
+  $output .= sprintf(__('Asking to configure consent screen. Leave Application type with Web application.<br/><img src="%s"/><br/>', 'yakadanda-google-hangout-events'), $src);
+
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-08.png';
   $output .= sprintf(__('Just fill with your suitable information, and then click Save button.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
 
-  $output .= sprintf(__('<li>Setup Create Client ID form.<br/>a. Leave APPLICATION TYPE with <span>Web application</span>.<br/>', 'yakadanda-google-hangout-events'));
+  $output .= sprintf(__('<li>Setup Create Client ID form.<br/>a. Leave Application type with <span>Web application</span>.<br/>', 'yakadanda-google-hangout-events'));
 
   $url = home_url();
-  $output .= sprintf(__('b. Fill AUTHORIZED JAVASCRIPT ORIGINS with <code>%s</code><br/>', 'yakadanda-google-hangout-events'), $url);
+  $output .= sprintf(__('b. Fill Authorized JavaScript origins with <code>%s</code><br/>', 'yakadanda-google-hangout-events'), $url);
 
   $url = admin_url('admin.php?page=googleplushangoutevent-settings');
-  $output .= sprintf(__('c. And AUTHORIZED REDIRECT URI with <code>%s</code><br/>', 'yakadanda-google-hangout-events'), $url);
+  $output .= sprintf(__('c. And Authorized redirect URIs with <code>%s</code><br/>', 'yakadanda-google-hangout-events'), $url);
 
-  $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-08.png"/></li>';
-
-  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-09.png';
-  $output .= sprintf(__('<li>Still on <u>Credentials</u> submenu, create new Key.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+  $output .= '<img src="' . GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-09.png"/></li>';
 
   $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-10.png';
-  $output .= sprintf(__('<li>Click Server key button.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+  $output .= sprintf(__('<li>Still on <u>Credentials</u> submenu, create new Key.<br/><img src="%s"/><br/>', 'yakadanda-google-hangout-events'), $src);
 
   $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-11.png';
-  $output .= sprintf(__('<li>Leave the textarea blank to make any IPs allowed, and then click Create button.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+  $output .= sprintf(__('Choose Server key button.<br/><img src="%s"/><br/>', 'yakadanda-google-hangout-events'), $src);
 
-  $output .= sprintf(__('<li>Well done, now you have CLIENT ID, and CLIENT SECRET below <strong>Client ID for web application</strong> and API KEY below <strong>Key for server applications</strong>.</li>', 'yakadanda-google-hangout-events'));
+  $src = GPLUS_HANGOUT_EVENTS_PLUGIN_URL . '/img/manual-setup-12.png';
+  $output .= sprintf(__('Leave the textarea blank to make any IPs allowed, and then click Create button.<br/><img src="%s"/></li>', 'yakadanda-google-hangout-events'), $src);
+
+  $output .= sprintf(__('<li>Well done, now you have Client ID, and Client secret below <strong>Client ID for web application</strong> and API key below <strong>Key for server applications</strong>.</li>', 'yakadanda-google-hangout-events'));
 
   $output .= '</ol>';
   $output .= '</div>';
