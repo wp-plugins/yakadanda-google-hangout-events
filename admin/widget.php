@@ -43,6 +43,7 @@ class googlePlusEvent extends WP_Widget {
     $creator = 1;
     $author = isset($instance['author']) ? $instance['author'] : 'all';
     $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
+    $visibility = isset($instance['visibility']) ? $instance['visibility'] : 'public';
     $source = empty($instance['src']) ? 'all' : $instance['src'];
     
     $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
@@ -61,8 +62,10 @@ class googlePlusEvent extends WP_Widget {
         ?>
           <?php foreach ( $events as $event ):
             $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
-            $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
-            
+
+            $event['visibility'] = isset($event['visibility']) ? $event['visibility'] : 'public';
+            $event['visibility'] = ($visibility == "all") ? 'all' : $event['visibility'];
+
             switch($author) {
               case 'self':
                 if ( isset($event["\0*\0modelData"]['creator']['self']) )
@@ -80,7 +83,7 @@ class googlePlusEvent extends WP_Widget {
             
             if ($source != 'all') $src_filter = googleplushangoutevent_src_filter($source, $event['htmlLink']);
             
-            if ( !$hangoutlink && $creator && ($visibility != 'private') && $src_filter ):
+            if ( !$hangoutlink && $creator && ($visibility == $event['visibility']) && $src_filter ):
               $timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
               $timezone = ($instance['timezone']) ? $instance['timezone'] : $timezone;
               
@@ -130,6 +133,7 @@ class googlePlusEvent extends WP_Widget {
     $instance['author'] = strip_tags($new_instance['author']);
     $instance['src'] = strip_tags($new_instance['src']);
     $instance['display'] = strip_tags($new_instance['display']);
+    $instance['visibility'] = strip_tags($new_instance['visibility']);
     $instance['countdown'] = strip_tags($new_instance['countdown']);
     $instance['timezone'] = strip_tags($new_instance['timezone']);
     return $instance;
@@ -141,6 +145,7 @@ class googlePlusEvent extends WP_Widget {
     $author = isset( $instance[ 'author' ] ) ? $instance[ 'author' ] : null;
     $src = isset( $instance[ 'src' ] ) ? $instance[ 'src' ] : null;
     $display = isset( $instance[ 'display' ] ) ? $instance[ 'display' ] : null;
+    $visibility = isset( $instance[ 'visibility' ] ) ? $instance[ 'visibility' ] : null;
     $countdown = isset( $instance[ 'countdown' ] ) ? $instance[ 'countdown' ] : null;
     $timezone = isset( $instance[ 'timezone' ] ) ? $instance[ 'timezone' ] : null;
     ?>
@@ -172,6 +177,14 @@ class googlePlusEvent extends WP_Widget {
           <option value="3" <?php echo ($display == 3) ? 'selected="selected"': null; ?>>3&nbsp;</option>
           <option value="4" <?php echo ($display == 4) ? 'selected="selected"': null; ?>>4&nbsp;</option>
           <option value="5" <?php echo ($display == 5) ? 'selected="selected"': null; ?>>5&nbsp;</option>
+        </select>
+      </p>
+      <p>
+        <label for="<?php echo $this->get_field_id('visibility'); ?>"><?php _e('Visibility:', 'yakadanda-google-hangout-events'); ?></label><br/>
+        <select id="<?php echo $this->get_field_id('visibility'); ?>" name="<?php echo $this->get_field_name('visibility'); ?>">
+          <option value="public" <?php echo ($visibility == "public") ? 'selected="selected"': null; ?>>Public&nbsp;</option>
+          <option value="private" <?php echo ($visibility == "private") ? 'selected="selected"': null; ?>>Private&nbsp;</option>
+          <option value="all" <?php echo ($visibility == "all") ? 'selected="selected"': null; ?>>All&nbsp;</option>
         </select>
       </p>
       <p>
@@ -246,6 +259,7 @@ class googlePlusHangout extends WP_Widget {
     $creator = 1;
     $author = isset($instance['author']) ? $instance['author'] : 'all';
     $countdown = isset($instance['countdown']) ? $instance['countdown'] : 'first';
+    $visibility = isset($instance['visibility']) ? $instance['visibility'] : 'public';
     
     $http_status = isset($events['error']['code']) ? $events['error']['code'] : null;
     
@@ -262,7 +276,9 @@ class googlePlusHangout extends WP_Widget {
         ?>
           <?php foreach ( $events as $event ):
             $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
-            $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
+
+            $event['visibility'] = isset($event['visibility']) ? $event['visibility'] : 'public';
+            $event['visibility'] = ($visibility == "all") ? 'all' : $event['visibility'];
             
             switch($author) {
               case 'self':
@@ -279,7 +295,7 @@ class googlePlusHangout extends WP_Widget {
                 break;
             }
             
-            if ( $hangoutlink && $creator && ($visibility != 'private') ):
+            if ( $hangoutlink && $creator && ($visibility == $event['visibility']) ):
               $timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
               $timezone = ($instance['timezone']) ? $instance['timezone'] : $timezone;
               
@@ -334,6 +350,7 @@ class googlePlusHangout extends WP_Widget {
     $instance['title'] = strip_tags($new_instance['title']);
     $instance['author'] = strip_tags($new_instance['author']);
     $instance['display'] = strip_tags($new_instance['display']);
+    $instance['visibility'] = strip_tags($new_instance['visibility']);
     $instance['countdown'] = strip_tags($new_instance['countdown']);
     $instance['timezone'] = strip_tags($new_instance['timezone']);
     return $instance;
@@ -344,6 +361,7 @@ class googlePlusHangout extends WP_Widget {
     if ( isset( $instance[ 'title' ] ) ) $title = $instance[ 'title' ];
     $author = isset( $instance[ 'author' ] ) ? $instance[ 'author' ] : null;
     $display = isset( $instance[ 'display' ] ) ? $instance[ 'display' ] : null;
+    $visibility = isset( $instance[ 'visibility' ] ) ? $instance[ 'visibility' ] : null;
     $countdown = isset( $instance[ 'countdown' ] ) ? $instance[ 'countdown' ] : null;
     $timezone = isset( $instance[ 'timezone' ] ) ? $instance[ 'timezone' ] : null;
     ?>
@@ -367,6 +385,14 @@ class googlePlusHangout extends WP_Widget {
           <option value="3" <?php echo ($display == 3) ? 'selected="selected"': null; ?>>3&nbsp;</option>
           <option value="4" <?php echo ($display == 4) ? 'selected="selected"': null; ?>>4&nbsp;</option>
           <option value="5" <?php echo ($display == 5) ? 'selected="selected"': null; ?>>5&nbsp;</option>
+        </select>
+      </p>
+      <p>
+        <label for="<?php echo $this->get_field_id('visibility'); ?>"><?php _e('Visibility:', 'yakadanda-google-hangout-events'); ?></label><br/>
+        <select id="<?php echo $this->get_field_id('visibility'); ?>" name="<?php echo $this->get_field_name('visibility'); ?>">
+          <option value="public" <?php echo ($visibility == "public") ? 'selected="selected"': null; ?>>Public&nbsp;</option>
+          <option value="private" <?php echo ($visibility == "private") ? 'selected="selected"': null; ?>>Private&nbsp;</option>
+          <option value="all" <?php echo ($visibility == "all") ? 'selected="selected"': null; ?>>All&nbsp;</option>
         </select>
       </p>
       <p>

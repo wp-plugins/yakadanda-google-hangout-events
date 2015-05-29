@@ -342,6 +342,7 @@ function googleplushangoutevent_section_shortcode() {
   $output .= '<li><code>[google+events attendees="show"]</code></li>';
   $output .= '<li><code>[google+events timezone="America/Los_Angeles"]</code></li>';
   $output .= '<li><code>[google+events countdown="true"]</code></li>';
+  $output .= '<li><code>[google+events visibility="private"]</code></li>';
   $output .= '</ul>';
   $output .= '<p><strong>' . __('Attributes', 'yakadanda-google-hangout-events') . '</strong></p>';
   $output .= '<table><tbody>';
@@ -362,6 +363,7 @@ function googleplushangoutevent_section_shortcode() {
   $output .= sprintf(__('<tr><td style="vertical-align: top;">timezone</td><td style="vertical-align: top;">=</td><td>Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at <a href="%s" target="_blank">http://www.php.net/manual/en/timezones.php</a> (string)</td></tr>', 'yakadanda-google-hangout-events'), $url);
 
   $output .= sprintf(__('<tr><td style="vertical-align: top;">countdown</td><td style="vertical-align: top;">=</td><td><span>true</span>, or <span>false</span>, by default countdown is <span>false</span></td></tr>', 'yakadanda-google-hangout-events'));
+  $output .= sprintf(__('<tr><td style="vertical-align: top;">visibility</td><td style="vertical-align: top;">=</td><td>Show event based on visibility. Visibilty can <span>public</span>, <span>private</span>, or <span>all</span>, default is <span>public</span></td></tr>', 'yakadanda-google-hangout-events'));
 
   $output .= '<tbody></table>';
   $output .= '</div>';

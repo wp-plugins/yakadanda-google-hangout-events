@@ -13,6 +13,7 @@
  * attendees = show, show_all, or hide, default is hide
  * timeZone = Time zone used in the response, optional. Default is time zone based on location (hangout event not have location) if not have location it will use google account/calendar time zone. Supported time zones at http://www.php.net/manual/en/timezones.php (string)
  * countdown = true, or false, by default countdown is false
+ * visibility = public, private, or all, default is public
  */
 add_shortcode( 'google+events', 'googleplushangoutevent_shortcode' );
 function googleplushangoutevent_shortcode( $atts ) {
@@ -27,7 +28,8 @@ function googleplushangoutevent_shortcode( $atts ) {
     'attendees' => 'hide',
     'timezone' => null,
     'countdown' => false,
-    'src' => 'all'
+    'src' => 'all',
+    'visibility' => 'public'
   ), $atts ) );
   
   // Enqueue scripts
@@ -86,65 +88,63 @@ function googleplushangoutevent_shortcode( $atts ) {
     if ($id) {
       // Events get
       $event = $events;
-      
-      $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
 
-      if ( $visibility != 'private' ) {
-        $used_timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
-        $used_timezone = ($timezone) ? $timezone : $used_timezone;
-        
-        $output .= '<div itemscope itemtype="http://data-vocabulary.org/Event" class="yghe-event">';
-        
-        $output .= '<div class="yghe-organizer">' . googleplushangoutevent_organizer($event);
-        $output .= googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
-        
-        $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '" itemprop="url"><span itemprop="summary">' . $event['summary'] . '</span></a></div>';
-        
-        $start = (array) $event["\0*\0modelData"]['start'];
-        $end = (array) $event["\0*\0modelData"]['end'];
-        $start_event = isset($start['dateTime']) ? $start['dateTime'] : $start['date'];
-        $end_event = isset($end['dateTime']) ? $end['dateTime'] : $end['date'];
-        
-        $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $used_timezone, 'shortcode') . '</div>';
+      $used_timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
+      $used_timezone = ($timezone) ? $timezone : $used_timezone;
 
-        if ( isset($event['location']) ) {
-          $output .= '<div itemprop="location" itemscope itemtype="http://data-vocabulary.org/​Organization" class="yghe-event-location" title="Location"><a itemprop="address" itemscope itemtype="http://data-vocabulary.org/Address" href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
-        } else {
-          $onair = googleplushangoutevent_onair($start_event, $end_event);
-          if ( $onair ) $output .= '<div class="yghe-event-onair" title="On Air">';
-          else $output .= '<div class="yghe-event-hangout" title="Hangout">';
-          
-          if ( isset($event['hangoutLink']) ) $output .= '<a href="' . $event['hangoutLink'] . '" title="Google+ Hangout">Google+ Hangout</a>';
-          $output .= '</div>';
-        }
-        
-        $extend_img_src = get_option('googleplushangoutevent_' . $event['id']);
-        if ($extend_img_src) {
-          $output .= '<div class="yghe-event-photo"><img itemprop="photo" src="' . $extend_img_src . '"/></div>';
-        }
-        
-        $description = isset($event['description']) ? nl2br( $event['description'] ) : null;
-        $output .= '<div itemprop="description" class="yghe-event-description">' . $description . '</div>';
-        
-        if ( ($attendees == 'show') || ($attendees == 'show_all') ) {
-          $guests = isset($event["\0*\0modelData"]['attendees']) ? $event["\0*\0modelData"]['attendees'] : null;
-          $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $guests, $attendees ) . '</div>';
-        }
-        
-        if ($countdown == 'true') {
-          $time = googleplushangoutevent_start_time($start_event, $used_timezone);
-          $output .= '<div id="' . uniqid() . '" class="yghe-shortcode-countdown fix" data-cdate="' . $time . '">' . $time . '</div>';
-        }
-        
+      $output .= '<div itemscope itemtype="http://data-vocabulary.org/Event" class="yghe-event">';
+
+      $output .= '<div class="yghe-organizer">' . googleplushangoutevent_organizer($event);
+      $output .= googleplushangoutevent_ago($event['created'], $event['updated']) . '</div>';
+
+      $output .= '<div class="yghe-event-title"><a href="' . $event['htmlLink'] . '" title="' . $event['summary'] . '" itemprop="url"><span itemprop="summary">' . $event['summary'] . '</span></a></div>';
+
+      $start = (array) $event["\0*\0modelData"]['start'];
+      $end = (array) $event["\0*\0modelData"]['end'];
+      $start_event = isset($start['dateTime']) ? $start['dateTime'] : $start['date'];
+      $end_event = isset($end['dateTime']) ? $end['dateTime'] : $end['date'];
+
+      $output .= '<div class="yghe-event-time">' . googleplushangoutevent_time($start_event, $end_event, $used_timezone, 'shortcode') . '</div>';
+
+      if ( isset($event['location']) ) {
+        $output .= '<div itemprop="location" itemscope itemtype="http://data-vocabulary.org/​Organization" class="yghe-event-location" title="Location"><a itemprop="address" itemscope itemtype="http://data-vocabulary.org/Address" href="http://maps.google.com/?q=' . $event['location'] . '" title="' . $event['location'] . '">' . $event['location'] . '</a></div>';
+      } else {
+        $onair = googleplushangoutevent_onair($start_event, $end_event);
+        if ( $onair ) $output .= '<div class="yghe-event-onair" title="On Air">';
+        else $output .= '<div class="yghe-event-hangout" title="Hangout">';
+
+        if ( isset($event['hangoutLink']) ) $output .= '<a href="' . $event['hangoutLink'] . '" title="Google+ Hangout">Google+ Hangout</a>';
         $output .= '</div>';
       }
+
+      $extend_img_src = get_option('googleplushangoutevent_' . $event['id']);
+      if ($extend_img_src) {
+        $output .= '<div class="yghe-event-photo"><img itemprop="photo" src="' . $extend_img_src . '"/></div>';
+      }
+
+      $description = isset($event['description']) ? nl2br( $event['description'] ) : null;
+      $output .= '<div itemprop="description" class="yghe-event-description">' . $description . '</div>';
+
+      if ( ($attendees == 'show') || ($attendees == 'show_all') ) {
+        $guests = isset($event["\0*\0modelData"]['attendees']) ? $event["\0*\0modelData"]['attendees'] : null;
+        $output .= '<div class="yghe-event-attendees">'. googleplushangoutevent_get_attendees( $guests, $attendees ) . '</div>';
+      }
+
+      if ($countdown == 'true') {
+        $time = googleplushangoutevent_start_time($start_event, $used_timezone);
+        $output .= '<div id="' . uniqid() . '" class="yghe-shortcode-countdown fix" data-cdate="' . $time . '">' . $time . '</div>';
+      }
+
+      $output .= '</div>';
       
     } else {
       // Events lists
       foreach ($events as $event) {
         $hangoutlink = isset($event['hangoutLink']) ? $event['hangoutLink'] : false;
-        $visibility = isset($event['visibility']) ? $event['visibility'] : 'public';
-
+        
+        $event['visibility'] = isset($event['visibility']) ? $event['visibility'] : 'public';
+        $event['visibility'] = ($visibility == "all") ? 'all' : $event['visibility'];
+        
         if ($type == 'normal') $filter = !$hangoutlink;
         elseif ($type == 'hangout') $filter = $hangoutlink;
         
@@ -165,7 +165,7 @@ function googleplushangoutevent_shortcode( $atts ) {
         
         if ($src != 'all') $src_filter = googleplushangoutevent_src_filter($src, $event['htmlLink']);
         
-        if ( $filter && $creator && ($visibility != 'private') && !in_array($event['id'], $filter_out) && $src_filter ) { $i++;
+        if ( $filter && $creator && ($visibility == $event['visibility']) && !in_array($event['id'], $filter_out) && $src_filter ) { $i++;
           $used_timezone = isset($event['timeZoneLocation']) ? $event['timeZoneLocation'] : $event['timeZoneCalendar'];
           $used_timezone = ($timezone) ? $timezone : $used_timezone;
           

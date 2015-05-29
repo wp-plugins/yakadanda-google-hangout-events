@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Yakadanda Google+ Hangout Events package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Yakadanda Google+ Hangout Events 0.3.2\n"
+"Project-Id-Version: Yakadanda Google+ Hangout Events 0.3.3\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/yakadanda-google-"
 "hangout-events\n"
-"POT-Creation-Date: 2015-05-12 10:16:56+00:00\n"
+"POT-Creation-Date: 2015-05-28 09:08:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -156,18 +156,18 @@ msgstr ""
 msgid "Examples"
 msgstr ""
 
-#: admin/functions.php:346
+#: admin/functions.php:347
 msgid "Attributes"
 msgstr ""
 
-#: admin/functions.php:348
+#: admin/functions.php:349
 msgid ""
 "<tr><td style=\"vertical-align: top;\">type</td><td style=\"vertical-align: "
 "top;\">=</td><td><span>all</span>, <span>normal</span>, or <span>hangout</"
 "span>, by default type is <span>all</span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:349
+#: admin/functions.php:350
 msgid ""
 "<tr><td style=\"vertical-align: top;\">src</td><td style=\"vertical-align: "
 "top;\">=</td><td><span>all</span>, <span>gcal</span> (event from calendar), "
@@ -175,28 +175,28 @@ msgid ""
 "span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:350
+#: admin/functions.php:351
 msgid ""
 "<tr><td style=\"vertical-align: top;\">limit</td><td style=\"vertical-align: "
 "top;\">=</td><td>number of events to display (maximum is <span>20</span>)</"
 "td></tr>"
 msgstr ""
 
-#: admin/functions.php:351
+#: admin/functions.php:352
 msgid ""
 "<tr><td style=\"vertical-align: top;\">past</td><td style=\"vertical-align: "
 "top;\">=</td><td>number of months to display past events in <span>X</span> "
 "months ago, by default past is false</td></tr>"
 msgstr ""
 
-#: admin/functions.php:352
+#: admin/functions.php:353
 msgid ""
 "<tr><td style=\"vertical-align: top;\">author</td><td style=\"vertical-"
 "align: top;\">=</td><td><span>self</span>, <span>other</span>, or <span>all</"
 "span>, by default author is <span>all</span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:355
+#: admin/functions.php:356
 msgid ""
 "<tr><td style=\"vertical-align: top;\">id</td><td style=\"vertical-align: "
 "top;\">=</td><td>Event identifier (string). Single Event Example: <a href="
@@ -206,21 +206,21 @@ msgid ""
 "code></td></tr>"
 msgstr ""
 
-#: admin/functions.php:357
+#: admin/functions.php:358
 msgid ""
 "<tr><td style=\"vertical-align: top;\">filter_out</td><td style=\"vertical-"
 "align: top;\">=</td><td>Filter out certain events by event identifiers, "
 "seperated by comma</td></tr>"
 msgstr ""
 
-#: admin/functions.php:358
+#: admin/functions.php:359
 msgid ""
 "<tr><td style=\"vertical-align: top;\">search</td><td style=\"vertical-"
 "align: top;\">=</td><td>Text search terms (string) to display events that "
 "match these terms in any field, except for extended properties</td></tr>"
 msgstr ""
 
-#: admin/functions.php:359
+#: admin/functions.php:360
 msgid ""
 "<tr><td style=\"vertical-align: top;\">attendees</td><td style=\"vertical-"
 "align: top;\">=</td><td>Events can have attendees, the value can be "
@@ -228,7 +228,7 @@ msgid ""
 "value for attendees attribute is <span>hide</span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:362
+#: admin/functions.php:363
 msgid ""
 "<tr><td style=\"vertical-align: top;\">timezone</td><td style=\"vertical-"
 "align: top;\">=</td><td>Time zone used in the response, optional. Default is "
@@ -238,18 +238,26 @@ msgid ""
 "php</a> (string)</td></tr>"
 msgstr ""
 
-#: admin/functions.php:364
+#: admin/functions.php:365
 msgid ""
 "<tr><td style=\"vertical-align: top;\">countdown</td><td style=\"vertical-"
 "align: top;\">=</td><td><span>true</span>, or <span>false</span>, by default "
 "countdown is <span>false</span></td></tr>"
 msgstr ""
 
-#: admin/functions.php:375
+#: admin/functions.php:366
+msgid ""
+"<tr><td style=\"vertical-align: top;\">visibility</td><td style=\"vertical-"
+"align: top;\">=</td><td>Show event based on visibility. Visibilty can "
+"<span>public</span>, <span>private</span>, or <span>all</span>, default is "
+"<span>public</span></td></tr>"
+msgstr ""
+
+#: admin/functions.php:377
 msgid "<h1>Adding the embedded posts</h1>"
 msgstr ""
 
-#: admin/functions.php:379
+#: admin/functions.php:381
 msgid ""
 "<p>Locate the post that you want to embed on <a href=\"%s\" target=\"_blank"
 "\">Google+</a> and click the <img src=\"%s\" title=\"A downward pointing "
@@ -257,21 +265,21 @@ msgid ""
 "indicates the menu\"/> menu icon and choose Embed post.</p>"
 msgstr ""
 
-#: admin/functions.php:384
+#: admin/functions.php:386
 msgid "<p>Copy the tag <code>%s</code> to post or page.</p>"
 msgstr ""
 
-#: admin/functions.php:389
+#: admin/functions.php:391
 msgid ""
 "<p>For more detail you can look at <a href=\"%s\" target=\"_blank\">https://"
 "developers.google.com/+/web/embedded-post/</a>.</p>"
 msgstr ""
 
-#: admin/functions.php:495
+#: admin/functions.php:497
 msgid "Close"
 msgstr ""
 
-#: admin/functions.php:499
+#: admin/functions.php:501
 msgid ""
 "<p>Since 0.2.6, Authorized redirect URI changed to <code>%s</code>. You can "
 "change your Authorized redirect URI at <a href=\"%s\" target=\"_blank"
@@ -279,7 +287,7 @@ msgid ""
 "you're using this plugin. Thank you.</p>"
 msgstr ""
 
-#: admin/functions.php:557
+#: admin/functions.php:559
 msgid "Settings restored to default settings."
 msgstr ""
 
@@ -370,7 +378,7 @@ msgstr ""
 msgid "Connected."
 msgstr ""
 
-#: admin/page-settings.php:25 admin/shortcode.php:227 admin/widget.php:540
+#: admin/page-settings.php:25 admin/shortcode.php:227 admin/widget.php:566
 msgid "Not Connected."
 msgstr ""
 
@@ -466,7 +474,7 @@ msgstr ""
 msgid "No event yet."
 msgstr ""
 
-#: admin/shortcode.php:226 admin/widget.php:545
+#: admin/shortcode.php:226 admin/widget.php:571
 msgid "No hangout event yet."
 msgstr ""
 
@@ -474,76 +482,80 @@ msgstr ""
 msgid "A countdown function to time of the Google+ Event"
 msgstr ""
 
-#: admin/widget.php:100 admin/widget.php:301
+#: admin/widget.php:103 admin/widget.php:317
 msgid "Event"
 msgstr ""
 
-#: admin/widget.php:107 admin/widget.php:312
+#: admin/widget.php:110 admin/widget.php:328
 msgid "View Event on Google+"
 msgstr ""
 
-#: admin/widget.php:148 admin/widget.php:351
+#: admin/widget.php:153 admin/widget.php:369
 msgid "Title:"
 msgstr ""
 
-#: admin/widget.php:152 admin/widget.php:355
+#: admin/widget.php:157 admin/widget.php:373
 msgid "Author:"
 msgstr ""
 
-#: admin/widget.php:154 admin/widget.php:162 admin/widget.php:186
-#: admin/widget.php:357 admin/widget.php:381
+#: admin/widget.php:159 admin/widget.php:167 admin/widget.php:199
+#: admin/widget.php:375 admin/widget.php:407
 msgid "All"
 msgstr ""
 
-#: admin/widget.php:155 admin/widget.php:358
+#: admin/widget.php:160 admin/widget.php:376
 msgid "Self"
 msgstr ""
 
-#: admin/widget.php:156 admin/widget.php:359
+#: admin/widget.php:161 admin/widget.php:377
 msgid "Other"
 msgstr ""
 
-#: admin/widget.php:160
+#: admin/widget.php:165
 msgid "Source:"
 msgstr ""
 
-#: admin/widget.php:163
+#: admin/widget.php:168
 msgid "Google Calendar"
 msgstr ""
 
-#: admin/widget.php:168 admin/widget.php:363
+#: admin/widget.php:173 admin/widget.php:381
 msgid "Display:"
 msgstr ""
 
-#: admin/widget.php:178 admin/widget.php:373
+#: admin/widget.php:183 admin/widget.php:391
+msgid "Visibility:"
+msgstr ""
+
+#: admin/widget.php:191 admin/widget.php:399
 msgid "Countdown:"
 msgstr ""
 
-#: admin/widget.php:181 admin/widget.php:376
+#: admin/widget.php:194 admin/widget.php:402
 msgid "First only"
 msgstr ""
 
-#: admin/widget.php:191 admin/widget.php:386
+#: admin/widget.php:204 admin/widget.php:412
 msgid "None"
 msgstr ""
 
-#: admin/widget.php:195 admin/widget.php:390
+#: admin/widget.php:208 admin/widget.php:416
 msgid "Timezone:"
 msgstr ""
 
-#: admin/widget.php:215
+#: admin/widget.php:228
 msgid "A countdown function to time of the Google+ Hangout"
 msgstr ""
 
-#: admin/widget.php:302
+#: admin/widget.php:318
 msgid "Hangout"
 msgstr ""
 
-#: admin/widget.php:304
+#: admin/widget.php:320
 msgid "On Air"
 msgstr ""
 
-#: admin/widget.php:713
+#: admin/widget.php:739
 msgid "Location/Calendar timezone (default)"
 msgstr ""
 
